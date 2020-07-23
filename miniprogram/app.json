@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/activities/activities",
+    "pages/activities/activities_all/activities_all",
+    "pages/activities/activities_detail/activities_detail",
+    "pages/activities/activities_detail_admin/activities_detail_admin",
+    "pages/activities/create_activity/create_activity",
+    "pages/gallery/gallery",
+    "pages/my_account/my_account",
+    "pages/my_account/modify_information/modify_information",
+    "pages/my_account/modify_admin/modify_admin",
+    
+    "pages/init_user/init_user",
+
+    "pages/index/index",
+    "pages/userConsole/userConsole",
+    "pages/storageConsole/storageConsole",
+    "pages/databaseGuide/databaseGuide",
+    "pages/addFunction/addFunction",
+    "pages/deployFunctions/deployFunctions",
+    "pages/chooseLib/chooseLib",
+    "pages/openapi/openapi",
+    "pages/openapi/serverapi/serverapi",
+    "pages/openapi/callback/callback",
+    "pages/openapi/cloudid/cloudid",
+    "pages/im/im",
+    "pages/im/room/room"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "阮薇薇点名啦",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}
