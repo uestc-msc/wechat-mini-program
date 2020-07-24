@@ -26,33 +26,6 @@
     "pages/im/im",
     "pages/im/room/room"
   ],
-  "tabBar": {
-    "custom": true,
-    "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
-    "borderStyle": "black",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "pagePath": "pages/activities/activities",
-        "iconPath": "images/icon_date.png",
-        "selectedIconPath": "images/icon_date_filling.png",
-        "text": "活动"
-      },
-      {
-        "pagePath": "pages/gallery/gallery",
-        "iconPath": "images/icon_gallery.png",
-        "selectedIconPath": "images/icon_gallery_filling.png",
-        "text": "相册"
-      },
-      {
-        "pagePath": "pages/user/user",
-        "iconPath": "images/icon_user.png",
-        "selectedIconPath": "images/icon_user_filling.png",
-        "text": "我"
-      }
-    ]
-  },
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",

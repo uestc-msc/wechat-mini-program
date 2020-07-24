@@ -27,5 +27,23 @@
 		<view class="button-sp-area">
 			<a class="weui-btn weui-btn_primary">签到</a>
 		</view>
+				<view class="weui-tab">
+			<view class="weui-tab__panel">
+			</view>
+			<view class="weui-tabbar">
+				<view class="weui-tabbar__item weui-bar__item_on">
+					<image src="../../images/icon_date_filling.png" alt class="weui-tabbar__icon"></image>
+					<view class="weui-tabbar__label">活动</view>
+				</view>
+				<view class="weui-tabbar__item">
+					<image src="../../images/icon_gallery.png" alt class="weui-tabbar__icon"></image>
+					<view class="weui-tabbar__label">相册</view>
+				</view>
+				<view class="weui-tabbar__item">
+					<image src="../../images/icon_user.png" alt class="weui-tabbar__icon"></image>
+					<view class="weui-tabbar__label">我</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </view>
