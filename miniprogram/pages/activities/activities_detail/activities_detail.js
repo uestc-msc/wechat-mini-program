@@ -9,6 +9,21 @@ Page({
     }
 });
 
+//修改底栏按钮
+Component({
+    pageLifetimes: {
+      show() {
+        if (typeof this.getTabBar === 'function' &&
+          this.getTabBar()) {
+          this.getTabBar().setData({
+            selected: 0
+          })
+        }
+      }
+    }
+  })
+  
+
 // Page({
 
 //   /**

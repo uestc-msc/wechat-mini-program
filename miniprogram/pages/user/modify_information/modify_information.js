@@ -1,4 +1,4 @@
-// pages/my_account/my_account.js
+// pages/user/modify_information/modify_information.js
 Page({
 
   /**

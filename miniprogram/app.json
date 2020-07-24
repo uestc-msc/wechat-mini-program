@@ -6,9 +6,9 @@
     "pages/activities/activities_detail_admin/activities_detail_admin",
     "pages/activities/create_activity/create_activity",
     "pages/gallery/gallery",
-    "pages/my_account/my_account",
-    "pages/my_account/modify_information/modify_information",
-    "pages/my_account/modify_admin/modify_admin",
+    "pages/user/user",
+    "pages/user/modify_information/modify_information",
+    "pages/user/modify_admin/modify_admin",
     
     "pages/init_user/init_user",
 
@@ -26,6 +26,33 @@
     "pages/im/im",
     "pages/im/room/room"
   ],
+  "tabBar": {
+    "custom": true,
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/activities/activities",
+        "iconPath": "images/icon_date.png",
+        "selectedIconPath": "images/icon_date_filling.png",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/gallery/gallery",
+        "iconPath": "images/icon_gallery.png",
+        "selectedIconPath": "images/icon_gallery_filling.png",
+        "text": "相册"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "images/icon_user.png",
+        "selectedIconPath": "images/icon_user_filling.png",
+        "text": "我"
+      }
+    ]
+  },
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",

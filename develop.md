@@ -6,7 +6,7 @@
 
 路径：`pages/activities/activities`
 
-展示前几次活动、“查看更多”。以及“新增活动”按钮。
+展示前几次活动、“查看更多”。以及“新增活动”按钮、“扫码签到”按钮。
 
 点击一次活动进入其活动详情页面。
 
@@ -17,7 +17,6 @@
 查看所有活动。
 
 点击一次活动进入其活动详情页面。
-
 
 ### 活动详情页面
 
@@ -35,7 +34,7 @@
 详情页路径：`pages/activities/activities_detail_admin/activities_detail_admin`
 
 * 查看（和修改）名称、时间、地点、已签到人数
-* 签到二维码（及下载）
+* 签到二维码生成（及下载），[可能需要芝麻小程序二维码器](https://weixin.hotapp.cn/)
 * 查看、导出签到名单
 * 管理图片
 * 从参与名单里进行抽奖
@@ -55,11 +54,23 @@
 
 ### 个人管理界面
 
-路径：`pages/my_account/my_account`
+路径：`pages/user/user`
 
 * 展示头像
-* 修改个人信息，路径：`pages/my_account/modify_information/modify_information`
-* 管理员名单修改（仅管理员可以看到），路径：`pages/my_account/modify_admin/modify_admin`
+* 修改个人信息，路径：`pages/user/modify_information/modify_information`
+* 管理员名单修改（仅管理员可以看到），路径：`pages/user/modify_admin/modify_admin`
+
+### 底栏
+
+参考：
+
+路径：`/tab-bar/tab-bar`
+
+### 签到页面
+
+路径：`pages/check_in/check_in`
+
+如果存在 `uuid` 参数，则直接进行签到；否则调用微信扫码功能。
 
 ### 初始化用户
 
@@ -67,12 +78,7 @@
 
 ## To-do
 
-* 主界面
-* 相册界面
-* 管理员界面
-  * 添加活动页面
-  * 已删除活动页面
-* 个人管理界面
+以上都是
 
 ## 长远计划
 

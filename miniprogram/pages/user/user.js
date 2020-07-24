@@ -1,4 +1,4 @@
-// pages/my_account/modify_information/modify_information.js
+// pages/user/user.js
 Page({
 
   /**
@@ -62,5 +62,19 @@ Page({
    */
   onShareAppMessage: function () {
 
+  }
+})
+
+//修改底栏按钮
+Component({
+  pageLifetimes: {
+    show() {
+      if (typeof this.getTabBar === 'function' &&
+        this.getTabBar()) {
+        this.getTabBar().setData({
+          selected: 2
+        })
+      }
+    }
   }
 })

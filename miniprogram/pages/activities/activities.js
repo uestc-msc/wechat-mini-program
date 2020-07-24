@@ -8,17 +8,29 @@ Page({
             icon20: base64.icon20,
             icon60: base64.icon60
         });
+    },
+    data: {
+        // 放四个沙龙比较好
+        recent_salon: [
+            {
+                topic: "第一场沙龙",
+                presenter: "阮薇薇",
+                date: "2020.7.24",
+                time: "20:00",
+                place: "品A101"
+            },
+            {
+                topic: "第二场沙龙",
+                presenter: "阮薇薇",
+                date: "2020.8.24",
+                time: "8:00",
+                place: "腾讯课堂"
+            }
+        ]
     }
 });
 
 // Page({
-
-//   /**
-//    * 页面的初始数据
-//    */
-//   data: {
-
-//   },
 
 //   /**
 //    * 生命周期函数--监听页面加载
