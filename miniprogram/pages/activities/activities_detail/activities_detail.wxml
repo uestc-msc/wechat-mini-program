@@ -28,7 +28,7 @@
 			</navigator>
 		</view>
 		<view class="button-sp-area">
-			<a class="weui-btn weui-btn_primary">签到</a>
+			<a class="weui-btn weui-btn_primary" bindtap="callCheckIn">签到</a>
 		</view>
 	</view>
 </view>

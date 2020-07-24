@@ -3,11 +3,34 @@ var base64 = require("../../../images/base64");
 
 Page({
     mixins: [require('../../../mixin/themeChanged')],
-    onLoad: function(){
+    onLoad: function () {
         this.setData({
             icon20: base64.icon20,
             icon60: base64.icon60
         });
+    },
+    data: {
+        // 放四个沙龙比较好
+        recent_activities: [{
+                topic: "第一场沙龙",
+                presenter: "阮薇薇",
+                date: "2020.7.24",
+                time: "20:00",
+                place: "品A101"
+            },
+            {
+                topic: "第二场沙龙",
+                presenter: "阮薇薇",
+                date: "2020.8.24",
+                time: "8:00",
+                place: "腾讯课堂"
+            }
+        ]
+    },
+    navigateToActivityDetail() {
+        wx.navigateTo({
+            url: '../activities_detail/activities_detail',
+        })
     }
 });
 

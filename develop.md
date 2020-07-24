@@ -59,6 +59,7 @@
 * 展示头像
 * 修改个人信息，路径：`pages/user/modify_information/modify_information`
 * 管理员名单修改（仅管理员可以看到），路径：`pages/user/modify_admin/modify_admin`
+* 关于，路径 `pages/about/about`
 
 ### 底栏
 
@@ -66,9 +67,11 @@
 
 路径：`/tab-bar/tab-bar`
 
-### 签到页面
+### 签到
 
-路径：`pages/check_in/check_in`
+签到不需要单写页面，但是为使得多个页面能调用，单独写一个 js 供其他地方调用。
+
+`pages/check_in/check_in.js`
 
 如果存在 `uuid` 参数，则直接进行签到；否则调用微信扫码功能。
 

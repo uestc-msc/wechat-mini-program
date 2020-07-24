@@ -1,60 +1,25 @@
 // pages/init_user/init_user.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
 
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  //加载页面前先判断是否有该人信息。如果有了，就直接 redirectTo url: '../activities/activities'
+  // 还要申请读取个人微信号
 
-  },
+  confirmInput () {
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
+    //存储信息
+    //如果数据库已经有人叫这个名字，但没有其他信息（是被管理员添加的沙龙主讲人）
+    //则把信息赋给数据库对应的人
+    //否则新建一个人
+    wx.redirectTo({
+      url: '../activities/activities',
+    })
+    wx.showToast({
+      title: '完善成功',
+      icon: 'success',
+      duration: 2000
+    });
+  }
 })

@@ -1,2 +1,37 @@
 <!--pages/user/user.wxml-->
-<text>pages/user/user.wxml</text>
+<view class="page" data-weui-theme="{{theme}}">
+	<view class="page__bd">
+		<view class="weui-cells">
+          <navigator url="modify_information/modify_information">
+			<view class="weui-cell weui-cell_active weui-cell_access" bindtap="navigateToModifyInformation">
+				<view class="weui-cell__d" style="position: relative; margin-right: 10px;">
+					<image src="../../images/icon_ruanweiwei.jpg" style="width: 80px; height:80px; display: block;"></image>
+				</view>
+				<view class="weui-cell__bd">
+					<view>阮薇薇</view>
+					<view style="font-size: 13px; color: #888;">20180801001</view>
+				</view>
+				<view class="weui-cell__ft">修改</view>
+			</view>
+      </navigator>
+
+		</view>
+
+		<view class="weui-cells">
+			<view class="weui-cell weui-cell_active weui-cell_access" bindtap="navigateToModifyAdmin"> <!-- 只想让它在管理员的界面上出现 -->
+				<view class="weui-cell__bd">
+					<text style="vertical-align: middle;">管理员列表</text>
+				</view>
+				<view class="weui-cell__ft"></view>
+			</view>
+      <navigator url="../about/about">
+			<view class="weui-cell weui-cell_active weui-cell_access">
+				<view class="weui-cell__bd">
+					<text style="vertical-align: middle;">关于</text>
+				</view>
+				<view class="weui-cell__ft"></view>
+			</view>
+      </navigator>
+		</view>
+	</view>
+</view>

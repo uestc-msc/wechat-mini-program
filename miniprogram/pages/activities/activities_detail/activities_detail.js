@@ -1,28 +1,19 @@
 // pages/activities/activities_detail/activities_detail.js
+import {checkIn} from '../../check_in/check_in.js';
 var base64 = require("../../../images/base64");
+
 Page({
     mixins: [require('../../../mixin/themeChanged')],
     onLoad: function(){
         this.setData({
             icon: base64.icon20
         });
-    }
+    },
+    callCheckIn () {
+      checkIn();
+  }
 });
 
-//修改底栏按钮
-Component({
-    pageLifetimes: {
-      show() {
-        if (typeof this.getTabBar === 'function' &&
-          this.getTabBar()) {
-          this.getTabBar().setData({
-            selected: 0
-          })
-        }
-      }
-    }
-  })
-  
 
 // Page({
 

@@ -1,0 +1,22 @@
+/* pages/about/about.wxss */
+
+.app-icon {
+  display:flex;
+  height: 400px;                    /* flex布局高度 */
+  justify-content: center;
+  align-items:center;                /* 垂直居中 */
+}
+ .app-icon image { 
+   width:400rpx;
+   height:400rpx;
+}
+
+.weui-form__tips {
+  font-size: 20px;
+}
+
+.weui-footer{margin-bottom:50px}.weui-footer_fixed-bottom{margin-bottom:0}
+
+.weui-footer__link {
+  font-size: 15px;
+}

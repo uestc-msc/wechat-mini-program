@@ -1,5 +1,6 @@
 // pages/activities/activities.js
 var base64 = require("../../images/base64");
+import {checkIn} from '../check_in/check_in.js';
 
 Page({
     mixins: [require('../../mixin/themeChanged')],
@@ -11,7 +12,7 @@ Page({
     },
     data: {
         // 放四个沙龙比较好
-        recent_salon: [
+        recent_activities: [
             {
                 topic: "第一场沙龙",
                 presenter: "阮薇薇",
@@ -27,6 +28,24 @@ Page({
                 place: "腾讯课堂"
             }
         ]
+    },
+    navigateToActivityDetail () {
+        wx.navigateTo({
+          url: 'activities_detail/activities_detail',
+        })
+    },
+    navigateToActivityAll () {
+        wx.navigateTo({
+            url: 'activities_all/activities_all',
+          })
+    },
+    navigateToCreateActivity () {
+        wx.navigateTo({
+            url: 'create_activity/create_activity',
+          })
+    },
+    callCheckIn () {
+        checkIn();
     }
 });
 
@@ -66,25 +85,3 @@ Page({
 //   onUnload: function () {
 
 //   },
-
-//   /**
-//    * 页面相关事件处理函数--监听用户下拉动作
-//    */
-//   onPullDownRefresh: function () {
-
-//   },
-
-//   /**
-//    * 页面上拉触底事件的处理函数
-//    */
-//   onReachBottom: function () {
-
-//   },
-
-//   /**
-//    * 用户点击右上角分享
-//    */
-//   onShareAppMessage: function () {
-
-//   }
-// })

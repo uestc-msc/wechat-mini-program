@@ -1,0 +1,23 @@
+<!--pages/about/about.wxml-->
+
+<view class="page" data-weui-theme="{{theme}}">
+
+	<view class="app-icon">
+		<image src="../../images/icon_ruanweiwei.png"></image>
+	</view>
+
+    
+
+		<view class="weui-form__tips-area">
+			<view class="weui-form__tips">
+                v0.1
+			</view>
+		</view>
+
+	<view class="weui-footer weui-footer_fixed-bottom">
+<view wx:for="{{link}}" wx:for-item="link" wx:key="*this">
+		<a class="weui-footer__link" bindtap="copyLinkToClipBoard" data-link="{{link}}">{{link}}</a>
+    </view>
+		<view class="weui-footer__text">Copyright © 2012-2020 UESTC-MSC</view>
+	</view>
+</view>
