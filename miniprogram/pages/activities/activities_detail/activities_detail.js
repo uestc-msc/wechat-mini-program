@@ -11,6 +11,11 @@ Page({
     },
     callCheckIn () {
       checkIn();
+  },
+  callActivityDetailAdmin() {
+      wx.navigateTo({
+        url: '../activities_detail_admin/activities_detail_admin',
+      })
   }
 });
 

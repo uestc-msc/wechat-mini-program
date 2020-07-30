@@ -1,2 +1,77 @@
-<!--pages/activities/activities_detail_admin/activities_detail_admin.wxml-->
-<text>pages/activities/activities_detail_admin/activities_detail_admin.wxml</text>
+<!--pages/activities/activities_detail/activities_detail.wxml-->
+
+
+
+<view class="page" data-weui-theme="{{theme}}">
+	<view class="page__hd">
+		<view class="page__title">阮薇薇的第一次沙龙</view>
+			<view class="page__desc">管理员界面</view>
+	</view>
+	<view class="page__bd">
+		<view class="weui-cells__title">修改信息</view>
+		<view class="weui-cells weui-cells_after-title">
+			<view class="weui-cell weui-cell_active">
+				<view class="weui-cell__hd">
+					<view class="weui-label">标题</view>
+				</view>
+				<view class="weui-cell__bd">
+					<input class="weui-input" value="阮薇薇的第一次沙龙" />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active">
+				<view class="weui-cell__hd">
+					<view class="weui-label">主讲人</view>
+				</view>
+				<view class="weui-cell__bd">
+					<input class="weui-input" value="阮薇薇" />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active">
+				<view class="weui-cell__hd">
+					<view class="weui-label">日期</view>
+				</view>
+				<view class="weui-cell__bd">
+					<picker mode="date" value="{{date}}" start="2015-09-01" end="2021-09-01" bindchange="bindDateChange">
+						<view class="weui-input">{{date}}</view>
+					</picker>
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active">
+				<view class="weui-cell__hd">
+					<view class="weui-label">时间</view>
+				</view>
+				<view class="weui-cell__bd">
+					<picker mode="time" value="{{time}}" start="09:01" end="21:01" bindchange="bindTimeChange">
+						<view class="weui-input">{{time}}</view>
+					</picker>
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active">
+				<view class="weui-cell__hd">
+					<view class="weui-label">地点</view>
+				</view>
+				<view class="weui-cell__bd">
+					<input class="weui-input" value="品A101" />
+				</view>
+			</view>
+		</view>
+		<view class="button-sp-area">
+			<a class="weui-btn weui-btn_primary" bindtap="saveChange">保存修改</a>
+		</view>
+
+		<view class="weui-cells__title">活动记录</view>
+		<view class="weui-cells weui-cells_after-title">
+			<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="callCheckInList">
+				<view class="weui-cell__bd">签到名单</view>
+				<view class="weui-cell__ft weui-cell__ft_in-access">5</view>
+			</view>
+			<!-- <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="callGallery">
+				<view class="weui-cell__bd">相册</view>
+				<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+			</view> -->
+		</view>
+		<view class="button-sp-area">
+			<a class="weui-btn weui-btn_primary" bindtap="callLottery">抽奖</a>
+		</view>
+	</view>
+</view>

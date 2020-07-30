@@ -2,7 +2,7 @@
 
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__hd">
-		<view class="page__title">标题一</view>
+		<view class="page__title">阮薇薇的第一次沙龙</view>
 	</view>
 	<view class="page__bd">
 		<view class="weui-cells weui-cells_after-title">
@@ -28,7 +28,10 @@
 			</navigator>
 		</view>
 		<view class="button-sp-area">
-			<a class="weui-btn weui-btn_primary" bindtap="callCheckIn">签到</a>
+			<view class="weui-btn weui-btn_primary" bindtap="callCheckIn">签到</view>
+		</view>
+				<view class="button-sp-area">
+			<view class="weui-btn weui-btn_primary" bindtap="callActivityDetailAdmin">管理员界面</view>
 		</view>
 	</view>
 </view>

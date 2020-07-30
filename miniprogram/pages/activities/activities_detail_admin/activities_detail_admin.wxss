@@ -1,1 +1,6 @@
 /* pages/activities/activities_detail_admin/activities_detail_admin.wxss */
+
+/* 文字右对齐 */
+.weui-input {
+  text-align: right;
+} 

@@ -6,6 +6,8 @@
     "pages/activities/activities_all/activities_all",
     "pages/activities/activities_detail/activities_detail",
     "pages/activities/activities_detail_admin/activities_detail_admin",
+    "pages/activities/activities_detail_admin/check_in_list/check_in_list",
+    "pages/activities/activities_detail_admin/lottery/lottery",
     "pages/activities/create_activity/create_activity",
     "pages/gallery/gallery",
     "pages/user/modify_information/modify_information",
