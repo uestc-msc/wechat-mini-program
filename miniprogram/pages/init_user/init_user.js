@@ -10,11 +10,9 @@ Page({
   confirmInput () {
 
     //存储信息
-    //如果数据库已经有人叫这个名字，但没有其他信息（是被管理员添加的沙龙主讲人）
-    //则把信息赋给数据库对应的人
-    //否则新建一个人
-    wx.redirectTo({
-      url: '../activities/activities',
+    //wx.redirectTo({ // 跳转到有tabBar页面必须使用 wx.switchTab 而不能用其他语法，否则会跳转失败
+      wx.switchTab({
+    url: '../activities/activities',
     })
     wx.showToast({
       title: '完善成功',

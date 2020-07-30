@@ -33,6 +33,28 @@
     "navigationBarTitleText": "阮薇薇点名啦",
     "navigationBarTextStyle": "black"
   },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/activities/activities",
+      "iconPath": "images/icon_date.png",
+          "selectedIconPath": "images/icon_date_filling.png",
+      "text": "活动"
+    }, {
+      "pagePath": "pages/gallery/gallery",
+      "iconPath": "images/icon_gallery.png",
+      "selectedIconPath": "images/icon_gallery_filling.png",
+      "text": "相册"
+    }, {
+      "pagePath": "pages/user/user",
+      "iconPath": "images/icon_user.png",
+      "selectedIconPath": "images/icon_user_filling.png",
+      "text": "我"
+    }]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }

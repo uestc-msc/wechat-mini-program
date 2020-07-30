@@ -26,7 +26,7 @@
 		<view class="button-sp-area">
 			<a class="weui-btn weui-btn_primary" bindtap="callCheckIn">签到</a>
 		</view>
-				<view class="weui-tab">
+		<!--<view class="weui-tab">
 			<view class="weui-tab__panel">
 			</view>
 			<view class="weui-tabbar">
@@ -43,6 +43,7 @@
 					<view class="weui-tabbar__label">我</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
+		<mp-tabbar style="position:fixed;bottom:0;width:100%;left:0;right:0;" list="{{list}}" bindchange="tabChange"></mp-tabbar>
 	</view>
 </view>

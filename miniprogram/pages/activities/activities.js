@@ -46,6 +46,9 @@ Page({
     },
     callCheckIn () {
         checkIn();
+    },
+    tabChange(e) {
+        console.log('tab change', e)
     }
 });
 
