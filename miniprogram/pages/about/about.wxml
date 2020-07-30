@@ -6,11 +6,9 @@
 		<image src="../../images/icon_ruanweiwei.png"></image>
 	</view>
 
-    
-
 		<view class="weui-form__tips-area">
 			<view class="weui-form__tips">
-                v0.1
+				{{version}}
 			</view>
 		</view>
 
