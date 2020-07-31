@@ -1,0 +1,31 @@
+<!--pages/activities/activities_detail/lottery/lottery.wxml-->
+<view class="page__hd">
+	<view class="page__title">阮薇薇的第一次沙龙</view>
+	<view class="page__desc">抽奖，共 5 人参与</view>
+</view>
+
+<view class="weui-cells weui-cells_form">
+	<view class="weui-cell weui-cell_active">
+		<view class="weui-cell__hd">
+			<label class="weui-label">中奖人数</label>
+		</view>
+		<view class="weui-cell__bd">
+			<picker bindchange="bindPickerChange" value="{{index}}" range="{{[1,2,3,4,5]}}">
+				<view class="picker">
+					{{index+1}}
+				</view>
+			</picker>
+		</view>
+	</view>
+</view>
+
+<view class="weui-cells__title">中奖名单</view>
+<view class="weui-cells weui-cells_after-title">
+	<view class="weui-cell" bindtap="copyListToClipBoard">
+		<text class="weui-cell__ft">{{lotteryListText}}</text>
+	</view>
+</view>
+
+<view class="button-sp-area">
+	<a class="weui-btn weui-btn_primary" bindtap="drawLottery">开奖</a>
+</view>

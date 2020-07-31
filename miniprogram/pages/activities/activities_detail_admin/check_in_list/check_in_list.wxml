@@ -1,0 +1,16 @@
+<!--pages/activities/activities_detail/check_in_list/check_in_list.wxml-->
+
+<view class="page__hd">
+	<view class="page__title">阮薇薇的第一次沙龙</view>
+	<view class="page__desc">签到名单</view>
+</view>
+
+<view class="weui-cells weui-cells_after-title">
+	<view class="weui-cell" bindtap="copyListToClipBoard">
+		<text class="weui-cell__ft">{{checkInListText}}</text>
+	</view>
+</view>
+
+<view class="button-sp-area">
+	<a class="weui-btn weui-btn_primary" bindtap="exportToCSV">导出为 CSV</a>
+</view>

@@ -1,0 +1,5 @@
+/* pages/activities/activities_detail/lottery/lottery.wxss */
+
+.picker {
+  text-align: right;
+}

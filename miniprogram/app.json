@@ -12,7 +12,7 @@
     "pages/gallery/gallery",
     "pages/user/modify_information/modify_information",
     "pages/user/modify_admin/modify_admin",
-    "pages/about/about",
+    "pages/user/about/about",
 
     "pages/index/index",
     "pages/userConsole/userConsole",
