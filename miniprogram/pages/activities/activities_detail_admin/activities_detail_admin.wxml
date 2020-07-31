@@ -57,6 +57,7 @@
 		</view>
 		<view class="button-sp-area">
 			<a class="weui-btn weui-btn_primary" bindtap="saveChange">保存修改</a>
+			<a class="weui-btn weui-btn_warn" bindtap="deleteActivity">删除活动</a>
 		</view>
 
 		<view class="weui-cells__title">活动记录</view>
