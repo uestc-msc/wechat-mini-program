@@ -1,2 +1,31 @@
 <!--pages/gallery/gallery.wxml-->
-<text>pages/gallery/gallery.wxml</text>
+<view class="page" data-weui-theme="{{theme}}">
+  <view class="page_bd">
+   <mp-cells title="新建相册参数">
+    <mp-cell prop="名称" title="名称-" ext-class="">
+      <input bindinput="formInputChange" data-field="newAlbumName" class="weui-input" placeholder="请输入新相册名称"/>
+    </mp-cell>
+    <mp-cell prop="描述" title="描述-" ext-class="">
+      <input bindinput="formInputChange" data-field="newAlbumDescribe" class="weui-input" placeholder="请填写相册描述"/>
+    </mp-cell>
+   </mp-cells>
+   <view class="weui-btn-area">
+    <button calss="weui-btn" type="primary" bindtap="submitNewAlbum">新建相册</button>
+   </view>
+  <!-- 条件渲染相册 -->
+  <view  class="page__bd">
+    <view class="weui-panel weui-panel_access">
+       <view class="weui-panel__bd" wx:for="{{albumType}}" wx:for-item="albumType" wx:key="*item">
+          <navigator url="../file/file?id={{index}}&name={{albumType.name}}&imgurl={{albumType.imgurl}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" mode="widthFix" src="{{albumType.imgurl[0]}}" sytle="height:auto"></image>
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">{{albumType.name}}</view>
+            </view>
+          </navigator>
+       </view>
+    </view>
+   </view>
+  </view>
+</view>
