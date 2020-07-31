@@ -4,3 +4,9 @@
 .weui-input {
   text-align: right;
 } 
+
+/* 签到二维码 */
+.weui-media-box__thumb {
+  width: 200rpx;
+  height: 200rpx;
+}
