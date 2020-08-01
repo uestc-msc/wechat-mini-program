@@ -1,7 +1,7 @@
 //app.js
 App({
     onLaunch: function () {
-      var that = this;
+      let that = this;
 
       if (!wx.cloud) {
         console.error('请使用 2.2.3 或以上的基础库以使用云能力')
@@ -20,7 +20,7 @@ App({
         openid: "",
         avatar_url: "",
         username: "",
-        school_id: "",
+        student_id: "",
         telephone: "",
         is_admin: false,
         register_date: "",
@@ -49,12 +49,12 @@ App({
                 });
                 return;
               } else {
-                this.globalData.avatar_url;
-                this.globalData.username;
-                this.globalData.school_id;
-                this.globalData.telephone;
-                this.globalData.is_admin;
-                this.globalData.register_date;
+                that.globalData.avatar_url = res.data[0].avatar_url;
+                that.globalData.username = res.data[0].username;
+                that.globalData.student_id = res.data[0].student_id;
+                that.globalData.telephone = res.data[0].telephone;
+                that.globalData.is_admin = res.data[0].is_admin;
+                that.globalData.register_date = res.data[0].register_date;
               }
             },
             fail: err => {

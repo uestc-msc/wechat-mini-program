@@ -2,7 +2,7 @@
 Page({
   data: {
     username: "",
-    school_id: "",
+    student_id: "",
     telephone: ""
   },
   onLoad(e) {
@@ -17,14 +17,14 @@ Page({
     this.data.username = e.detail.value;
   },
   inputSchoolId(e) {
-    this.data.school_id = e.detail.value;
+    this.data.student_id = e.detail.value;
   },
   inputTelephone(e) {
     this.data.telephone = e.detail.value;
   },
 
   getUserInfomation(e) {
-    if (!this.data.username || !this.data.school_id || !this.data.telephone) { //如果输入信息不完整
+    if (!this.data.username || !this.data.student_id || !this.data.telephone) { //如果输入信息不完整
       wx.showToast({
         title: '请输入完整信息哦',
         icon: 'none',
@@ -36,7 +36,7 @@ Page({
 
     //将信息保存为全局变量
     app.globalData.username = this.data.username;
-    app.globalData.school_id = this.data.school_id;
+    app.globalData.student_id = this.data.student_id;
     app.globalData.telephone = this.data.telephone;
     app.globalData.avatar_url = e.detail.userInfo.avatarUrl;
     app.globalData.is_admin = false;
@@ -46,11 +46,11 @@ Page({
     db.collection("user_info").add({
       data: {
         username: app.globalData.username,
-        school_id: app.globalData.school_id,
+        student_id: app.globalData.student_id,
         telephone: app.globalData.telephone,
         avatar_url: app.globalData.avatar_url,
         is_admin: false,
-        register_date: app.globalData.avatar_url
+        register_date: app.globalData.register_date
       },
       success: res => {
         wx.switchTab({
@@ -65,7 +65,7 @@ Page({
       fail: err => {
         wx.showToast({
           icon: 'none',
-          title: '向 user_info 数据库\n新增记录失败'
+          title: '向 user_info 数据库 新增记录失败'
         })
       }
     })

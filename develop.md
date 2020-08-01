@@ -94,8 +94,8 @@
 -|-|-
 _openid|string|微信识别用户的 openid，数据库自带
 avatar_url|string|头像的链接
-name|string|姓名
-school_id|string|学号
+username|string|姓名
+student_id|string|学号
 telephone|string|电话
 is_admin|bool|是否为管理员
 register_date|date|注册时间

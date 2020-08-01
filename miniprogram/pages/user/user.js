@@ -1,36 +1,38 @@
 // pages/user/user.js
 
-var app = getApp();
-
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    username: app.globalData.username,
-    avatar_url: app.globalData.avatar_url,
-    school_id: app.globalData.school_id
+    username: "",
+    avatar_url: "",
+    student_id: ""
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var app = getApp();
+    // console.log(app.globalData.username);
+    this.setData({
+      username: app.globalData.username,
+      avatar_url: app.globalData.avatar_url,
+      student_id: app.globalData.student_id
+    })
   },
 
   /**

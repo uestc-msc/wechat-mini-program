@@ -1,7 +1,7 @@
 <!--pages/user/modify_information/modify_information.wxml-->
-<!--pages/init_user/init_user.wxml-->
+
 <view class="page" data-weui-theme="{{theme}}">
-	<view class="weui-form">
+	<form class="weui-form" bindsubmit="submitInput">
 		<view class="weui-form__text-area">
 			<h2 class="weui-form__title">修改信息</h2>
 		</view>
@@ -9,9 +9,11 @@
 			<view class="weui-cells__group weui-cells__group_form">
 				<view class="weui-cells weui-cells_form">
 					<view class="weui-cell weui-cell_active">
-						<view class="weui-cell__hd"><label class="weui-label">姓名</label></view>
+						<view class="weui-cell__hd">
+							<label class="weui-label">姓名</label>
+						</view>
 						<view class="weui-cell__bd">
-							<input class="weui-input" value="阮薇薇" placeholder="你叫什么名字吖" placeholder-class="weui-input__placeholder"/>
+							<input class="weui-input" name="username" value="{{username}}" placeholder="你叫什么名字吖" placeholder-class="weui-input__placeholder" />
 						</view>
 					</view>
 					<view class="weui-cell weui-cell_active">
@@ -19,7 +21,7 @@
 							<label class="weui-label">学号</label>
 						</view>
 						<view class="weui-cell__bd">
-							<input class="weui-input" type="number" value="2018080101001" placeholder="阮薇薇才不会没事去找你辅导员" placeholder-class="weui-input__placeholder" />
+							<input class="weui-input" type="number" name="student_id" value="{{student_id}}" placeholder="阮薇薇才不会没事去找你辅导员" placeholder-class="weui-input__placeholder" />
 						</view>
 					</view>
 					<view class="weui-cell weui-cell_active">
@@ -27,14 +29,14 @@
 							<label class="weui-label">联系电话</label>
 						</view>
 						<view class="weui-cell__bd">
-							<input class="weui-input" type="number" value="18888888888" placeholder="也不会打骚扰电话" placeholder-class="weui-input__placeholder" />
+							<input class="weui-input" type="number" name="telephone" value="{{telephone}}" placeholder="也不会打骚扰电话" placeholder-class="weui-input__placeholder" />
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="weui-form__opr-area">
-			<a class="weui-btn weui-btn_primary" bindtap="confirmInput">确定修改</a>
+			<button class="weui-btn weui-btn_primary" formType="submit">确定修改</button>
 		</view>
-	</view>
+	</form>
 </view>
