@@ -1,6 +1,6 @@
 <!--pages/init_user/init_user.wxml-->
 <view class="page" data-weui-theme="{{theme}}">
-	<view class="weui-form">
+	<form class="weui-form">
 		<view class="weui-form__text-area">
 			<h2 class="weui-form__title">完善信息</h2>
 			<view class="weui-form__desc">快让阮薇薇认识你吧~</view>
@@ -11,7 +11,7 @@
 					<view class="weui-cell weui-cell_active">
 						<view class="weui-cell__hd"><label class="weui-label">姓名</label></view>
 						<view class="weui-cell__bd">
-							<input class="weui-input" placeholder="你叫什么名字吖" placeholder-class="weui-input__placeholder" />
+							<input class="weui-input" bindinput="inputName" placeholder="你叫什么名字吖" placeholder-class="weui-input__placeholder"/>
 						</view>
 					</view>
 					<view class="weui-cell weui-cell_active">
@@ -19,7 +19,7 @@
 							<label class="weui-label">学号</label>
 						</view>
 						<view class="weui-cell__bd">
-							<input class="weui-input" type="number" placeholder="阮薇薇才不会没事去找你辅导员" placeholder-class="weui-input__placeholder" />
+							<input class="weui-input" type="number" bindinput="inputSchoolId" placeholder="阮薇薇才不会没事去找你辅导员" placeholder-class="weui-input__placeholder" />
 						</view>
 					</view>
 					<view class="weui-cell weui-cell_active">
@@ -27,14 +27,14 @@
 							<label class="weui-label">联系电话</label>
 						</view>
 						<view class="weui-cell__bd">
-							<input class="weui-input" type="number" placeholder="也不会打骚扰电话" placeholder-class="weui-input__placeholder" />
+							<input class="weui-input" type="number" bindinput="inputTelephone" placeholder="也不会打骚扰电话" placeholder-class="weui-input__placeholder" />
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="weui-form__opr-area">
-			<a class="weui-btn weui-btn_primary" bindtap="confirmInput">确定</a>
+			<button class="weui-btn weui-btn_primary" open-type="getUserInfo" bindgetuserinfo="getUserInfomation">确定</button>
 		</view>
-	</view>
+	</form>
 </view>

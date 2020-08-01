@@ -1,23 +1,73 @@
 // pages/init_user/init_user.js
 Page({
   data: {
-
+    name: "",
+    school_id: "",
+    telephone: ""
+  },
+  onLoad(e) {
+    wx.getUserInfo({
+      lang: "zh_CN",
+      success(e) {
+        // console.log(e)
+      }
+    })
+  },
+  inputName(e) {
+    this.data.name = e.detail.value;
+  },
+  inputSchoolId(e) {
+    this.data.school_id = e.detail.value;
+  },
+  inputTelephone(e) {
+    this.data.telephone = e.detail.value;
   },
 
-  //加载页面前先判断是否有该人信息。如果有了，就直接 redirectTo url: '../activities/activities'
-  // 还要申请读取个人微信号
+  getUserInfomation(e) {
+    if (!this.data.name || !this.data.school_id || !this.data.telephone) { //如果输入信息不完整
+      wx.showToast({
+        title: '请输入完整信息哦',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+    var app = getApp();
 
-  confirmInput () {
+    //将信息保存为全局变量
+    app.globalData.name = this.data.name;
+    app.globalData.school_id = this.data.school_id;
+    app.globalData.telephone = this.data.telephone;
+    app.globalData.avatar_url = e.detail.userInfo.avatarUrl;
+    app.globalData.is_admin = false;
+    app.globalData.register_date = new Date().toISOString().slice(0, 10); // "2020-08-01"
 
-    //存储信息
-    //wx.redirectTo({ // 跳转到有tabBar页面必须使用 wx.switchTab 而不能用其他语法，否则会跳转失败
-      wx.switchTab({
-    url: '../activities/activities',
+    const db = wx.cloud.database()
+    db.collection("user_info").add({
+      data: {
+        name: app.globalData.name,
+        school_id: app.globalData.school_id,
+        telephone: app.globalData.telephone,
+        avatar_url: app.globalData.avatar_url,
+        is_admin: false,
+        register_date: app.globalData.avatar_url
+      },
+      success: res => {
+        wx.switchTab({
+          url: '../activities/activities',
+        })
+        wx.showToast({
+          title: '完善成功',
+          icon: 'success',
+          duration: 2000
+        });
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '向 user_info 数据库\n新增记录失败'
+        })
+      }
     })
-    wx.showToast({
-      title: '完善成功',
-      icon: 'success',
-      duration: 2000
-    });
   }
 })

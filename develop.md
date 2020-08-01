@@ -82,6 +82,26 @@
 
 路径：`pages/init_user/init_user`
 
+## 数据库结构
+
+微信小程序使用 JSON 数据库。
+
+### 用户信息 user_info
+
+每一条记录的字段如下：
+
+字段|值|含义
+-|-|-
+_openid|string|微信识别用户的 openid，数据库自带
+avatar_url|string|头像的链接
+name|string|姓名
+school_id|string|学号
+telephone|string|电话
+is_admin|bool|是否为管理员
+register_date|date|注册时间
+exp|int|经验值
+
+
 ## To-do
 
 以上都是
