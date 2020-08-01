@@ -1,49 +1,49 @@
 // pages/activities/activities_detail/activities_detail.js
 import {
-    checkIn
+  checkIn
 } from '../../check_in/check_in.js';
 var base64 = require("../../../images/base64");
 
 Page({
-    mixins: [require('../../../mixin/themeChanged')],
-    onLoad: function () {
-        this.setData({
-            icon: base64.icon20
-        });
-    },
-    data: {
-        date: "2016-09-01",
-        time: "12:01"
-    },
-    bindDateChange: function (e) {
-        this.setData({
-            date: e.detail.value
-        })
-    },
-    bindTimeChange: function (e) {
-        this.setData({
-            time: e.detail.value
-        })
-    },
-    callCheckInList() {
-        wx.navigateTo({
-            url: 'check_in_list/check_in_list',
-        })
-    },
-    callGallery() {
+  mixins: [require('../../../mixin/themeChanged')],
+  onLoad: function () {
+    this.setData({
+      icon: base64.icon20
+    });
+  },
+  data: {
+    date: "2016-09-01",
+    time: "12:01"
+  },
+  bindDateChange: function (e) {
+    this.setData({
+      date: e.detail.value
+    })
+  },
+  bindTimeChange: function (e) {
+    this.setData({
+      time: e.detail.value
+    })
+  },
+  callCheckInList() {
+    wx.navigateTo({
+      url: 'check_in_list/check_in_list',
+    })
+  },
+  callGallery() {
 
-    },
-    callCheckIn() {
-        checkIn();
-    },
-    callLottery() {
-        wx.navigateTo({
-            url: 'lottery/lottery',
-        })
-    },
-    saveChange() {
-
-    }
+  },
+  callCheckIn() {
+    checkIn();
+  },
+  callLottery() {
+    wx.navigateTo({
+      url: 'lottery/lottery',
+    })
+  },
+  inputSubmit(e) {
+    console.log(e);
+  }
 });
 
 
