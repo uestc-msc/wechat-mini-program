@@ -1,18 +1,22 @@
 // pages/user/user.js
-Page({
 
+var app = getApp();
+
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-
+    username: app.globalData.username,
+    avatar_url: app.globalData.avatar_url,
+    school_id: app.globalData.school_id
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    console.log(options)
   },
 
   /**
@@ -62,19 +66,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
-})
-
-//修改底栏按钮
-Component({
-  pageLifetimes: {
-    show() {
-      if (typeof this.getTabBar === 'function' &&
-        this.getTabBar()) {
-        this.getTabBar().setData({
-          selected: 2
-        })
-      }
-    }
   }
 })

@@ -19,7 +19,7 @@ App({
       this.globalData = {
         openid: "",
         avatar_url: "",
-        name: "",
+        username: "",
         school_id: "",
         telephone: "",
         is_admin: false,
@@ -50,7 +50,7 @@ App({
                 return;
               } else {
                 this.globalData.avatar_url;
-                this.globalData.name;
+                this.globalData.username;
                 this.globalData.school_id;
                 this.globalData.telephone;
                 this.globalData.is_admin;
@@ -59,15 +59,16 @@ App({
             },
             fail: err => {
               wx.showToast({
-                title: '查询user_info数据库失败\n请联系管理员',
+                title: '查询 user_info 数据库失败 请联系管理员',
                 icon: 'none'
               })
             }
           })
         },
-        fail(e) {
+        fail(err) {
+          // console.log(err);
           wx.showToast({
-            title: '获取 openid 失败\n请联系管理员',
+            title: '获取 openid 失败 请联系管理员',
             icon: 'none'
           })
         }

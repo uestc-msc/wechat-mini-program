@@ -1,7 +1,7 @@
 // pages/init_user/init_user.js
 Page({
   data: {
-    name: "",
+    username: "",
     school_id: "",
     telephone: ""
   },
@@ -14,7 +14,7 @@ Page({
     })
   },
   inputName(e) {
-    this.data.name = e.detail.value;
+    this.data.username = e.detail.value;
   },
   inputSchoolId(e) {
     this.data.school_id = e.detail.value;
@@ -24,7 +24,7 @@ Page({
   },
 
   getUserInfomation(e) {
-    if (!this.data.name || !this.data.school_id || !this.data.telephone) { //如果输入信息不完整
+    if (!this.data.username || !this.data.school_id || !this.data.telephone) { //如果输入信息不完整
       wx.showToast({
         title: '请输入完整信息哦',
         icon: 'none',
@@ -35,7 +35,7 @@ Page({
     var app = getApp();
 
     //将信息保存为全局变量
-    app.globalData.name = this.data.name;
+    app.globalData.username = this.data.username;
     app.globalData.school_id = this.data.school_id;
     app.globalData.telephone = this.data.telephone;
     app.globalData.avatar_url = e.detail.userInfo.avatarUrl;
@@ -45,7 +45,7 @@ Page({
     const db = wx.cloud.database()
     db.collection("user_info").add({
       data: {
-        name: app.globalData.name,
+        username: app.globalData.username,
         school_id: app.globalData.school_id,
         telephone: app.globalData.telephone,
         avatar_url: app.globalData.avatar_url,
