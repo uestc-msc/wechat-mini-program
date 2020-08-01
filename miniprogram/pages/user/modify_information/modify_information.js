@@ -38,10 +38,12 @@ Page({
     app.globalData.username = e.detail.value.username;
     app.globalData.student_id = e.detail.value.student_id;
     app.globalData.telephone = e.detail.value.telephone;
+
+    //将信息加入对应用户的数据库
     const db = wx.cloud.database()
     const _ = db.command
     db.collection("user_info").where({
-      _openid: _.eq(app.globalData.openid)
+      _openid: app.globalData.openid
     }).get({
       success: res => {
         // console.log(res)

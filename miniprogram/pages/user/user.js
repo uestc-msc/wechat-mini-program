@@ -7,7 +7,8 @@ Page({
   data: {
     username: "",
     avatar_url: "",
-    student_id: ""
+    student_id: "",
+    can_grant_admin: false
   },
 
   /**
@@ -31,7 +32,8 @@ Page({
     this.setData({
       username: app.globalData.username,
       avatar_url: app.globalData.avatar_url,
-      student_id: app.globalData.student_id
+      student_id: app.globalData.student_id,
+      can_grant_admin: app.globalData.can_grant_admin
     })
   },
 

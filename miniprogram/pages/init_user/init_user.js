@@ -40,6 +40,7 @@ Page({
     app.globalData.telephone = this.data.telephone;
     app.globalData.avatar_url = e.detail.userInfo.avatarUrl;
     app.globalData.is_admin = false;
+    app.globalData.can_grant_admin = false;
     app.globalData.register_date = new Date().toISOString().slice(0, 10); // "2020-08-01"
 
     const db = wx.cloud.database()
@@ -49,7 +50,8 @@ Page({
         student_id: app.globalData.student_id,
         telephone: app.globalData.telephone,
         avatar_url: app.globalData.avatar_url,
-        is_admin: false,
+        is_admin: app.globalData.is_admin,
+        can_grant_admin: app.globalData.can_grant_admin,
         register_date: app.globalData.register_date
       },
       success: res => {

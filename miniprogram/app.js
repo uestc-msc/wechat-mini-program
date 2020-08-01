@@ -36,7 +36,6 @@ App({
           that.globalData.openid = e.result.openid;
           //查询数据库
           const db = wx.cloud.database()
-          // 查询当前用户所有的 counters
           db.collection('user_info').where({
             _openid: that.globalData.openid
           }).get({
@@ -54,6 +53,7 @@ App({
                 that.globalData.student_id = res.data[0].student_id;
                 that.globalData.telephone = res.data[0].telephone;
                 that.globalData.is_admin = res.data[0].is_admin;
+                that.globalData.can_grant_admin = res.data[0].can_grant_admin;
                 that.globalData.register_date = res.data[0].register_date;
               }
             },
