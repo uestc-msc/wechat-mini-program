@@ -42,9 +42,9 @@ Page({
     //将信息加入对应用户的数据库
     const db = wx.cloud.database()
     const _ = db.command
-    db.collection("user_info").where({
-      _openid: app.globalData.openid
-    }).get({
+    db.collection("user_info").doc(
+      app.globalData.openid
+    ).get({
       success: res => {
         // console.log(res)
         db.collection("user_info").doc('').update({

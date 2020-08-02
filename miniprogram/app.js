@@ -36,9 +36,9 @@ App({
           that.globalData.openid = e.result.openid;
           //查询数据库
           const db = wx.cloud.database()
-          db.collection('user_info').where({
-            _openid: that.globalData.openid
-          }).get({
+          db.collection('user_info').doc(
+            that.globalData.openid
+          ).get({
             success: res => {
               // console.log('res:', res);
               if (res.data.length == 0) // 数据库中没有该用户的信息

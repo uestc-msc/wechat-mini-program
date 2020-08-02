@@ -92,14 +92,44 @@
 
 字段|值|含义
 -|-|-
-_openid|string|微信识别用户的 openid，数据库自带
-avatar_url|string|头像的链接
-username|string|姓名
-student_id|string|学号
-telephone|string|电话
-is_admin|bool|是否为管理员
-register_date|date|注册时间
-exp|int|经验值
+`_id`|等于`_openid`|本条记录记录的 id，设置为等于 openid
+`_openid`|string|微信识别用户的 openid，数据库自带
+`avatar_url`|string|头像的链接
+`username`|string|姓名
+`student_id`|string|学号
+`telephone`|string|电话
+`is_admin`|bool|是否为管理员
+`can_grant_admin`|bool|能授予别人管理员
+`register_date`|date|注册时间
+`exp`|int|参加沙龙/举办沙龙能获得经验值
+
+### 活动信息 activity_info
+
+### 活动签到记录 check_in_list
+
+### 安全规则
+
+数据库的安全规则设定为所有人可读、创建者或管理员可写，即：
+
+```json
+{
+  "read": true,
+  "write": "doc._openid == auth.openid || get(`database.user_info.${auth.openid}`).is_admin == true"
+}
+```
+
+## 云存储
+
+### 安全规则
+
+云存储的安全规则设定为所有人可读、创建者或管理员可写，即：
+
+```json
+{
+  "read": true,
+  "write": "resource.openid == auth.openid || get(`database.user_info.${auth.openid}`).is_admin == true"
+}
+```
 
 
 ## To-do

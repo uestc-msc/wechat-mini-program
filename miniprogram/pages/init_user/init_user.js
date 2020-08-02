@@ -46,6 +46,7 @@ Page({
     const db = wx.cloud.database()
     db.collection("user_info").add({
       data: {
+        _id: app.globalData.openid, //将本条记录的 id 也设置为 openid
         username: app.globalData.username,
         student_id: app.globalData.student_id,
         telephone: app.globalData.telephone,
