@@ -1,17 +1,18 @@
 // pages/init_user/init_user.js
+
+import {getDate} from '../../utils/date.js';
+
 Page({
   data: {
     username: "",
     student_id: "",
     telephone: ""
   },
-  onLoad(e) {
-    wx.getUserInfo({
-      lang: "zh_CN",
-      success(e) {
-        // console.log(e)
+  // 隐藏左上角的 home
+  onShow(){
+    if(wx.canIUse('hideHomeButton')){
+      wx.hideHomeButton()
       }
-    })
   },
   inputName(e) {
     this.data.username = e.detail.value;
@@ -22,7 +23,7 @@ Page({
   inputTelephone(e) {
     this.data.telephone = e.detail.value;
   },
-
+  //按钮触发的函数
   getUserInfomation(e) {
     if (!this.data.username || !this.data.student_id || !this.data.telephone) { //如果输入信息不完整
       wx.showToast({
@@ -41,7 +42,7 @@ Page({
     app.globalData.avatar_url = e.detail.userInfo.avatarUrl;
     app.globalData.is_admin = false;
     app.globalData.can_grant_admin = false;
-    app.globalData.register_date = new Date().toISOString().slice(0, 10); // "2020-08-01"
+    app.globalData.register_date = getDate(); // "2020-08-01"
 
     const db = wx.cloud.database()
     db.collection("user_info").add({

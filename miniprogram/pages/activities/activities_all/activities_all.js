@@ -1,37 +1,73 @@
 // pages/activities/activities_all/activities_all.js
-var base64 = require("../../../images/base64");
+
+import {
+  getPresenterString
+} from '../../../utils/get_presenter_string.js';
+
+var app = getApp();
 
 Page({
-    mixins: [require('../../../mixin/themeChanged')],
-    onLoad: function () {
-        this.setData({
-            icon20: base64.icon20,
-            icon60: base64.icon60
-        });
-    },
-    data: {
-        // 放四个沙龙比较好
-        recent_activities: [{
-                topic: "第一场沙龙",
-                presenter: "阮薇薇",
-                date: "2020.7.24",
-                time: "20:00",
-                place: "品A101"
-            },
-            {
-                topic: "第二场沙龙",
-                presenter: "阮薇薇",
-                date: "2020.8.24",
-                time: "8:00",
-                place: "腾讯课堂"
-            }
-        ]
-    },
-    navigateToActivityDetail() {
-        wx.navigateTo({
-            url: '../activities_detail/activities_detail',
-        })
+  data: {
+    // 放两个沙龙比较好
+  },
+  onShow() {
+    // 从数据库获取活动的信息
+    const db = wx.cloud.database()
+    db
+      .collection('activity_info')
+      .where({
+        is_hidden: false
+      })
+      .orderBy('date', 'desc')
+      .orderBy('time', 'desc')
+      .limit(20)
+      .get({
+        success: res => {
+          // console.log(res);
+          let recent_activities = Array.from(res.data);
+          //用 presenter_namelist 主讲人列表 生成需要展示的 presenter_string 字符串
+          for (let i = 0; i < recent_activities.length; i++) {
+            recent_activities[i].presenter_string = getPresenterString(recent_activities[i].presenter_namelist);
+          }
+          this.setData({
+            recent_activities: recent_activities
+          })
+        },
+        fail: err => {
+          console.log(err);
+          wx.showToast({
+            title: '获取近期沙龙数据失败',
+            icon: 'none'
+          })
+        }
+      })
+  },
+  navigateToActivityDetail(e) {
+    // 找到对应活动的信息并丢给全局变量，节约从数据库获取的时间
+    this.data.recent_activities.forEach(Element => {
+      if (Element._id == e.currentTarget.dataset.id) {
+        app.globalData.current_activity = Element;
+        return;
+      }
+    });
+    wx.navigateTo({
+      url: '/pages/activities/activities_detail/activities_detail?id=' + e.currentTarget.dataset.id
+    });
+  },
+  // 监听用户下拉动作：刷新列表
+  onPullDownRefresh: function () {
+    this.onShow();
+    function sleep (time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
     }
+    sleep(500).then(() => {
+      wx.stopPullDownRefresh()
+    })
+  },
+  // 页面上拉触底事件的处理函数
+  onReachBottom: function () {
+    console.log(333)
+  }
 });
 
 // Page({
@@ -75,13 +111,6 @@ Page({
 //    * 生命周期函数--监听页面卸载
 //    */
 //   onUnload: function () {
-
-//   },
-
-//   /**
-//    * 页面相关事件处理函数--监听用户下拉动作
-//    */
-//   onPullDownRefresh: function () {
 
 //   },
 

@@ -84,7 +84,9 @@
 
 ## 数据库结构
 
-微信小程序使用 JSON 数据库。
+微信小程序使用 JSON 数据库。并且提供每日（凌晨）备份，每个备份保留七天。
+
+可从云开发控制台使用代码查询数据库。其语法如[链接](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database/read.html)。
 
 ### 用户信息 user_info
 
@@ -100,10 +102,26 @@
 `telephone`|string|电话
 `is_admin`|bool|是否为管理员
 `can_grant_admin`|bool|能授予别人管理员
-`register_date`|date|注册时间
+`register_date`|string|注册时间
 `exp`|int|参加沙龙/举办沙龙能获得经验值
 
 ### 活动信息 activity_info
+
+每一条记录的字段如下：
+
+字段|值|含义
+-|-|-
+`_id`||本条记录记录的 id，也是本次活动的 id
+`_openid`|string|创建者的 openid
+`title`|string|标题
+`presenter_list`|[string]|主讲人的名单（列表，存储每个人的 openid）
+`presenter_namelist`|[string]|主讲人的姓名的名单（列表，存储每个人的姓名）作为冗余数据，也可以通过 `presenter_namelist` 在 `user_info` 表查到
+`avatar_url`|[string]|某位主讲人的头像（随机，算法上是取 `presenter_list[0]`）
+`date`|string|活动日期
+`time`|string|活动时间
+`location`|string|活动地点
+`check_in_list`|[string]|签到名单（列表，存储每个人的 openid）
+`is_hidden`|bool|活动是否被删除（实际上是隐藏）
 
 ### 活动签到记录 check_in_list
 
@@ -131,10 +149,9 @@
 }
 ```
 
+## 已知 bug
 
-## To-do
-
-以上都是
+`activities_detail_admin` 页的“删除活动”按钮触发的弹窗，会在某些层之下，而不是在最上方。
 
 ## 长远计划
 
@@ -142,4 +159,5 @@
 * 活动搜索（主页面和管理员页面都需要有）
 * 个人经验等级系统
 * 管理员授予勋章
-* 查看更多活动页面刚开始不加载所有页面，而是在下拉的时候加载更多
+* 查看更多活动页面刚开始不加载所有页面，而是在上拉的时候加载更多
+* 下拉刷新

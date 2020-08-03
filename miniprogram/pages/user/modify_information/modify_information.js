@@ -42,38 +42,28 @@ Page({
     //将信息加入对应用户的数据库
     const db = wx.cloud.database()
     const _ = db.command
-    db.collection("user_info").doc(
-      app.globalData.openid
-    ).get({
+    db.collection("user_info").doc(app.globalData.openid).update({
+      data: {
+        username: app.globalData.username,
+        student_id: app.globalData.student_id,
+        telephone: app.globalData.telephone,
+      },
       success: res => {
-        // console.log(res)
-        db.collection("user_info").doc('').update({
-          data: {
-            username: app.globalData.username,
-            student_id: app.globalData.student_id,
-            telephone: app.globalData.telephone,
-          },
-          success: res => {
-            wx.navigateBack({
-              delta: 1,
-            });
-            wx.showToast({
-              title: '修改成功',
-              icon: 'success',
-              duration: 2000
-            });
-          },
-          fail: err => {
-            console.log(err)
-            wx.showToast({
-              icon: 'none',
-              title: '向 user_info 数据库 新增记录失败'
-            })
-          }
-        })
+        wx.navigateBack({
+          delta: 1,
+        });
+        wx.showToast({
+          title: '修改成功',
+          icon: 'success',
+          duration: 2000
+        });
       },
       fail: err => {
         console.log(err)
+        wx.showToast({
+          icon: 'none',
+          title: '向 user_info 数据库 修改记录失败'
+        })
       }
     })
   }

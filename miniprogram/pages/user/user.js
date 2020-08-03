@@ -51,11 +51,15 @@ Page({
 
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
+  // 监听用户下拉动作：刷新列表
   onPullDownRefresh: function () {
-
+    this.onShow();
+    function sleep (time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
+    sleep(500).then(() => {
+      wx.stopPullDownRefresh()
+    })
   },
 
   /**

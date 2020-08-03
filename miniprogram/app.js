@@ -23,8 +23,11 @@ App({
         student_id: "",
         telephone: "",
         is_admin: false,
+        can_grant_admin: false,
         register_date: "",
-        exp: 0
+        exp: 0,
+
+        current_activity: {} //在几个页面中传递的当前活动的对象
       }
 
       //获取 openid 并查询数据库中是否有该人信息
@@ -41,32 +44,43 @@ App({
           ).get({
             success: res => {
               // console.log('res:', res);
-              if (res.data.length == 0) // 数据库中没有该用户的信息
-              {
-                wx.reLaunch({
-                  url: '/pages/init_user/init_user',
-                });
-                return;
-              } else {
-                that.globalData.avatar_url = res.data[0].avatar_url;
-                that.globalData.username = res.data[0].username;
-                that.globalData.student_id = res.data[0].student_id;
-                that.globalData.telephone = res.data[0].telephone;
-                that.globalData.is_admin = res.data[0].is_admin;
-                that.globalData.can_grant_admin = res.data[0].can_grant_admin;
-                that.globalData.register_date = res.data[0].register_date;
-              }
+              
+              // 每次登陆都要更新头像 url
+              wx.getUserInfo({
+                success: res2 => {
+                  // console.log(res2);
+                  if (res2.userInfo.avatarUrl != res.data.avatar_url)
+                    db.collection('user_info').doc(
+                      that.globalData.openid
+                    ).update({
+                      data: {
+                        avatar_url: res2.userInfo.avatarUrl
+                      }
+                    })
+                }
+              })
+
+              // 将已有的信息存为全局变量
+              that.globalData.avatar_url = res.data.avatar_url;
+              that.globalData.username = res.data.username;
+              that.globalData.student_id = res.data.student_id;
+              that.globalData.telephone = res.data.telephone;
+              that.globalData.is_admin = res.data.is_admin;
+              that.globalData.can_grant_admin = res.data.can_grant_admin;
+              that.globalData.register_date = res.data.register_date;
+
             },
             fail: err => {
-              wx.showToast({
-                title: '查询 user_info 数据库失败 请联系管理员',
-                icon: 'none'
-              })
+              // console.log(err);
+              wx.reLaunch({
+                url: '/pages/init_user/init_user',
+              });
+              return;
             }
           })
         },
         fail(err) {
-          // console.log(err);
+          console.log(err);
           wx.showToast({
             title: '获取 openid 失败 请联系管理员',
             icon: 'none'
