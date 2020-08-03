@@ -49,7 +49,10 @@ Page({
           }
         });
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> lyh543
     let current_activity = app.globalData.current_activity;
     this.setData({
       title: current_activity.title,
