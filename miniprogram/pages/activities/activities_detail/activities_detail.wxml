@@ -2,25 +2,25 @@
 
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__hd">
-		<view class="page__title">阮薇薇的第一次沙龙</view>
+		<view class="page__title">{{title}}</view>
 	</view>
 	<view class="page__bd">
 		<view class="weui-cells weui-cells_after-title">
 			<view class="weui-cell">
 				<view class="weui-cell__bd">主讲人</view>
-				<view class="weui-cell__ft">阮薇薇</view>
+				<view class="weui-cell__ft">{{presenter_string}}</view>
 			</view>
 			<view class="weui-cell">
 				<view class="weui-cell__bd">时间</view>
-				<view class="weui-cell__ft">2020.7.23 20:00</view>
+				<view class="weui-cell__ft">{{date}} {{time}}</view>
 			</view>
 			<view class="weui-cell">
 				<view class="weui-cell__bd">地点</view>
-				<view class="weui-cell__ft">品A101</view>
+				<view class="weui-cell__ft">{{location}}</view>
 			</view>
 			<view class="weui-cell">
 				<view class="weui-cell__bd">已签到人数</view>
-				<view class="weui-cell__ft">5</view>
+				<view class="weui-cell__ft">{{check_in_total}}</view>
 			</view>
 			<navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 				<view class="weui-cell__bd">相册</view>
@@ -30,8 +30,8 @@
 		<view class="button-sp-area">
 			<view class="weui-btn weui-btn_primary" bindtap="callCheckIn">签到</view>
 		</view>
-				<view class="button-sp-area">
-			<view class="weui-btn weui-btn_primary" bindtap="callActivityDetailAdmin">管理员界面</view>
+		<view class="button-sp-area" wx:if="{{is_admin}}">
+			<view class="weui-btn weui-btn_primary" bindtap="callActivityDetailAdmin" data-id="{{id}}">活动管理界面</view>
 		</view>
 	</view>
 </view>

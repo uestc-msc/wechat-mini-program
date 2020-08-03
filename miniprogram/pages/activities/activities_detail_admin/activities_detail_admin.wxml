@@ -2,8 +2,8 @@
 
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__hd">
-		<view class="page__title">阮薇薇的第一次沙龙</view>
-		<view class="page__desc">管理员界面</view>
+		<view class="page__title">{{title}}</view>
+		<view class="page__desc">活动管理界面</view>
 	</view>
 	<form bindsubmit="inputSubmit">
 		<view class="page__bd">
@@ -14,7 +14,7 @@
 						<view class="weui-label">标题</view>
 					</view>
 					<view class="weui-cell__bd">
-						<input class="weui-input" name="title" value="阮薇薇的第一次沙龙" />
+						<input class="weui-input" name="title" value="{{title}}" />
 					</view>
 				</view>
 				<view class="weui-cell weui-cell_active">
@@ -22,7 +22,7 @@
 						<view class="weui-label">主讲人</view>
 					</view>
 					<view class="weui-cell__bd">
-						<input class="weui-input" value="阮薇薇" />
+						<view class="weui-input" bindtap="modifyPresenter">{{presenter_string}}</view>
 					</view>
 				</view>
 				<view class="weui-cell weui-cell_active">
@@ -30,7 +30,7 @@
 						<view class="weui-label">日期</view>
 					</view>
 					<view class="weui-cell__bd">
-						<picker mode="date" value="{{date}}" start="2015-09-01" end="2021-09-01" bindchange="bindDateChange">
+						<picker mode="date" value="{{date}}" name="date" start="{{today}}" bindchange="bindDateChange">
 							<view class="weui-input">{{date}}</view>
 						</picker>
 					</view>
@@ -40,7 +40,7 @@
 						<view class="weui-label">时间</view>
 					</view>
 					<view class="weui-cell__bd">
-						<picker mode="time" value="{{time}}" start="09:01" end="21:01" bindchange="bindTimeChange">
+						<picker mode="time" value="{{time}}" name="time" bindchange="bindTimeChange">
 							<view class="weui-input">{{time}}</view>
 						</picker>
 					</view>
@@ -50,16 +50,18 @@
 						<view class="weui-label">地点</view>
 					</view>
 					<view class="weui-cell__bd">
-						<input class="weui-input" value="品A101" />
+						<input class="weui-input" value="{{location}}" name="location" placeholder="本薇薇才不会找不到路" />
 					</view>
 				</view>
 			</view>
 			<view class="button-sp-area">
 				<button class="weui-btn weui-btn_primary" form-type="submit">保存修改</button>
-				<a class="weui-btn weui-btn_warn" bindtap="deleteActivity">删除活动</a>
+				<button class="weui-btn weui-btn_warn" bindtap="deleteActivity">删除活动</button>
 			</view>
 		</view>
 	</form>
+
+
 
 	<view class="weui-cells__title">活动记录</view>
 	<view class="weui-cells weui-cells_after-title">
@@ -71,14 +73,24 @@
 		</view>
 		<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="callCheckInList">
 			<view class="weui-cell__bd">签到名单</view>
-			<view class="weui-cell__ft weui-cell__ft_in-access">5</view>
+			<view class="weui-cell__ft weui-cell__ft_in-access">{{check_in_total}}</view>
 		</view>
-		<!-- <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="callGallery">
-        <view class="weui-cell__bd">相册</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-      </view> -->
 	</view>
 	<view class="button-sp-area">
 		<a class="weui-btn weui-btn_primary" bindtap="callLottery">抽奖</a>
 	</view>
 </view>
+
+    <view class="fadeIn" wx:if="{{show_dialog}}">
+        <view class="weui-mask"></view>
+        <view class="weui-dialog weui-skin_android">
+            <view class="weui-dialog__hd"><strong class="weui-dialog__title">弹窗标题</strong></view>
+            <view class="weui-dialog__bd">
+                弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内
+            </view>
+            <view class="weui-dialog__ft">
+                <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="close">辅助操作</a>
+                <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="close">主操作</a>
+            </view>
+        </view>
+    </view>

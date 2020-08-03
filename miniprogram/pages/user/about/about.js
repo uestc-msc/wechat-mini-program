@@ -10,5 +10,5 @@ Page({
   copyLinkToClipBoard(e) {
     var link = e.currentTarget.dataset.link;
     wx.setClipboardData({data: link});
-  }
+  },
 })

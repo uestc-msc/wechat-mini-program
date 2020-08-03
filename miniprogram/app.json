@@ -13,21 +13,8 @@
     "pages/user/modify_admin/modify_admin",
     "pages/user/about/about",
 
-    "pages/init_user/init_user",
-    
-    "pages/index/index",
-    "pages/userConsole/userConsole",
-    "pages/storageConsole/storageConsole",
-    "pages/databaseGuide/databaseGuide",
-    "pages/addFunction/addFunction",
-    "pages/deployFunctions/deployFunctions",
-    "pages/chooseLib/chooseLib",
-    "pages/openapi/openapi",
-    "pages/openapi/serverapi/serverapi",
-    "pages/openapi/callback/callback",
-    "pages/openapi/cloudid/cloudid",
-    "pages/im/im",
-    "pages/im/room/room"
+    "pages/init_user/init_user"
+
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -40,7 +27,7 @@
     "list": [{
       "pagePath": "pages/activities/activities",
       "iconPath": "images/icon_date.png",
-          "selectedIconPath": "images/icon_date_filling.png",
+      "selectedIconPath": "images/icon_date_filling.png",
       "text": "活动"
     }, {
       "pagePath": "pages/gallery/gallery",

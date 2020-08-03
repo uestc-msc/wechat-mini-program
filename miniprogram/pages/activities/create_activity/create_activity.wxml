@@ -1,2 +1,60 @@
 <!--pages/activities/create_activity/create_activity.wxml-->
-<text>pages/activities/create_activity/create_activity.wxml</text>
+<view class="page" data-weui-theme="{{theme}}">
+	<view class="page__hd">
+		<view class="page__title">创建活动</view>
+	</view>
+	<form bindsubmit="inputSubmit">
+		<view class="page__bd">
+			<view class="weui-cells__title">活动信息</view>
+			<view class="weui-cells weui-cells_after-title">
+				<view class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd">
+						<view class="weui-label">标题</view>
+					</view>
+					<view class="weui-cell__bd">
+						<input class="weui-input" name="title" placeholder="大佬要开什么样的活动吖" />
+					</view>
+				</view>
+				<view class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd">
+						<view class="weui-label">主讲人</view>
+					</view>
+					<view class="weui-cell__bd">
+						<view class="weui-input" bindtap="modifyPresenter">{{presenter_string}}</view>
+					</view>
+				</view>
+				<view class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd">
+						<view class="weui-label">日期</view>
+					</view>
+					<view class="weui-cell__bd">
+						<picker mode="date" value="{{date}}" name="date" start="{{today}}" bindchange="bindDateChange">
+							<view class="weui-input">{{date}}</view>
+						</picker>
+					</view>
+				</view>
+				<view class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd">
+						<view class="weui-label">时间</view>
+					</view>
+					<view class="weui-cell__bd">
+						<picker mode="time" value="{{time}}" name="time" bindchange="bindTimeChange">
+							<view class="weui-input">{{time}}</view>
+						</picker>
+					</view>
+				</view>
+				<view class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd">
+						<view class="weui-label">地点</view>
+					</view>
+					<view class="weui-cell__bd">
+						<input class="weui-input" name="location" placeholder="本薇薇才不会找不到路"/>
+					</view>
+				</view>
+			</view>
+			<view class="button-sp-area">
+				<button class="weui-btn weui-btn_primary" form-type="submit">创建活动</button>
+			</view>
+		</view>
+	</form>
+</view>
