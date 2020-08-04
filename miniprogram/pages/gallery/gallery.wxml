@@ -1,2 +1,43 @@
 <!--pages/gallery/gallery.wxml-->
-<text>pages/gallery/gallery.wxml</text>
+<view class="page gallery-root">
+  <image class="iback"
+    bindtap="tapBack" 
+    src="../../images/iback.svg"
+    wx:if="{{currentAlbum != null}}"></image>
+  <view class="title">{{title}}</view>
+  <view wx:if="{{currentAlbum == null}}" class="album-list">
+    <view class="album-wrapper"
+      wx:for="{{activities}}"
+      wx:for-item="item" 
+      wx:key="_id"
+      data-item="{{item}}"
+      bindtap="tapAlbum">
+      <view class="album-container">
+        <view class="album-cover">
+          <image mode="heightFix" src="{{item.avatar_url}}"></image>
+        </view>
+        <view class="album-name">{{item.title}}</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{currentAlbum != null}}" class="photo-list">
+    <view class="photo-wrapper" bindtap="addPhoto">
+      <view class="photo-container photo-add">
+        <image class="iadd" src="../../images/iadd.svg"></image>
+        <view>上传图片</view>
+      </view>
+    </view>
+    <view class="photo-wrapper"
+      wx:for="{{photos}}"
+      wx:for-item="item" 
+      wx:key="_id"
+      data-item="{{item}}"
+      bindtap="tapPhoto">
+      <view class="photo-container">
+        <view class="photo-cover">
+          <image mode="heightFix" src="{{item.url}}"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
