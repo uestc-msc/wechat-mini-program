@@ -4,6 +4,12 @@ export function checkIn() {
   wx.scanCode({
     success: res => {
       console.log(res);
+      wx.showToast({
+        title: 'title',
+      });
+      wx.setClipboardData({
+        data: 'title',
+      })
     }
   })
 };

@@ -43,7 +43,7 @@ Page({
               url: '/pages/activities/activities',
             });
             wx.showToast({
-              title: '获取活动信息失败',
+              title: '参数错误或无法访问数据库',
               icon: 'none'
             });
           }

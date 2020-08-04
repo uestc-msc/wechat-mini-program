@@ -1,22 +1,10 @@
 //app.js
 App({
     onLaunch: function () {
-      let that = this;
-
-      if (!wx.cloud) {
-        console.error('请使用 2.2.3 或以上的基础库以使用云能力')
-      } else {
-        wx.cloud.init({
-          // env 参数说明：
-          //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
-          //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
-          //   如不填则使用默认环境（第一个创建的环境）
-          env: 'uestc-msc-activities',
-          traceUser: true,
-        })
-      }
-
       this.globalData = {
+        app_id: "wx06d7ed7bad6750fd",
+        app_secret: "f79a744550e022e9fcb907771e1c23b5",
+
         openid: "",
         avatar_url: "",
         username: "",
@@ -28,6 +16,21 @@ App({
         exp: 0,
 
         current_activity: {} //在几个页面中传递的当前活动的对象
+      }
+
+      let that = this;
+      //初始化云服务
+      if (!wx.cloud) {
+        console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+      } else {
+        wx.cloud.init({
+          // env 参数说明：
+          //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
+          //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
+          //   如不填则使用默认环境（第一个创建的环境）
+          env: 'uestc-msc-activities',
+          traceUser: true,
+        })
       }
 
       //获取 openid 并查询数据库中是否有该人信息
@@ -44,7 +47,7 @@ App({
           ).get({
             success: res => {
               // console.log('res:', res);
-              
+
               // 每次登陆都要更新头像 url
               wx.getUserInfo({
                 success: res2 => {
