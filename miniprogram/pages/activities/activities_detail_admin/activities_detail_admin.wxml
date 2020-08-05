@@ -5,8 +5,9 @@
 		<view class="page__title">{{title}}</view>
 		<view class="page__desc">活动管理界面</view>
 	</view>
-	<form bindsubmit="inputSubmit">
-		<view class="page__bd">
+
+	<view class="page__bd">
+		<form bindsubmit="inputSubmit">
 			<view class="weui-cells__title">修改信息</view>
 			<view class="weui-cells weui-cells_after-title">
 				<view class="weui-cell weui-cell_active">
@@ -58,43 +59,27 @@
 				<button class="weui-btn weui-btn_primary" form-type="submit">保存修改</button>
 				<button class="weui-btn weui-btn_warn" bindtap="deleteActivity">删除活动</button>
 			</view>
-		</view>
-	</form>
+		</form>
 
-
-
-	<view class="weui-cells__title">活动记录</view>
-	<view class="weui-cells weui-cells_after-title">
-		<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="showCheckIn2DCode">
-			<view class="weui-cell__bd">签到二维码</view>
-			<view class="weui-media-box__hd">
-				<image class="weui-media-box__thumb" src="/images/icon_ruanweiwei.jpg" alt></image>
+		<view class="weui-cells__title">活动记录</view>
+		<view class="weui-cells weui-cells_after-title">
+			<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="showCheckInWxaode">
+				<view class="weui-cell__bd">签到二维码</view>
+				<view class="weui-media-box__hd">
+					<image class="weui-media-box__thumb" src="/images/icon_ruanweiwei.jpg" alt></image>
+				</view>
+			</view>
+			<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="checkInManually">
+				<view class="weui-cell__bd">手动签到</view>
+				<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+			</view>
+			<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="showCheckInList">
+				<view class="weui-cell__bd">签到名单</view>
+				<view class="weui-cell__ft weui-cell__ft_in-access">{{check_in_total}}</view>
 			</view>
 		</view>
-				<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="checkInManually">
-			<view class="weui-cell__bd">手动签到</view>
-			<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+		<view class="button-sp-area">
+			<a class="weui-btn weui-btn_primary" bindtap="callLottery">抽奖</a>
 		</view>
-		<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="showCheckInList">
-			<view class="weui-cell__bd">签到名单</view>
-			<view class="weui-cell__ft weui-cell__ft_in-access">{{check_in_total}}</view>
-		</view>
-	</view>
-	<view class="button-sp-area">
-		<a class="weui-btn weui-btn_primary" bindtap="callLottery">抽奖</a>
 	</view>
 </view>
-
-    <view class="fadeIn" wx:if="{{show_dialog}}">
-        <view class="weui-mask"></view>
-        <view class="weui-dialog weui-skin_android">
-            <view class="weui-dialog__hd"><strong class="weui-dialog__title">弹窗标题</strong></view>
-            <view class="weui-dialog__bd">
-                弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内
-            </view>
-            <view class="weui-dialog__ft">
-                <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="close">辅助操作</a>
-                <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="close">主操作</a>
-            </view>
-        </view>
-    </view>

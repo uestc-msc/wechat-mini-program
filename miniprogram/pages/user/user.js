@@ -32,7 +32,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // 如果没有 username 则循环
+    // 如果没有 username 则每 0.5s 尝试 onShow
     if(app.globalData.username == '') {
       sleep(500).then(() => this.onShow());
     }

@@ -24,7 +24,7 @@ Page({
 
     show_dialog: false,
   },
-  onLoad: function(e) {
+  onLoad: function (e) {
     //尝试从全局变量中读取是否有该次活动的信息，如果没有就从数据库获取
     if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {} else {
       // console.log(e)
@@ -72,6 +72,20 @@ Page({
         icon: 'none',
         duration: 2000
       });
+      // 获取签到二维码
+      wx.cloud.callFunction({
+        name: "get_check_in_wxacode",
+        data: {
+          id: activity_id,
+          page: 'pages/activities/activities'
+        },
+        success() {
+
+        },
+        fail() {
+
+        }
+      })
     }
   },
   modifyPresenter() {
@@ -100,14 +114,14 @@ Page({
       time: e.detail.value
     })
   },
-  showCheckIn2DCode(e) {
+  showCheckInWxaode(e) {
 
   },
   checkInManually(e) {
     wx.navigateTo({
-      url: '/pages/people_selector/people_selector?id='
-      + app.globalData.current_activity._id
-      + '&modify=check_in_list',
+      url: '/pages/people_selector/people_selector?id=' +
+        app.globalData.current_activity._id +
+        '&modify=check_in_list',
     })
   },
   showCheckInList() {
@@ -158,7 +172,7 @@ Page({
           //修改上一页面的信息，然后 navigateBack 到上一页
           var pages = getCurrentPages();
           var prevPage = pages[pages.length - 2];
-          prevPage.setData( app.globalData.current_activity);
+          prevPage.setData(app.globalData.current_activity);
           wx.navigateBack({
             delta: 1,
           });
@@ -181,33 +195,32 @@ Page({
     wx.showModal({
       title: '确认删除',
       content: '真的要删除吗？这是不可逆的哦',
-      success (res) {
+      success(res) {
         if (res.confirm) {
           const db = wx.cloud.database();
           db
-          .collection('activity_info')
-          .doc(app.globalData.current_activity._id)
-          .update({
-            data: {
-              is_hidden: true
-            },
-            success: res => {
-              wx.navigateBack({
-                delta: 2,
-              });
-              wx.showToast({
-                title: '删除成功',
-              });
-            },
-            fail: err => {
-              wx.showToast({
-                title: '删除失败',
-                icon: 'none'
-              });
-            }
-          });
-        } else if (res.cancel) {
-        }
+            .collection('activity_info')
+            .doc(app.globalData.current_activity._id)
+            .update({
+              data: {
+                is_hidden: true
+              },
+              success: res => {
+                wx.navigateBack({
+                  delta: 2,
+                });
+                wx.showToast({
+                  title: '删除成功',
+                });
+              },
+              fail: err => {
+                wx.showToast({
+                  title: '删除失败',
+                  icon: 'none'
+                });
+              }
+            });
+        } else if (res.cancel) {}
       }
     })
   }
