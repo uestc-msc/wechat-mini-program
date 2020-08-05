@@ -1,4 +1,7 @@
 // pages/user/user.js
+import {
+  onPullDownRefresh, sleep
+} from '../../utils/on_pull_down_refresh.js';
 
 var app = getApp();
 
@@ -29,7 +32,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // console.log(app.globalData.username);
+    // 如果没有 username 则循环
+    if(app.globalData.username == '') {
+      sleep(500).then(() => this.onShow());
+    }
     this.setData({
       username: app.globalData.username,
       avatar_url: app.globalData.avatar_url,
@@ -53,14 +59,8 @@ Page({
   },
 
   // 监听用户下拉动作：刷新列表
-  onPullDownRefresh: function () {
-    this.onShow();
-    function sleep (time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
-    }
-    sleep(500).then(() => {
-      wx.stopPullDownRefresh()
-    })
+  onPullDownRefresh () {
+    onPullDownRefresh(this);
   },
 
   /**

@@ -3,6 +3,9 @@
 import {
   getPresenterString
 } from '../../../utils/get_presenter_string.js';
+import {
+  onPullDownRefresh
+} from '../../../utils/on_pull_down_refresh.js';
 
 var app = getApp();
 
@@ -54,15 +57,8 @@ Page({
       url: '/pages/activities/activities_detail/activities_detail?id=' + e.currentTarget.dataset.id
     });
   },
-  // 监听用户下拉动作：刷新列表
-  onPullDownRefresh: function () {
-    this.onShow();
-    function sleep (time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
-    }
-    sleep(500).then(() => {
-      wx.stopPullDownRefresh()
-    })
+  onPullDownRefresh () {
+    onPullDownRefresh(this);
   },
   // 页面上拉触底事件的处理函数
   onReachBottom: function () {
