@@ -4,10 +4,10 @@ const db = wx.cloud.database();
 export var title = '选择主讲人';
 
 //逻辑相同的函数就直接从隔壁引入了
-import {onLoad} from './check_in_list';
-export {onLoad};
+import {getCurrentActivity} from './check_in_list';
 
-export function getTotalAndSetTitle(page) {
+export function onLoad(e, page) {
+  getCurrentActivity(e)
   page.setData({
     title: title + page.data.title,
     total: app.globalData.current_activity.presenter_list.length

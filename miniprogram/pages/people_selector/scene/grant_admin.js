@@ -3,7 +3,7 @@ const db = wx.cloud.database();
 
 export var title = '设置管理员';
 
-export function onLoad() {
+export function onLoad(e, page) {
   if (!app.globalData.can_grant_admin) {
     wx.navigateBack({
       delta: 1,
@@ -13,9 +13,7 @@ export function onLoad() {
       icon: 'none'
     });
   }
-}
-
-export function getTotalAndSetTitle(page) {
+  //查询管理员总人数
   db
   .collection('user_info')
   .where({

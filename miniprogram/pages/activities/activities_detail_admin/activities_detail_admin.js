@@ -22,9 +22,11 @@ Page({
     check_in_total: "",
     is_admin: false,
 
-    show_dialog: false,
+    wxacode_url: "",
+    show_wxacode: false
   },
   onLoad: function (e) {
+    var that = this;
     //尝试从全局变量中读取是否有该次活动的信息，如果没有就从数据库获取
     if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {} else {
       // console.log(e)
@@ -58,6 +60,7 @@ Page({
       location: current_activity.location,
       check_in_total: current_activity.check_in_list.length
     })
+
     //如果本人是主讲人或全局的管理员，则也是这次活动的管理员
     if (app.globalData.is_admin || current_activity.presenter_list.includes(app.globalData.openid)) {
       this.setData({
@@ -72,21 +75,27 @@ Page({
         icon: 'none',
         duration: 2000
       });
-      // 获取签到二维码
-      wx.cloud.callFunction({
-        name: "get_check_in_wxacode",
-        data: {
-          id: activity_id,
-          page: 'pages/activities/activities'
-        },
-        success() {
-
-        },
-        fail() {
-
-        }
-      })
     }
+    // 获取签到二维码
+    wx.cloud.callFunction({
+      name: "get_check_in_wxacode",
+      data: {
+        id: app.globalData.current_activity._id
+      },
+      success(res) {
+        let wxacode_url = "data:image/png;base64," + wx.arrayBufferToBase64(res.result.buffer);
+        that.setData({
+          wxacode_url: wxacode_url
+        })
+      },
+      fail(err) {
+        console.log(err)
+        wx.showToast({
+          title: '获取签到二维码失败 请联系管理员',
+          icon: 'none'
+        })
+      }
+    })
   },
   modifyPresenter() {
     if (app.globalData.is_admin) {
@@ -114,10 +123,71 @@ Page({
       time: e.detail.value
     })
   },
-  showCheckInWxaode(e) {
-
+  showWxacode() {
+    this.setData({
+      show_wxacode: true
+    });
+  },
+  closeWxacode() {
+    this.setData({
+      show_wxacode: false
+    });
+  },
+  downloadWxacode() {
+    let that = this;
+    wx.authorize({
+      scope: "scope.writePhotosAlbum",
+      success: res => {
+        wx.getFileSystemManager().writeFile({
+          filePath: wx.env.USER_DATA_PATH + '/temp.png',
+          data: that.data.wxacode_url.slice(22), // 把 data:image/png;base64, 去除
+          encoding: 'base64',
+          success: res => {
+            wx.saveImageToPhotosAlbum({
+              filePath: wx.env.USER_DATA_PATH + '/temp.png',
+              success: function (res) {
+                console.log(res);
+                wx.showToast({
+                  title: '保存成功',
+                  icon: 'none',
+                  duration: 5000
+                })
+              },
+              fail: function (err) {
+                console.log(err)
+                wx.showToast({
+                  title: '保存失败',
+                  icon: 'none'
+                })
+              }
+            })
+          },
+          fail: err => {
+            console.log(err)
+            wx.showToast({
+              title: '保存失败',
+              icon: 'none'
+            })
+          }
+        })
+      },
+      fail: err => {
+        console.log(err)
+        wx.showToast({
+          title: '没有写入相册的权限',
+          icon: 'none'
+        })
+      }
+    });
   },
   checkInManually(e) {
+    if(getDate() != app.globalData.current_activity.date) {
+      wx.showToast({
+        title: '活动当天才可以签到哦',
+        icon: 'none'
+      })
+      return;
+    }
     wx.navigateTo({
       url: '/pages/people_selector/people_selector?id=' +
         app.globalData.current_activity._id +

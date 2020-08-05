@@ -39,9 +39,8 @@ Page({
     }
     // 从对应场景名载入对应的 js 文件，实现不同的功能
     scene = scene_list[e.modify]
-    scene.onLoad(e);
-    // 获取当前已选总人数，并且修改标题
-    scene.getTotalAndSetTitle(this);
+    // 拒绝错误的状态，并获取当前已选总人数，并且修改标题
+    scene.onLoad(e, this);
   },
   showInput: function () {
     this.setData({

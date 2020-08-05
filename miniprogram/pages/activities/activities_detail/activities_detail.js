@@ -1,7 +1,7 @@
 // pages/activities/activities_detail/activities_detail.js
 
 import {
-  checkIn
+  scanCodeCheckIn
 } from '../../check_in/check_in.js';
 import {
   getPresenterString
@@ -62,7 +62,7 @@ Page({
     }
   },
   callCheckIn() {
-    checkIn();
+    scanCodeCheckIn();
   },
   callActivityDetailAdmin(e) {
     wx.navigateTo({

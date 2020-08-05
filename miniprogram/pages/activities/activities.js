@@ -1,6 +1,6 @@
 // pages/activities/activities.js
 import {
-  checkIn
+  scanCodeCheckIn, checkIn
 } from '../check_in/check_in.js';
 import {
   getPresenterString
@@ -13,7 +13,15 @@ var app = getApp();
 
 Page({
   data: {
-    // 放两个沙龙比较好
+  },
+  //扫码进入时的情形
+  onLoad (query) {
+    // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
+    const scene = decodeURIComponent(query.scene)
+    if (scene != 'undefined')
+    {
+      checkIn(scene);
+    }
   },
   onShow() {
     // 从数据库获取活动的信息
@@ -73,7 +81,7 @@ Page({
     })
   },
   callCheckIn() {
-    checkIn();
+    scanCodeCheckIn();
   },
   // 监听用户下拉动作：刷新列表
   onPullDownRefresh() {

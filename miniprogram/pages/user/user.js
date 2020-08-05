@@ -1,6 +1,7 @@
 // pages/user/user.js
 import {
-  onPullDownRefresh, sleep
+  onPullDownRefresh,
+  sleep
 } from '../../utils/on_pull_down_refresh.js';
 
 var app = getApp();
@@ -19,29 +20,28 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-  },
+  onLoad: function (options) {},
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  },
+  onReady: function () {},
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
     // 如果没有 username 则每 0.5s 尝试 onShow
-    if(app.globalData.username == '') {
+    if (app.globalData.username == '') {
       sleep(500).then(() => this.onShow());
+    } else {
+      this.setData({
+        username: app.globalData.username,
+        avatar_url: app.globalData.avatar_url,
+        student_id: app.globalData.student_id,
+        can_grant_admin: app.globalData.can_grant_admin
+      })
     }
-    this.setData({
-      username: app.globalData.username,
-      avatar_url: app.globalData.avatar_url,
-      student_id: app.globalData.student_id,
-      can_grant_admin: app.globalData.can_grant_admin
-    })
   },
 
   /**
@@ -59,7 +59,7 @@ Page({
   },
 
   // 监听用户下拉动作：刷新列表
-  onPullDownRefresh () {
+  onPullDownRefresh() {
     onPullDownRefresh(this);
   },
 

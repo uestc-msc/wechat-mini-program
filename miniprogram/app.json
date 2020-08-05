@@ -25,8 +25,8 @@
   "tabBar": {
     "list": [{
       "pagePath": "pages/activities/activities",
-      "iconPath": "images/icon_date.png",
-      "selectedIconPath": "images/icon_date_filling.png",
+      "iconPath": "images/icon_discover.png",
+      "selectedIconPath": "images/icon_discover_filling.png",
       "text": "活动"
     }, {
       "pagePath": "pages/gallery/gallery",

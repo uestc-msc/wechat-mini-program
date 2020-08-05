@@ -3,8 +3,8 @@ const db = wx.cloud.database();
 
 export var title = '手动签到';
 
-export function onLoad(e) {
-  // 缓存当前活动的信息
+// 缓存当前活动的信息
+export function getCurrentActivity(e) {
   if (e.id != app.globalData.current_activity._id) {
     db
       .collection('activity_info')
@@ -26,7 +26,8 @@ export function onLoad(e) {
   }
 }
 
-export function getTotalAndSetTitle(page) {
+export function onLoad(e, page) {
+  getCurrentActivity(e);
   page.setData({
     title: title + page.data.title,
     total: app.globalData.current_activity.check_in_list.length

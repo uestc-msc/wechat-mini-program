@@ -29,7 +29,6 @@ App({
           traceUser: true,
         })
       }
-
       //获取 openid 并查询数据库中是否有该人信息
       wx.cloud.callFunction({
         name: "login",
@@ -44,7 +43,6 @@ App({
           ).get({
             success: res => {
               // console.log('res:', res);
-
               // 每次登陆都要更新头像 url
               wx.getUserInfo({
                 success: res2 => {
@@ -59,7 +57,6 @@ App({
                     })
                 }
               })
-
               // 将已有的信息存为全局变量
               that.globalData.avatar_url = res.data.avatar_url;
               that.globalData.username = res.data.username;
