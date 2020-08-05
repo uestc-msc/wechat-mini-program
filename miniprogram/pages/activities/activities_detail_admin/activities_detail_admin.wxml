@@ -71,7 +71,11 @@
 				<image class="weui-media-box__thumb" src="/images/icon_ruanweiwei.jpg" alt></image>
 			</view>
 		</view>
-		<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="callCheckInList">
+				<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="checkInManually">
+			<view class="weui-cell__bd">手动签到</view>
+			<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+		</view>
+		<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="showCheckInList">
 			<view class="weui-cell__bd">签到名单</view>
 			<view class="weui-cell__ft weui-cell__ft_in-access">{{check_in_total}}</view>
 		</view>

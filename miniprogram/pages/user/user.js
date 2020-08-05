@@ -1,5 +1,7 @@
 // pages/user/user.js
 
+var app = getApp();
+
 Page({
   /**
    * 页面的初始数据
@@ -27,7 +29,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var app = getApp();
     // console.log(app.globalData.username);
     this.setData({
       username: app.globalData.username,

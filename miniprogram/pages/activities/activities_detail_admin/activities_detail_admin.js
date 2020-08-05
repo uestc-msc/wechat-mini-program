@@ -24,7 +24,7 @@ Page({
 
     show_dialog: false,
   },
-  onLoad: function (e) {
+  onLoad: function(e) {
     //尝试从全局变量中读取是否有该次活动的信息，如果没有就从数据库获取
     if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {} else {
       // console.log(e)
@@ -66,25 +66,51 @@ Page({
     } else {
       wx.navigateBack({
         delta: 1,
-      })
+      });
       wx.showToast({
         title: '你还不是管理员 不能进入这种地方的',
         icon: 'none',
         duration: 2000
-      })
+      });
     }
   },
-  bindDateChange: function (e) {
+  modifyPresenter() {
+    if (app.globalData.is_admin) {
+      wx.navigateTo({
+        url: '/pages/people_selector/people_selector?id=' +
+          app.globalData.current_activity._id +
+          '&modify=presenter_list'
+      })
+    } else {
+      //非管理员尝试修改主讲人时的提示
+      wx.showToast({
+        title: '非管理员不能修改主讲人哦',
+        icon: 'none',
+        duration: 1000
+      });
+    }
+  },
+  bindDateChange(e) {
     this.setData({
       date: e.detail.value
     })
   },
-  bindTimeChange: function (e) {
+  bindTimeChange(e) {
     this.setData({
       time: e.detail.value
     })
   },
-  callCheckInList() {
+  showCheckIn2DCode(e) {
+
+  },
+  checkInManually(e) {
+    wx.navigateTo({
+      url: '/pages/people_selector/people_selector?id='
+      + app.globalData.current_activity._id
+      + '&modify=check_in_list',
+    })
+  },
+  showCheckInList() {
     wx.navigateTo({
       url: 'check_in_list/check_in_list',
     })

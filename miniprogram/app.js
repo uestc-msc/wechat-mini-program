@@ -2,9 +2,6 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_id: "wx06d7ed7bad6750fd",
-        app_secret: "f79a744550e022e9fcb907771e1c23b5",
-
         openid: "",
         avatar_url: "",
         username: "",

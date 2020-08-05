@@ -1,6 +1,17 @@
-//获取数据库某集合中所有元素
-//由于小程序限制 LIMIT 20，云函数限制 LIMIT 100，故使用云函数一次拉取
+/*
+获取数据库某集合中所有元素
+由于小程序限制 LIMIT 20，云函数限制 LIMIT 100，故使用云函数一次拉取
+调用方法：
 
+wx.cloud.callFunction({
+  name: "get_collection",
+  data: {
+    collection: 'user_info'
+  },
+  success(){},
+  fail(){}
+}
+*/
 const cloud = require('wx-server-sdk');
 cloud.init({env: cloud.DYNAMIC_CURRENT_ENV});
 const db = cloud.database();
