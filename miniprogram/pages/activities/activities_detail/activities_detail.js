@@ -6,8 +6,12 @@ import {
 import {
   getPresenterString
 } from '../../../utils/get_presenter_string.js'
+import {
+  sleep
+} from '../../../utils/sleep.js';
 
 var app = getApp();
+var that;
 
 Page({
   data: {
@@ -19,47 +23,13 @@ Page({
     is_admin: app.globalData.is_admin
   },
   onLoad: function (e) {
-    //尝试从全局变量中读取是否有该次活动的信息，如果没有就从数据库获取
+    that = this;
+    //尝试从全局变量中读取是否有该次活动的信息，如果有就先默认填上
     if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {
-
-    } else {
-      // console.log(e)
-      const db = wx.cloud.database();
-      db
-        .collection('activity_info')
-        .doc(e.id)
-        .get({
-          success: res => {
-            app.globalData.current_activity = res.data;
-          },
-          fail: err => {
-            console.log(err);
-            wx.switchTab({
-              url: '/pages/activities/activities'
-            });
-            wx.showToast({
-              title: '参数错误或无法访问数据库',
-              icon: 'none'
-            });
-          }
-        });
+      setPageData();
     }
-
-    let current_activity = app.globalData.current_activity;
-    this.setData({
-      title: current_activity.title,
-      presenter_string: getPresenterString(current_activity.presenter_namelist, 0),
-      date: current_activity.date,
-      time: current_activity.time,
-      location: current_activity.location,
-      check_in_total: current_activity.check_in_list.length
-    })
-    //如果本人是主讲人，则也是这次活动的管理员
-    if (current_activity.presenter_list.includes(app.globalData.openid)) {
-      this.setData({
-        is_admin: true
-      });
-    }
+    //从数据库获取最新数据以后再覆盖
+    fetchData(e.id).then(setPageData);
   },
   callCheckIn() {
     scanCodeCheckIn();
@@ -69,9 +39,62 @@ Page({
       url: '/pages/activities/activities_detail_admin/activities_detail_admin?id=' +
         app.globalData.current_activity._id,
     })
-  }
+  },
+  onPullDownRefresh() {
+    fetchData(app.globalData.current_activity._id).then(() => {
+      setPageData();
+      wx.showToast({
+        title: '刷新成功',
+        icon: 'none'
+      })
+      sleep(500).then(() => {
+        wx.stopPullDownRefresh()
+      })
+    });
+  },
 });
 
+// 从数据库获取最新数据
+async function fetchData(id) {
+  const db = wx.cloud.database();
+  db
+    .collection('activity_info')
+    .doc(id)
+    .get({
+      success: res => {
+        app.globalData.current_activity = res.data;
+      },
+      fail: err => {
+        console.log(err);
+        wx.navigateBack({
+          delta: 1,
+        })
+        wx.showToast({
+          title: '参数错误或无法访问数据库',
+          icon: 'none'
+        });
+      }
+    });
+}
+
+// 将数据渲染到页面
+function setPageData() {
+  let cur = app.globalData.current_activity;
+  that.setData({
+    title: cur.title,
+    presenter_string: getPresenterString(cur.presenter_namelist, 0),
+    date: cur.date,
+    time: cur.time,
+    location: cur.location,
+    check_in_total: cur.check_in_list.length
+  })
+  //如果本人是主讲人，则也是这次活动的管理员
+  if (cur.presenter_list.includes(app.globalData.openid)) {
+    that.setData({
+      is_admin: true
+    });
+  }
+}
 
 // Page({
 

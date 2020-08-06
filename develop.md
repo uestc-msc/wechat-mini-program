@@ -6,7 +6,7 @@
 
 路径：`pages/activities/activities`
 
-展示前几次活动、“查看更多”。以及“创建沙龙”按钮、“签到”按钮。
+展示前几次活动、“查看更多”。以及“创建活动”按钮、“签到”按钮。
 
 点击某次活动进入其活动详情页面。
 
@@ -103,7 +103,7 @@
 `is_admin`|bool|是否为管理员
 `can_grant_admin`|bool|能授予别人管理员
 `register_date`|string|注册时间
-`exp`|int|参加沙龙/举办沙龙能获得经验值
+`exp`|int|参加活动/举办活动能获得经验值
 
 ### 活动信息 activity_info
 

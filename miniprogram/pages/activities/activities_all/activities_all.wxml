@@ -2,7 +2,7 @@
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__bd">
 		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd">全部沙龙</view>
+			<view class="weui-panel__hd">全部活动</view>
 			<view class="weui-panel__bd">
 				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{recent_activities}}" wx:for-item="recent_activities" wx:key="id">
 					<view class="weui-media-box__hd" bindtap="navigateToActivityDetail" data-id="{{recent_activities._id}}">

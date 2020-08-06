@@ -1,8 +1,7 @@
 // pages/user/user.js
 import {
-  onPullDownRefresh,
   sleep
-} from '../../utils/on_pull_down_refresh.js';
+} from '../../utils/sleep';
 
 var app = getApp();
 
@@ -60,7 +59,14 @@ Page({
 
   // 监听用户下拉动作：刷新列表
   onPullDownRefresh() {
-    onPullDownRefresh(this);
+    this.onShow();
+    wx.showToast({
+      title: '刷新成功',
+      icon: 'none'
+    })
+    sleep(500).then(() => {
+      wx.stopPullDownRefresh()
+    })
   },
 
   /**

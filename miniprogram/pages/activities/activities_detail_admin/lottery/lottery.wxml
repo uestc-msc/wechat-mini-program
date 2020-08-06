@@ -1,6 +1,6 @@
 <!--pages/activities/activities_detail/lottery/lottery.wxml-->
 <view class="page__hd">
-	<view class="page__title">阮薇薇的第一次沙龙</view>
+	<view class="page__title">阮薇薇的第一次活动</view>
 	<view class="page__desc">抽奖，共 5 人参与</view>
 </view>
 

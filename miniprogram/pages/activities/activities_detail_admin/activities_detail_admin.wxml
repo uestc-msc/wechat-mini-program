@@ -5,7 +5,6 @@
 		<view class="page__title">{{title}}</view>
 		<view class="page__desc">活动管理界面</view>
 	</view>
-
 	<view class="page__bd">
 		<form bindsubmit="inputSubmit">
 			<view class="weui-cells__title">修改信息</view>
@@ -63,10 +62,10 @@
 
 		<view class="weui-cells__title">活动记录</view>
 		<view class="weui-cells weui-cells_after-title">
-			<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="showWxacode">
+			<view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 				<view class="weui-cell__bd">签到二维码</view>
 				<view class="weui-media-box__hd">
-					<image class="weui-media-box__thumb" wx:if="{{wxacode_url}}" src="{{wxacode_url}}" alt></image>
+					<image class="weui-media-box__thumb" wx:if="{{wxacode_url}}" src="{{wxacode_url}}" bindtap="showWxacode"></image>
 					<view class="weui-loading__wrp" wx:else>
 						<view class="weui-loading"></view>
 					</view>
@@ -86,14 +85,14 @@
 		</view>
 	</view>
 
-	    <view wx:if="{{show_wxacode}}" class="weui-gallery fadeIn" bindtap="closeWxacode">
-        <view class="weui-gallery__img__wrp">
-            <image mode="aspectFit" class="weui-gallery__img" src="{{wxacode_url}}"></image>
-        </view>
-        <view class="weui-gallery__opr">
-            <view class="weui-gallery__download">
-                <i class="weui-icon-download" bindtap="downloadWxacode"></i>
-            </view>
-        </view>
-    </view>
+	<view wx:if="{{show_wxacode}}" class="weui-gallery fadeIn" bindtap="closeWxacode">
+		<view class="weui-gallery__img__wrp">
+			<image mode="aspectFit" class="weui-gallery__img" src="{{wxacode_url}}"></image>
+		</view>
+		<view class="weui-gallery__opr">
+			<view class="weui-gallery__download">
+				<i class="weui-icon-download" bindtap="downloadWxacode"></i>
+			</view>
+		</view>
+	</view>
 </view>

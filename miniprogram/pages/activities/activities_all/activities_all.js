@@ -4,14 +4,14 @@ import {
   getPresenterString
 } from '../../../utils/get_presenter_string.js';
 import {
-  onPullDownRefresh
-} from '../../../utils/on_pull_down_refresh.js';
+  sleep
+} from '../../../utils/sleep';
 
 var app = getApp();
 
 Page({
   data: {
-    // 放两个沙龙比较好
+    // 放两个活动比较好
   },
   onShow() {
     // 从数据库获取活动的信息
@@ -39,7 +39,7 @@ Page({
         fail: err => {
           console.log(err);
           wx.showToast({
-            title: '获取近期沙龙数据失败',
+            title: '获取近期活动数据失败',
             icon: 'none'
           })
         }
@@ -57,8 +57,15 @@ Page({
       url: '/pages/activities/activities_detail/activities_detail?id=' + e.currentTarget.dataset.id
     });
   },
-  onPullDownRefresh () {
-    onPullDownRefresh(this);
+  onPullDownRefresh() {
+    this.onShow();
+    wx.showToast({
+      title: '刷新成功',
+      icon: 'none'
+    })
+    sleep(500).then(() => {
+      wx.stopPullDownRefresh()
+    })
   },
   // 页面上拉触底事件的处理函数
   onReachBottom: function () {

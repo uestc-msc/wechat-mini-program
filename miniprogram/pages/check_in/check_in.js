@@ -3,6 +3,7 @@ import {getDate} from '../../utils/date';
 
 var app = getApp();
 
+// “扫码签到” 按钮的回调函数
 export function scanCodeCheckIn() {
   wx.scanCode({
     success: res => {
@@ -13,7 +14,10 @@ export function scanCodeCheckIn() {
   })
 };
 
-export function checkIn(activity_id) {
+export async function checkIn(options) {
+  if(options.activity_id == undefined) {
+
+  }
   const db = wx.cloud.database();
   wx.showLoading({
     title: '正在签到',
@@ -21,21 +25,24 @@ export function checkIn(activity_id) {
   })
   // 从数据库加载该次活动信息
   if (getApp().globalData.current_activity.current_activity == undefined
-      || activity_id != app.globalData.current_activity._id) {
-        db.collection('activity_info')
-        .doc(activity_id)
+      || options.activity_id != app.globalData.current_activity._id) {
+        await db.collection('activity_info')
+        .doc(options.activity_id)
         .get({
           success: res => {
             app.globalData.current_activity = res.data;
+            console.log(1);
           },
           fail: err => {
             console.log(err);
+              console.log(1);
             wx.showToast({
               title: err.errMsg
             });
           }
         });
       }
+      console.log(1);
   if (getDate() != app.globalData.current_activity.date) {
     wx.showToast({
       title: '活动当天才可以签到哦',

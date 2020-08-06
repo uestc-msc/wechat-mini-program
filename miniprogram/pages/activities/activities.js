@@ -1,26 +1,27 @@
 // pages/activities/activities.js
 import {
-  scanCodeCheckIn, checkIn
+  scanCodeCheckIn,
+  checkIn
 } from '../check_in/check_in.js';
 import {
   getPresenterString
 } from '../../utils/get_presenter_string.js';
 import {
-  onPullDownRefresh
-} from '../../utils/on_pull_down_refresh.js';
+  sleep
+} from '../../utils/sleep';
 
 var app = getApp();
 
 Page({
-  data: {
-  },
+  data: {},
   //扫码进入时的情形
-  onLoad (query) {
+  onLoad(query) {
     // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
     const scene = decodeURIComponent(query.scene)
-    if (scene != 'undefined')
-    {
-      checkIn(scene);
+    if (scene != 'undefined') {
+      checkIn({
+        activity_id: scene
+      });
     }
   },
   onShow() {
@@ -49,7 +50,7 @@ Page({
         fail: err => {
           console.log(err);
           wx.showToast({
-            title: '获取近期沙龙数据失败',
+            title: '获取近期活动数据失败',
             icon: 'none'
           });
           wx.navigateBack({
@@ -85,7 +86,14 @@ Page({
   },
   // 监听用户下拉动作：刷新列表
   onPullDownRefresh() {
-    onPullDownRefresh(this);
+    this.onShow();
+    wx.showToast({
+      title: '刷新成功',
+      icon: 'none'
+    })
+    sleep(500).then(() => {
+      wx.stopPullDownRefresh()
+    })
   }
 });
 

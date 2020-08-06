@@ -1,6 +1,6 @@
 # wechat-mini-program
 
-电子科技大学微软学生俱乐部（UESTC-MSC）的微信小程序，记录每次沙龙活动的信息。
+电子科技大学微软学生俱乐部（UESTC-MSC）的微信小程序，记录每次活动活动的信息。
 
 ![小程序码](img/wxacode.jpg)
 

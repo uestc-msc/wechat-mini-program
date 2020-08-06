@@ -1,16 +1,17 @@
 // pages/activities/activities_detail_admin/activities_detail_admin.js
 
 import {
-  checkIn
-} from '../../check_in/check_in.js';
-import {
   getPresenterString
 } from '../../../utils/get_presenter_string.js'
 import {
   getDate
 } from '../../../utils/date.js';
+import {
+  sleep
+} from '../../../utils/sleep';
 
 var app = getApp();
+var that;
 
 Page({
   data: {
@@ -26,56 +27,13 @@ Page({
     show_wxacode: false
   },
   onLoad: function (e) {
-    var that = this;
-    //尝试从全局变量中读取是否有该次活动的信息，如果没有就从数据库获取
-    if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {} else {
-      // console.log(e)
-      const db = wx.cloud.database();
-      db
-        .collection('activity_info')
-        .doc(e.id)
-        .get({
-          success: res => {
-            app.globalData.current_activity = res.data;
-            console.log(res.data);
-          },
-          fail: err => {
-            console.log(err);
-            wx.redirectTo({
-              url: '/pages/activities/activities',
-            });
-            wx.showToast({
-              title: '参数错误或无法访问数据库',
-              icon: 'none'
-            });
-          }
-        });
+    that = this;
+    //尝试从全局变量中读取是否有该次活动的信息，如果有就先默认填上
+    if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {
+      setPageData();
     }
-    let current_activity = app.globalData.current_activity;
-    this.setData({
-      title: current_activity.title,
-      presenter_string: getPresenterString(current_activity.presenter_namelist, 0),
-      date: current_activity.date,
-      time: current_activity.time,
-      location: current_activity.location,
-      check_in_total: current_activity.check_in_list.length
-    })
-
-    //如果本人是主讲人或全局的管理员，则也是这次活动的管理员
-    if (app.globalData.is_admin || current_activity.presenter_list.includes(app.globalData.openid)) {
-      this.setData({
-        is_admin: true
-      });
-    } else {
-      wx.navigateBack({
-        delta: 1,
-      });
-      wx.showToast({
-        title: '你还不是管理员 不能进入这种地方的',
-        icon: 'none',
-        duration: 2000
-      });
-    }
+    //从数据库获取最新数据以后再覆盖
+    fetchData(e.id).then(setPageData);
     // 获取签到二维码
     wx.cloud.callFunction({
       name: "get_check_in_wxacode",
@@ -96,6 +54,18 @@ Page({
         })
       }
     })
+  },
+  onPullDownRefresh() {
+    fetchData(app.globalData.current_activity._id).then(() => {
+      setPageData();
+      wx.showToast({
+        title: '刷新成功',
+        icon: 'none'
+      })
+      sleep(500).then(() => {
+        wx.stopPullDownRefresh()
+      })
+    });
   },
   modifyPresenter() {
     if (app.globalData.is_admin) {
@@ -123,6 +93,92 @@ Page({
       time: e.detail.value
     })
   },
+  inputSubmit(e) {
+    // console.log(e);
+    var value = e.detail.value;
+    var that = this;
+    if (!value.location || !value.title) {
+      wx.showToast({
+        title: '请把消息补充完整喔',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+    // 将其他信息存入为全局变量
+    app.globalData.current_activity.title = value.title;
+    app.globalData.current_activity.date = value.date;
+    app.globalData.current_activity.time = value.time;
+    app.globalData.current_activity.location = value.location;
+    // 将其他信息存入数据库
+    const db = wx.cloud.database();
+    db.collection('activity_info')
+      .doc(app.globalData.current_activity._id)
+      .update({
+        data: {
+          title: value.title,
+          date: value.date,
+          time: value.time,
+          location: value.location,
+        },
+        success: res => {
+          //修改上一页面的信息，然后 navigateBack 到上一页
+          var pages = getCurrentPages();
+          var prevPage = pages[pages.length - 2];
+          prevPage.setData(app.globalData.current_activity); // 把 current_activity 的每个属性直接给 page
+          wx.navigateBack({
+            delta: 1,
+          });
+          wx.showToast({
+            title: '修改成功',
+            duration: 2000
+          })
+        },
+        fail: err => {
+          console.log(err);
+          wx.showToast({
+            title: '修改失败',
+            duration: 2000,
+            icon: 'none'
+          });
+        }
+      });
+  },
+  deleteActivity() {
+    wx.showModal({
+      title: '确认删除',
+      content: '真的要删除吗？这是不可逆的哦',
+      success(res) {
+        if (res.confirm) {
+          const db = wx.cloud.database();
+          db
+            .collection('activity_info')
+            .doc(app.globalData.current_activity._id)
+            .update({
+              data: {
+                // 只是隐藏了 activities 并没有删除
+                is_hidden: true
+              },
+              success: res => {
+                wx.navigateBack({
+                  delta: 2,
+                });
+                wx.showToast({
+                  title: '删除成功',
+                });
+              },
+              fail: err => {
+                wx.showToast({
+                  title: '删除失败',
+                  icon: 'none'
+                });
+              }
+            });
+        }
+      }
+    })
+  },
+  // 全屏查看小程序码
   showWxacode() {
     this.setData({
       show_wxacode: true
@@ -133,6 +189,7 @@ Page({
       show_wxacode: false
     });
   },
+  //
   downloadWxacode() {
     let that = this;
     wx.authorize({
@@ -180,6 +237,7 @@ Page({
       }
     });
   },
+  //手动签到
   checkInManually(e) {
     if(getDate() != app.globalData.current_activity.date) {
       wx.showToast({
@@ -196,106 +254,72 @@ Page({
   },
   showCheckInList() {
     wx.navigateTo({
-      url: 'check_in_list/check_in_list',
+      url: 'check_in_list/check_in_list?id=' +
+      app.globalData.current_activity._id +
+      '&modify=check_in_list',
     })
   },
   callGallery() {
 
   },
-  callCheckIn() {
-    checkIn();
-  },
   callLottery() {
     wx.navigateTo({
-      url: 'lottery/lottery',
-    })
-  },
-  inputSubmit(e) {
-    // console.log(e);
-    var value = e.detail.value;
-    var that = this;
-    if (!value.location || !value.title) {
-      wx.showToast({
-        title: '请把消息补充完整喔',
-        icon: 'none',
-        duration: 2000
-      });
-      return;
-    }
-    // 将其他信息存入为全局变量
-    app.globalData.current_activity.title = value.title;
-    app.globalData.current_activity.date = value.date;
-    app.globalData.current_activity.time = value.time;
-    app.globalData.current_activity.location = value.location;
-    // 将其他信息存入数据库
-    const db = wx.cloud.database();
-    db.collection('activity_info')
-      .doc(app.globalData.current_activity._id)
-      .update({
-        data: {
-          title: value.title,
-          date: value.date,
-          time: value.time,
-          location: value.location,
-        },
-        success: res => {
-          //修改上一页面的信息，然后 navigateBack 到上一页
-          var pages = getCurrentPages();
-          var prevPage = pages[pages.length - 2];
-          prevPage.setData(app.globalData.current_activity);
-          wx.navigateBack({
-            delta: 1,
-          });
-          wx.showToast({
-            title: '修改成功',
-            duration: 2000
-          })
-        },
-        fail: err => {
-          console.log(err);
-          wx.showToast({
-            title: '修改失败',
-            duration: 2000,
-            icon: 'none'
-          });
-        }
-      });
-  },
-  deleteActivity() {
-    wx.showModal({
-      title: '确认删除',
-      content: '真的要删除吗？这是不可逆的哦',
-      success(res) {
-        if (res.confirm) {
-          const db = wx.cloud.database();
-          db
-            .collection('activity_info')
-            .doc(app.globalData.current_activity._id)
-            .update({
-              data: {
-                is_hidden: true
-              },
-              success: res => {
-                wx.navigateBack({
-                  delta: 2,
-                });
-                wx.showToast({
-                  title: '删除成功',
-                });
-              },
-              fail: err => {
-                wx.showToast({
-                  title: '删除失败',
-                  icon: 'none'
-                });
-              }
-            });
-        } else if (res.cancel) {}
-      }
+      url: 'lottery/lottery?id=' +
+       app.globalData.current_activity._id
     })
   }
 });
 
+async function fetchData(id) {
+  const db = wx.cloud.database();
+  db
+    .collection('activity_info')
+    .doc(id)
+    .get({
+      success: res => {
+        app.globalData.current_activity = res.data;
+        // console.log(res.data);
+      },
+      fail: err => {
+        console.log(err);
+        wx.navigateBack({
+          delta: 1,
+        })
+        wx.showToast({
+          title: '参数错误或无法访问数据库',
+          icon: 'none'
+        });
+      }
+    });
+}
+
+function setPageData() {
+  let cur = app.globalData.current_activity;
+  that.setData({
+    title: cur.title,
+    presenter_string: getPresenterString(cur.presenter_namelist, 0),
+    date: cur.date,
+    time: cur.time,
+    location: cur.location,
+    check_in_total: cur.check_in_list.length
+  })
+
+  //如果本人是主讲人或全局的管理员，则也是这次活动的管理员
+  if (app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)) {
+    that.setData({
+      is_admin: true
+    });
+  } else {
+    wx.navigateBack({
+      delta: 1,
+    });
+    wx.showToast({
+      title: '你还不是管理员 不能进入这种地方的',
+      icon: 'none',
+      duration: 2000
+    });
+  }
+}
 
 // Page({
 
