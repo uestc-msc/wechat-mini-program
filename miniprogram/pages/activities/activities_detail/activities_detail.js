@@ -3,12 +3,8 @@
 import {
   scanCodeCheckIn
 } from '../../check_in/check_in.js';
-import {
-  getPresenterString
-} from '../../../utils/get_presenter_string.js'
-import {
-  sleep
-} from '../../../utils/sleep.js';
+import getPresenterString from '../../../utils/get_presenter_string.js'
+import sleep from '../../../utils/sleep.js';
 
 var app = getApp();
 var that;

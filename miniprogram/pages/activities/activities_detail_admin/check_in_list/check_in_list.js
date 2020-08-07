@@ -1,8 +1,6 @@
 // pages/activities/activities_detail/check_in_list/check_in_list.js
 
-import {
-  sleep
-} from '../../../../utils/sleep';
+import sleep from '../../../../utils/sleep';
 
 var app = getApp();
 var that;

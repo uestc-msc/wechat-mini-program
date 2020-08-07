@@ -1,7 +1,5 @@
 // pages/user/user.js
-import {
-  sleep
-} from '../../utils/sleep';
+import sleep from '../../utils/sleep';
 
 var app = getApp();
 

@@ -1,11 +1,7 @@
 // pages/activities/activities_all/activities_all.js
 
-import {
-  getPresenterString
-} from '../../../utils/get_presenter_string.js';
-import {
-  sleep
-} from '../../../utils/sleep';
+import getPresenterString from '../../../utils/get_presenter_string.js';
+import sleep from '../../../utils/sleep';
 
 var app = getApp();
 

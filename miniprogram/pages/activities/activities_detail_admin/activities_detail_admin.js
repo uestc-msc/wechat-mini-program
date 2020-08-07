@@ -1,14 +1,10 @@
 // pages/activities/activities_detail_admin/activities_detail_admin.js
 
-import {
-  getPresenterString
-} from '../../../utils/get_presenter_string.js'
+import getPresenterString from '../../../utils/get_presenter_string.js'
 import {
   getDate
 } from '../../../utils/date.js';
-import {
-  sleep
-} from '../../../utils/sleep';
+import sleep from '../../../utils/sleep';
 
 var app = getApp();
 var that;
@@ -62,7 +58,9 @@ Page({
         title: '刷新成功',
         icon: 'none'
       })
-      wx.stopPullDownRefresh()
+      sleep(500).then(() => {
+        wx.stopPullDownRefresh()
+      })
     });
   },
   modifyPresenter() {
