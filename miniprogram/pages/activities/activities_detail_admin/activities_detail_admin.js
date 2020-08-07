@@ -38,7 +38,7 @@ Page({
     wx.cloud.callFunction({
       name: "get_check_in_wxacode",
       data: {
-        id: app.globalData.current_activity._id
+        id: e.id
       },
       success(res) {
         let wxacode_url = "data:image/png;base64," + wx.arrayBufferToBase64(res.result.buffer);
@@ -62,9 +62,7 @@ Page({
         title: '刷新成功',
         icon: 'none'
       })
-      sleep(500).then(() => {
-        wx.stopPullDownRefresh()
-      })
+      wx.stopPullDownRefresh()
     });
   },
   modifyPresenter() {
@@ -189,7 +187,6 @@ Page({
       show_wxacode: false
     });
   },
-  //
   downloadWxacode() {
     let that = this;
     wx.authorize({
@@ -239,7 +236,7 @@ Page({
   },
   //手动签到
   checkInManually(e) {
-    if(getDate() != app.globalData.current_activity.date) {
+    if (getDate() != app.globalData.current_activity.date) {
       wx.showToast({
         title: '活动当天才可以签到哦',
         icon: 'none'
@@ -255,8 +252,8 @@ Page({
   showCheckInList() {
     wx.navigateTo({
       url: 'check_in_list/check_in_list?id=' +
-      app.globalData.current_activity._id +
-      '&modify=check_in_list',
+        app.globalData.current_activity._id +
+        '&modify=check_in_list',
     })
   },
   callGallery() {
@@ -265,14 +262,14 @@ Page({
   callLottery() {
     wx.navigateTo({
       url: 'lottery/lottery?id=' +
-       app.globalData.current_activity._id
+        app.globalData.current_activity._id
     })
   }
 });
 
 async function fetchData(id) {
   const db = wx.cloud.database();
-  db
+  await db
     .collection('activity_info')
     .doc(id)
     .get({
@@ -301,15 +298,12 @@ function setPageData() {
     date: cur.date,
     time: cur.time,
     location: cur.location,
-    check_in_total: cur.check_in_list.length
+    check_in_total: cur.check_in_list.length,
+    is_admin: app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)
   })
 
   //如果本人是主讲人或全局的管理员，则也是这次活动的管理员
-  if (app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)) {
-    that.setData({
-      is_admin: true
-    });
-  } else {
+  if (!that.data.is_admin) {
     wx.navigateBack({
       delta: 1,
     });

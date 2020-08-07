@@ -10,8 +10,3 @@
   width: 200rpx;
   height: 200rpx;
 }
-
-/* gallery 部分 */
-.page {
-  background-color: var(--weui-BG-2)
-}

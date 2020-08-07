@@ -3,6 +3,7 @@
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__hd">
 		<view class="page__title">{{title}}</view>
+		<!-- <view class="page__desc" wx:if="{{show_id}}">activity_id: {{_id}}</view> -->
 	</view>
 	<view class="page__bd">
 		<view class="weui-cells weui-cells_after-title">

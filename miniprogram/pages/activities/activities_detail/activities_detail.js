@@ -12,6 +12,7 @@ import {
 
 var app = getApp();
 var that;
+let tap_title_total = 0;
 
 Page({
   data: {
@@ -31,6 +32,18 @@ Page({
     //从数据库获取最新数据以后再覆盖
     fetchData(e.id).then(setPageData);
   },
+  // tapTitle () {
+  //   tap_title_total++;
+  //   if (tap_title_total == 5) {
+  //     tap_title_total = 0;
+  //     wx.setClipboardData({
+  //       data: app.globalData.current_activity._id,
+  //     });
+  //     this.setData({
+  //       show_id: true
+  //     })
+  //   }
+  // },
   callCheckIn() {
     scanCodeCheckIn();
   },
@@ -57,7 +70,7 @@ Page({
 // 从数据库获取最新数据
 async function fetchData(id) {
   const db = wx.cloud.database();
-  db
+  await db
     .collection('activity_info')
     .doc(id)
     .get({
@@ -81,19 +94,16 @@ async function fetchData(id) {
 function setPageData() {
   let cur = app.globalData.current_activity;
   that.setData({
+    // _id: cur._id,
     title: cur.title,
     presenter_string: getPresenterString(cur.presenter_namelist, 0),
     date: cur.date,
     time: cur.time,
     location: cur.location,
-    check_in_total: cur.check_in_list.length
-  })
+    check_in_total: cur.check_in_list.length,
   //如果本人是主讲人，则也是这次活动的管理员
-  if (cur.presenter_list.includes(app.globalData.openid)) {
-    that.setData({
-      is_admin: true
-    });
-  }
+    is_admin: app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)
+  })
 }
 
 // Page({
