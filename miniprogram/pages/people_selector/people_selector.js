@@ -8,6 +8,7 @@ import * as grant_admin from 'scene/grant_admin.js';
 import * as check_in_list from 'scene/check_in_list.js';
 import * as presenter_list from 'scene/presenter_list.js';
 let scene; // 根据 url 设置为上述之一
+let i = 0;
 
 let app = getApp();
 const db = wx.cloud.database();
@@ -121,13 +122,15 @@ Page({
     let checkboxItems = this.data.checkboxItems;
     let checked = !checkboxItems[index].checked;
     checkboxItems[index].checked = checked;
+    console.log(i++, checkboxItems.map(x => x.checked ? 1 : 0));
     this.setData({
-      checkboxItems: checkboxItems
+      // checkboxItems: checkboxItems
+      ['checkboxItems[' + index + '].checked']: checked
     });
     // 调用对应函数
-    // scene.listChanged(id, checked);
+    scene.listChanged(id, checked);
     // 弹出弹窗
-    let text = true ? '修改成功' : '修改失败 请退出后重新修改';
+    let text = true ? i + '修改成功：' + checkboxItems[index].name : '修改失败 请退出后重新修改';
     wx.showToast({
       title: text,
       icon: 'none'

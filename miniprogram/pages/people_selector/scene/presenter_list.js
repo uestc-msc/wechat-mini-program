@@ -20,3 +20,7 @@ export function onLoad(e, page) {
 export function elementIsChecked(Element) {
   return app.globalData.current_activity.presenter_list.includes(Element._id);
 }
+
+export function listChanged(id, checked) {
+  
+}

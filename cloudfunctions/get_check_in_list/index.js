@@ -41,7 +41,7 @@ exports.main = async (event, context) => {
       namelist = [];
       errMsg2 = res;
       res.data.forEach(Element => {
-        namelist.push(Element.username + Element.student_id);
+        namelist.push(Element.student_id.padEnd(18, ' ') + Element.username);
       });
     }).catch(err => {
       errMsg2 = err;
