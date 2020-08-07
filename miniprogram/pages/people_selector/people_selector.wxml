@@ -20,8 +20,9 @@
 		<!-- 由于这里需要单独知道哪一个被触发了，而不是得到完整的表，因此没有使用官方的 checkbox-group 的 bindchange 而是 view 的 bindtap -->
 			<!-- <checkbox-group bindchange="checkboxChange">-->
 			<checkbox-group>
-				<label class="weui-cell weui-check__label" wx:for="{{checkboxItems}}" wx:key="value">
-					<view class="weui-cell__hd" bindtap="checkboxChange" data-id="{{item.value}}">
+				<label class="weui-cell weui-check__label" wx:for="{{checkboxItems}}" wx:key="value" bindtap="checkboxChange" data-id="{{item.value}}">
+				<!-- <a bindtap="checkboxChange" data-id="{{item.value}}"> -->
+					<view class="weui-cell__hd">
 						<!-- <checkbox class="weui-check"  value="{{item.value}}" checked="{{item.checked}}"/> -->
 						<checkbox class="weui-check"  checked="{{item.checked}}" />
 						<i class="weui-icon-checked"></i>
@@ -29,6 +30,7 @@
 					<view class="weui-cell__bd">
 						<view>{{item.name}}</view>
 					</view>
+					<!-- </a> -->
 				</label>
 			</checkbox-group>
 		</view>

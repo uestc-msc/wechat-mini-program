@@ -12,6 +12,7 @@ let i = 0;
 
 let app = getApp();
 const db = wx.cloud.database();
+var that;
 
 let scene_list = {
   check_in_list: check_in_list,
@@ -23,11 +24,12 @@ Page({
   data: {
     inputShowed: false,
     inputVal: "",
-    checkboxItems: [], // 每一项有 name, id, checked
+    checkboxItems: [], // 每一项有 name (学号 姓名), value (openid 值), username, checked
     title: ' - 已选：', // 标题，'XXX - 已选：'
     total: 0 // 已选人数
   },
   onLoad(e) {
+    that = this;
     // 检测 modify 参数是否在 scene_list 中
     if (typeof (scene_list[e.modify]) == 'undefined') {
       wx.navigateBack({
@@ -99,6 +101,7 @@ Page({
           res.data.forEach(Element => {
             checkboxItems.push({
               name: Element.student_id.padEnd(18, ' ') + Element.username,
+              username: Element.username,
               value: Element._id,
               checked: scene.elementIsChecked(Element)
             })
@@ -118,30 +121,49 @@ Page({
     let index = this.data.checkboxItems.findIndex(element => element.value == id);
     // checkboxChange 被触发时尽管 ui 上已经变化
     // 但是并不会改变 this.data.checkboxItems[i].checked 值
-    // 获取到的是旧值；还需要手动 setData
+    // 获取到的是旧值；还需要手动修改以后 setData
     let checkboxItems = this.data.checkboxItems;
     let checked = !checkboxItems[index].checked;
-    checkboxItems[index].checked = checked;
-    console.log(i++, checkboxItems.map(x => x.checked ? 1 : 0));
+    // checkboxItems[index].checked = checked;
+    // console.log(i++, checkboxItems.map(x => x.checked ? 1 : 0));
     this.setData({
-      // checkboxItems: checkboxItems
       ['checkboxItems[' + index + '].checked']: checked
     });
     // 调用对应函数
-    scene.listChanged(id, checked);
-    // 弹出弹窗
-    let text = true ? i + '修改成功：' + checkboxItems[index].name : '修改失败 请退出后重新修改';
-    wx.showToast({
-      title: text,
-      icon: 'none'
-    });
-    // 修改 total 值和标题
-    this.setData ({
-      total: this.data.total + (checked ? 1 : -1)
+    let startTime = new Date().getTime();
+    scene.listChanged({
+      userid: id,
+      checked: checked,
+      username: checkboxItems[index].username
     })
-    wx.setNavigationBarTitle({
-      title: this.data.title + this.data.total,
-    })
+      .then(res => {
+        let endTime = new Date().getTime();
+        console.log(endTime - startTime);
+        console.log(res)
+        wx.showToast({
+          title: '成功' + (checked ? '添加' : '删除') + ' ' + checkboxItems[index].name,
+          icon: 'none'
+        });
+        // 修改 total 值和标题
+        this.setData({
+          total: this.data.total + (checked ? 1 : -1)
+        })
+        wx.setNavigationBarTitle({
+          title: this.data.title + this.data.total,
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        wx.showToast({
+          title: '修改' + checkboxItems[index].name + '失败 请尝试退出后重新修改',
+          icon: 'none',
+          duration: 5000
+        });
+        //还得把选项改回来
+        that.setData({
+          ['checkboxItems[' + index + '].checked']: !checked
+        });
+      })
   },
 });
 

@@ -30,7 +30,7 @@
 	},
 	"appid": "wx06d7ed7bad6750fd",
 	"projectname": "wechat-mini-program",
-	"libVersion": "2.8.1",
+	"libVersion": "2.8.3",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",

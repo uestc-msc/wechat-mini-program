@@ -15,34 +15,43 @@ export function onLoad(e, page) {
   }
   //查询管理员总人数
   db
-  .collection('user_info')
-  .where({
-    is_admin: true
-  })
-  .count({
-    success: res => {
-      page.setData({
-        title: title + page.data.title,
-        total: res.total
-      });
-      wx.setNavigationBarTitle({
-        title: page.data.title + page.data.total,
-      });
-    },
-    fail: res => {
-      console.log(res);
-      wx.showToast({
-        title: '获取总人数失败',
-        icon: 'none'
-      });
-    }
-  });
+    .collection('user_info')
+    .where({
+      is_admin: true
+    })
+    .count({
+      success: res => {
+        page.setData({
+          title: title + page.data.title,
+          total: res.total
+        });
+        wx.setNavigationBarTitle({
+          title: page.data.title + page.data.total,
+        });
+      },
+      fail: res => {
+        console.log(res);
+        wx.showToast({
+          title: '获取总人数失败',
+          icon: 'none'
+        });
+      }
+    });
 }
 
 export function elementIsChecked(Element) {
   return Element.is_admin;
 }
 
-export function listChanged(id) {
-  return 0;
+export async function listChanged(options) {
+  let res = await db
+    .collection('user_info')
+    .doc(options.userid)
+    .update({
+      data: {
+        is_admin: options.checked
+      }
+    });
+  console.log(res);
+  return res;
 }
