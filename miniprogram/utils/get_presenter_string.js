@@ -4,7 +4,7 @@ export function getPresenterString(presenter_list, limit=3) {
   if (limit==0 || limit >= presenter_list.length) {
     return presenter_list.join('、');
   } else {
-    list = presenter_list.slice(0, limit);
+    let list = presenter_list.slice(0, limit);
     return list.join('、') + '等';
   }
 }
