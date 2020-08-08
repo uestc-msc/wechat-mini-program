@@ -1,53 +1,53 @@
 // pages/activities/activities_all/activities_all.js
 
-import getPresenterString from '../../../utils/get_presenter_string.js';
+import getActivityInfo from '../../../utils/get_activity_info.js';
 import sleep from '../../../utils/sleep';
 
 var app = getApp();
+const db = wx.cloud.database();
+const _ = db.command;
+
+let page_index = -1;
+const activities_per_page = 6;
 
 Page({
   data: {
-    // 放两个活动比较好
+    recent_activities_arr: []
   },
-  onShow() {
+  onLoad() {
     // 从数据库获取活动的信息
-    const db = wx.cloud.database()
-    db
-      .collection('activity_info')
-      .where({
-        is_hidden: false
-      })
-      .orderBy('date', 'desc')
-      .orderBy('time', 'desc')
-      .limit(20)
-      .get({
-        success: res => {
-          // console.log(res);
-          let recent_activities = Array.from(res.data);
-          //用 presenter_namelist 主讲人列表 生成需要展示的 presenter_string 字符串
-          for (let i = 0; i < recent_activities.length; i++) {
-            recent_activities[i].presenter_string = getPresenterString(recent_activities[i].presenter_namelist);
-          }
-          this.setData({
-            recent_activities: recent_activities
-          })
-        },
-        fail: err => {
-          console.log(err);
+    page_index++;
+    wx.showLoading({
+      title: '加载中',
+    });
+    getActivityInfo({
+      skip: page_index * activities_per_page,
+      limit: activities_per_page,
+      callback: activities => {
+        wx.hideLoading();
+        if (activities.length == 0) {
           wx.showToast({
-            title: '获取近期活动数据失败',
+            title: '本薇薇也是有底线的',
             icon: 'none'
+          });
+        } else {
+          this.setData({
+            ['recent_activities_arr[' + page_index + ']']: activities
           })
         }
-      })
+        // console.log(activities)
+      },
+    });
   },
   navigateToActivityDetail(e) {
     // 找到对应活动的信息并丢给全局变量，节约从数据库获取的时间
-    this.data.recent_activities.forEach(Element => {
-      if (Element._id == e.currentTarget.dataset.id) {
-        app.globalData.current_activity = Element;
-        return;
-      }
+    this.data.recent_activities_arr.forEach(page => {
+      page.forEach(Element => {
+        if (Element._id == e.currentTarget.dataset.id) {
+          app.globalData.current_activity = Element;
+          return;
+        }
+      })
     });
     wx.navigateTo({
       url: '/pages/activities/activities_detail/activities_detail?id=' + e.currentTarget.dataset.id
@@ -64,8 +64,8 @@ Page({
     })
   },
   // 页面上拉触底事件的处理函数
-  onReachBottom: function () {
-    console.log(333)
+  onReachBottom() {
+    this.onLoad();
   }
 });
 

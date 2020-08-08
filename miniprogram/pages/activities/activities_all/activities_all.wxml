@@ -4,16 +4,18 @@
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__hd">全部活动</view>
 			<view class="weui-panel__bd">
-				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{recent_activities}}" wx:for-item="recent_activities" wx:key="id">
-					<view class="weui-media-box__hd" bindtap="navigateToActivityDetail" data-id="{{recent_activities._id}}">
-						<image class="weui-media-box__thumb" src="{{recent_activities.avatar_url}}" alt></image>
-					</view>
-					<view class="weui-media-box__bd" bindtap="navigateToActivityDetail" data-id="{{recent_activities._id}}">
-						<!-- 图片和文字不能包含在另一个 view 里面，有点奇怪  -->
-						<h4 class="weui-media-box__title">{{recent_activities.title}}</h4>
-						<view class="weui-media-box__desc"><text>{{recent_activities.date}} {{recent_activities.time}}\n{{recent_activities.presenter_string}} | {{recent_activities.location}}</text></view>
-					</view>
-				</a>
+				<block wx:for="{{recent_activities_arr}}" wx:for-item="recent_activities" wx:key="id">
+					<a class="weui-media-box weui-media-box_appmsg" wx:for="{{recent_activities}}" wx:for-item="activities" wx:key="id">
+						<view class="weui-media-box__hd" bindtap="navigateToActivityDetail" data-id="{{activities._id}}">
+							<image class="weui-media-box__thumb" src="{{activities.avatar_url}}" alt></image>
+						</view>
+						<view class="weui-media-box__bd" bindtap="navigateToActivityDetail" data-id="{{activities._id}}">
+							<!-- 图片和文字不能包含在另一个 view 里面，有点奇怪  -->
+							<h4 class="weui-media-box__title">{{activities.title}}</h4>
+							<view class="weui-media-box__desc"><text>{{activities.date}} {{activities.time}}\n{{activities.presenter_string}} | {{activities.location}}</text></view>
+						</view>
+					</a>
+				</block>
 			</view>
 		</view>
 	</view>

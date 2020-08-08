@@ -115,8 +115,6 @@
 `_openid`|string|创建者的 openid
 `title`|string|标题
 `presenter_list`|[string]|主讲人的名单（列表，存储每个人的 openid）
-`presenter_namelist`|[string]|主讲人的姓名的名单（列表，存储每个人的姓名）作为冗余数据，也可以通过 `presenter_namelist` 在 `user_info` 表查到
-`avatar_url`|[string]|某位主讲人的头像（随机，算法上是取 `presenter_list[0]`）
 `date`|string|活动日期
 `time`|string|活动时间
 `location`|string|活动地点
@@ -161,5 +159,6 @@
 * 活动搜索（主页面和管理员页面都需要有）
 * 个人经验等级系统
 * 管理员授予勋章
-* 查看更多活动页面刚开始不加载所有页面，而是在上拉的时候加载更多
-* 下拉刷新
+
+长远计划 x  
+没有需求就咕了 √
