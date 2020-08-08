@@ -22,8 +22,11 @@ export function elementIsChecked(Element) {
 }
 
 export async function listChanged(options) {
+  wx.showLoading({
+    title: '修改中',
+  })
   const _ = db.command;
-  const oper = options.checked ? _.addToSet : _.pull; // 数据库操作：添加/删除
+  const oper = options.checked ? _.push : _.pull; // 数据库操作：添加/删除
   // 更新 list 和 namelist
   let res1 = await db
   .collection('activity_info')
@@ -64,5 +67,6 @@ export async function listChanged(options) {
       avatar_url: avatar_url
     }
   });
+  wx.hideLoading();
   return [res1, res2, res3, res4];
 }

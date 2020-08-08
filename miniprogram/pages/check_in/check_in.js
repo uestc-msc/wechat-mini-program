@@ -15,8 +15,17 @@ export function scanCodeCheckIn() {
 };
 
 export async function checkIn(options) {
-  if(options.activity_id == undefined) {
-
+  if (options.activity_id == undefined) {
+    wx.navigateBack({
+      delta: 1,
+    });
+    wx.showToast({
+      title: '参数 activity_id 为空',
+      icon: 'none'
+    })
+  }
+  if (options.userid == undefined) {
+    options.userid = app.globalData.openid;
   }
   const db = wx.cloud.database();
   wx.showLoading({

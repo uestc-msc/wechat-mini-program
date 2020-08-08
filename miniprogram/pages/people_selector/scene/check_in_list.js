@@ -1,3 +1,5 @@
+import { checkIn } from '../../check_in/check_in.js';
+
 let app = getApp();
 const db = wx.cloud.database();
 
@@ -35,6 +37,11 @@ export function onLoad(e, page) {
   wx.setNavigationBarTitle({
     title: page.data.title + page.data.total,
   })
+}
+
+export async function listChanged(options) {
+  options.activity_id = app.globalData.current_activity._id;
+  return await checkIn(options);
 }
 
 export function elementIsChecked(Element) {
