@@ -58,7 +58,7 @@ export default async function (options) {
           .then(res => {
             let namelist = res.data.map(Element => Element.username);
             try {
-              activities[i].avatar_url = res.data[0].avatar_url;
+              activities[i].avatar_url = res.data[0].avatar_url; // 如果没有主讲人，会触发错误
             } catch (error) {
               activities[i].avatar_url = '/images/icon_ruanweiwei_alt_2.jpg';
             }
