@@ -4,7 +4,7 @@ import {getDate} from '../../utils/date';
 var app = getApp();
 
 // “扫码签到” 按钮的回调函数
-export function scanCodeCheckIn() {
+export function scanCode() {
   wx.scanCode({
     success: res => {
       let id = res.result;
@@ -46,7 +46,9 @@ export async function checkIn(options) {
             console.log(err);
               console.log(1);
             wx.showToast({
-              title: err.errMsg
+              title: err.errMsg,
+              icon: 'none',
+              duration: 10000
             });
           }
         });

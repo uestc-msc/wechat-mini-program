@@ -52,6 +52,6 @@ export async function listChanged(options) {
         is_admin: options.checked
       }
     });
-  console.log(res);
+  // console.log(res);
   return res;
 }

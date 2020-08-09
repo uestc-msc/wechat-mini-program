@@ -36,8 +36,6 @@ Page({
     }
 
     //将信息保存为全局变量
-    let old_name = app.globalData.username;
-    let new_name = e.detail.value.username;
     app.globalData.username = e.detail.value.username;
     app.globalData.student_id = e.detail.value.student_id;
     app.globalData.telephone = e.detail.value.telephone;
@@ -51,25 +49,6 @@ Page({
           student_id: app.globalData.student_id,
           telephone: app.globalData.telephone,
         }
-      })
-      .then(res => {
-        // 还要同时修改相关沙龙主讲人的名字（presenter_namelist 字段）
-        // 查询数据库中该人主讲的所有沙龙
-        // 然后删除旧名字，添加新名字
-        // 这里不考虑两位主讲人重名导致删除错误的情况了
-        let c = db.collection("activity_info").where({
-          presenter_list: _.all([app.globalData.openid])
-        });
-        c.update({
-          data: {
-            presenter_namelist: _.pull(old_name)
-          }
-        });
-        c.update({
-          data: {
-            presenter_namelist: _.push(new_name)
-          }
-        });
       })
       .then(res => {
         wx.navigateBack({

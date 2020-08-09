@@ -1,14 +1,13 @@
 // pages/activities/activities_detail/activities_detail.js
 
 import {
-  scanCodeCheckIn
+  scanCode
 } from '../../check_in/check_in.js';
-import getPresenterString from '../../../utils/get_presenter_string.js'
-import sleep from '../../../utils/sleep.js';
+import getActivityInfo from '../../../utils/get_activity_info.js'
 
 var app = getApp();
 var that;
-let tap_title_total = 0;
+// let tap_title_total = 0;
 
 Page({
   data: {
@@ -26,7 +25,14 @@ Page({
       setPageData();
     }
     //从数据库获取最新数据以后再覆盖
-    fetchData(e.id).then(setPageData);
+    getActivityInfo({
+      id: e.id,
+      callback: res => {
+        let cur = res[0];
+        app.globalData.current_activity = cur;
+        setPageData()
+      }
+    });
   },
   // tapTitle () {
   //   tap_title_total++;
@@ -41,7 +47,7 @@ Page({
   //   }
   // },
   callCheckIn() {
-    scanCodeCheckIn();
+    scanCode();
   },
   callActivityDetailAdmin(e) {
     wx.navigateTo({
@@ -50,54 +56,33 @@ Page({
     })
   },
   onPullDownRefresh() {
-    fetchData(app.globalData.current_activity._id).then(() => {
-      setPageData();
-      wx.showToast({
-        title: '刷新成功',
-        icon: 'none'
-      })
-      sleep(500).then(() => {
+    getActivityInfo({
+      id: app.globalData.current_activity._id,
+      callback: res => {
+        app.globalData.current_activity = res[0];
+        setPageData();
+        wx.showToast({
+          title: '刷新成功',
+          icon: 'none'
+        })
         wx.stopPullDownRefresh()
-      })
+      }
     });
   },
 });
 
-// 从数据库获取最新数据
-async function fetchData(id) {
-  const db = wx.cloud.database();
-  await db
-    .collection('activity_info')
-    .doc(id)
-    .get({
-      success: res => {
-        app.globalData.current_activity = res.data;
-      },
-      fail: err => {
-        console.log(err);
-        wx.navigateBack({
-          delta: 1,
-        })
-        wx.showToast({
-          title: '参数错误或无法访问数据库',
-          icon: 'none'
-        });
-      }
-    });
-}
-
-// 将数据渲染到页面
+// 将 globalData 中的活动数据渲染到页面
 function setPageData() {
   let cur = app.globalData.current_activity;
   that.setData({
     // _id: cur._id,
     title: cur.title,
-    presenter_string: getPresenterString(cur.presenter_namelist, 0),
+    presenter_string: cur.presenter_string,
     date: cur.date,
     time: cur.time,
     location: cur.location,
     check_in_total: cur.check_in_list.length,
-  //如果本人是主讲人，则也是这次活动的管理员
+    //如果本人是主讲人，则也是这次活动的管理员
     is_admin: app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)
   })
 }

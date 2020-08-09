@@ -2,6 +2,8 @@
 App({
     onLaunch: function () {
       this.globalData = {
+        app_version: "v0.2",
+
         openid: "",
         avatar_url: "",
         username: "",

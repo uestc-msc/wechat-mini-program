@@ -16,6 +16,13 @@
 						</view>
 					</a>
 				</block>
+				<!-- <view class="weui-loadmore" wx:if="{{loading_more}}">
+					<i class="weui-loading"></i>
+					<text class="weui-loadmore__tips">正在加载</text>
+				</view>
+				<view class="weui-loadmore weui-loadmore_line" wx:if="{{no-more}}">
+					<text class="weui-loadmore__tips">本薇薇也是有底线的</text>
+				</view> -->
 			</view>
 		</view>
 	</view>

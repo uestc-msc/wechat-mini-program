@@ -1,10 +1,9 @@
 // pages/activities/activities_detail_admin/activities_detail_admin.js
 
-import getPresenterString from '../../../utils/get_presenter_string.js'
 import {
   getDate
 } from '../../../utils/date.js';
-import sleep from '../../../utils/sleep';
+import getActivityInfo from '../../../utils/get_activity_info.js';
 
 var app = getApp();
 var that;
@@ -29,7 +28,13 @@ Page({
       setPageData();
     }
     //从数据库获取最新数据以后再覆盖
-    fetchData(e.id).then(setPageData);
+    getActivityInfo({
+      id: e.id,
+      callback: res => {
+        app.globalData.current_activity = res[0];
+        setPageData();
+      }
+    });
     // 获取签到二维码
     wx.cloud.callFunction({
       name: "get_check_in_wxacode",
@@ -52,15 +57,17 @@ Page({
     })
   },
   onPullDownRefresh() {
-    fetchData(app.globalData.current_activity._id).then(() => {
-      setPageData();
-      wx.showToast({
-        title: '刷新成功',
-        icon: 'none'
-      })
-      sleep(500).then(() => {
+    getActivityInfo({
+      id: app.globalData.current_activity._id,
+      callback: res => {
+        app.globalData.current_activity = res[0];
+        setPageData();
+        wx.showToast({
+          title: '刷新成功',
+          icon: 'none'
+        })
         wx.stopPullDownRefresh()
-      })
+      }
     });
   },
   modifyPresenter() {
@@ -265,34 +272,12 @@ Page({
   }
 });
 
-async function fetchData(id) {
-  const db = wx.cloud.database();
-  await db
-    .collection('activity_info')
-    .doc(id)
-    .get({
-      success: res => {
-        app.globalData.current_activity = res.data;
-        // console.log(res.data);
-      },
-      fail: err => {
-        console.log(err);
-        wx.navigateBack({
-          delta: 1,
-        })
-        wx.showToast({
-          title: '参数错误或无法访问数据库',
-          icon: 'none'
-        });
-      }
-    });
-}
-
-function setPageData() {
+function setPageData(res) {
   let cur = app.globalData.current_activity;
+  app.globalData.current_activity = cur;
   that.setData({
     title: cur.title,
-    presenter_string: getPresenterString(cur.presenter_namelist, 0),
+    presenter_string: cur.presenter_string,
     date: cur.date,
     time: cur.time,
     location: cur.location,

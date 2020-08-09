@@ -117,6 +117,7 @@ Page({
       });
   },
   checkboxChange: function (e) {
+    wx.showNavigationBarLoading();
     let id = e.currentTarget.dataset.id;
     let index = this.data.checkboxItems.findIndex(element => element.value == id);
     // checkboxChange 被触发时尽管 ui 上已经变化
@@ -132,13 +133,14 @@ Page({
     // 调用对应函数
     let startTime = new Date().getTime();
     scene.listChanged({
-      userid: id,
-      checked: checked,
-      username: checkboxItems[index].username
-    })
+        userid: id,
+        checked: checked,
+        username: checkboxItems[index].username
+      })
       .then(res => {
+        wx.hideNavigationBarLoading();
         let endTime = new Date().getTime();
-        console.log(endTime - startTime);
+        res.time = endTime - startTime;
         console.log(res)
         wx.showToast({
           title: '成功' + (checked ? '添加' : '删除') + ' ' + checkboxItems[index].name,
@@ -153,7 +155,8 @@ Page({
         })
       })
       .catch(err => {
-        console.log(err)
+        wx.hideNavigationBarLoading();
+        console.log(err);
         wx.showToast({
           title: '修改' + checkboxItems[index].name + '失败 请尝试退出后重新修改',
           icon: 'none',

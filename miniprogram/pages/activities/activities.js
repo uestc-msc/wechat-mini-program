@@ -1,10 +1,8 @@
 // pages/activities/activities.js
 import {
-  scanCodeCheckIn,
+  scanCode,
   checkIn
 } from '../check_in/check_in.js';
-
-import sleep from '../../utils/sleep';
 import getActivityInfo from '../../utils/get_activity_info';
 
 var app = getApp();
@@ -68,7 +66,7 @@ Page({
     })
   },
   callCheckIn() {
-    scanCodeCheckIn();
+    scanCode();
   },
   // 监听用户下拉动作：刷新列表
   onPullDownRefresh() {

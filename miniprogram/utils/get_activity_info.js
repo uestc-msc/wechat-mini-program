@@ -2,19 +2,19 @@
 // 由于还需要获取主讲人姓名、头像等
 // 故独立为一个页面
 
+import getPresenterString from 'get_presenter_string.js';
+
+const db = wx.cloud.database();
+const _ = db.command;
+
 // 接收参数：
 // id:    获取的活动的 _id
 // limit: 如果不存在 id，则 limit 为 limit 的参数
 // skip:  为 skip 的参数
 // callback(activities): 对于每一个查询到的活动，都会调用一次回调函数。如果没有查询结果，依旧会调用一次，但 res.data 为 []
 
-import getPresenterString from 'get_presenter_string.js';
-
-const db = wx.cloud.database();
-const _ = db.command;
-
 export default async function (options) {
-  var startTime = new Date().getTime();
+  // var startTime = new Date().getTime();
   if (options == undefined || options.id == undefined && options.limit == undefined) {
     wx.showToast({
       title: '参数错误',
@@ -42,8 +42,9 @@ export default async function (options) {
       if (options.id != undefined) {
         activities = [activities];
       }
-      var endTime = new Date().getTime();
-      console.log(endTime -startTime);
+      // console.log(activities);
+      // var endTime = new Date().getTime();
+      // console.log(endTime - startTime);
       if (activities.length == 0) {
         options.callback(activities); // 保证至少调用一次 callback
       }
@@ -56,7 +57,11 @@ export default async function (options) {
           .get()
           .then(res => {
             let namelist = res.data.map(Element => Element.username);
-            activities[i].avatar_url = res.data[0].avatar_url;
+            try {
+              activities[i].avatar_url = res.data[0].avatar_url;
+            } catch (error) {
+              activities[i].avatar_url = '/images/icon_ruanweiwei_alt_2.jpg';
+            }
             activities[i].presenter_string = getPresenterString(namelist);
             options.callback(activities);
           })

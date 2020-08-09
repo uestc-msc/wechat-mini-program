@@ -3,6 +3,7 @@
 import {
   getDate
 } from '../../../utils/date.js';
+import getActivityInfo from '../../../utils/get_activity_info';
 
 var app = getApp();
 
@@ -21,8 +22,6 @@ Page({
     app.globalData.current_activity = {
       title: "",
       presenter_list: [app.globalData.openid], // 默认为本人
-      presenter_namelist: [app.globalData.username],
-      avatar_url: app.globalData.avatar_url,
       date: "",
       time: "",
       location: "",
@@ -132,28 +131,6 @@ Page({
         }
       });
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    // console.log('onHide')
-  },
-
   /**
    * 生命周期函数--监听页面卸载
    */
@@ -178,8 +155,20 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-
+    onPullDownRefresh() {
+      getActivityInfo({
+        id: app.globalData.current_activity._id,
+        callback: res => {
+          this.setData({
+            presenter_string: res[0].presenter_string
+          });
+          wx.showToast({
+            title: '刷新成功',
+            icon: 'none'
+          })
+          wx.stopPullDownRefresh()
+        }
+      });
   },
 
   /**

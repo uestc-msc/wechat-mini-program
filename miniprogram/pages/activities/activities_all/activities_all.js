@@ -8,7 +8,7 @@ const db = wx.cloud.database();
 const _ = db.command;
 
 let page_index = -1;
-const activities_per_page = 6;
+const activities_per_page = 20;
 
 Page({
   data: {
@@ -54,7 +54,7 @@ Page({
     });
   },
   onPullDownRefresh() {
-    this.onShow();
+    this.onLoad();
     wx.showToast({
       title: '刷新成功',
       icon: 'none'
