@@ -1,17 +1,15 @@
-// 获取活动信息
-// 由于还需要获取主讲人姓名、头像等
-// 故独立为一个页面
-
 import getPresenterString from 'get_presenter_string.js';
 
 const db = wx.cloud.database();
 const _ = db.command;
 
-// 接收参数：
-// id:    获取的活动的 _id
-// limit: 如果不存在 id，则 limit 为 limit 的参数
-// skip:  为 skip 的参数
-
+/**
+ * 获取活动信息。由于还需要获取主讲人姓名、头像等，故独立为一个页面
+ * @param id 获取的活动的 `_id`
+ * @param limit 数据库查询中 `limit` 的参数，仅 `id` 为 `undefined` 时有效
+ * @param skip 数据库查询中 `skip` 的参数
+ * @returns `Promise`
+ */
 export default async function (options) {
   // var startTime = new Date().getTime();
   if (options == undefined || options.id == undefined && options.limit == undefined) {
