@@ -103,6 +103,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/lyh543"><img src="https://avatars2.githubusercontent.com/u/15522311?v=4" width="100px;" alt=""/><br /><sub><b>刘俨晖</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=lyh543" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/guyaqi"><img src="https://avatars2.githubusercontent.com/u/26341682?v=4" width="100px;" alt=""/><br /><sub><b>Guyaqi</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=guyaqi" title="Code">💻</a></td>
     <td align="center"><a href="http://luosuu.github.io"><img src="https://avatars2.githubusercontent.com/u/43507393?v=4" width="100px;" alt=""/><br /><sub><b>Tianle Zhong</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=Luosuu" title="Code">💻</a></td>
   </tr>
 </table>
