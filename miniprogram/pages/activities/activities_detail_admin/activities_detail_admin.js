@@ -268,9 +268,8 @@ Page({
   }
 });
 
-function setPageData(res) {
+function setPageData() {
   let cur = app.globalData.current_activity;
-  app.globalData.current_activity = cur;
   that.setData({
     title: cur.title,
     presenter_string: cur.presenter_string,
@@ -341,9 +340,7 @@ function setPageData(res) {
 //   /**
 //    * 页面相关事件处理函数--监听用户下拉动作
 //    */
-//   onPullDownRefresh: function () {
 
-//   },
 
 //   /**
 //    * 页面上拉触底事件的处理函数

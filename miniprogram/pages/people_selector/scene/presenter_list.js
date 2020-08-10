@@ -33,10 +33,10 @@ export async function listChanged(options) {
     .doc(app.globalData.current_activity._id)
     .update({
       data: {
-        presenter_list: oper(options.userid)
+        presenter_list: oper(options.user_id)
       }
     });
-  // 获取新的 presenter_string 并刷新上一页
+  // 获取新的 presenter_string 存储并刷新上一页
   getActivityInfo({
     id: app.globalData.current_activity._id
   }).then(res => {

@@ -4,6 +4,9 @@ import {
   checkIn
 } from '../check_in/check_in.js';
 import getActivityInfo from '../../utils/get_activity_info';
+import log from '../../utils/log';
+
+log()
 
 var app = getApp();
 

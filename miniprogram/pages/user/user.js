@@ -31,7 +31,8 @@ Page({
     // 如果没有 username 则每 0.5s 尝试 onShow
     if (app.globalData.username == '') {
       sleep(500).then(() => this.onShow());
-    } else {
+      return;
+    }
       if (app.globalData.is_admin) {
         var usertitle = '（管理员）';
       } else {
@@ -43,7 +44,6 @@ Page({
         student_id: app.globalData.student_id,
         can_grant_admin: app.globalData.can_grant_admin
       })
-    }
   },
 
   /**

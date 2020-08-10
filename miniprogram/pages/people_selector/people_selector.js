@@ -133,7 +133,7 @@ Page({
     // 调用对应函数
     let startTime = new Date().getTime();
     scene.listChanged({
-        userid: id,
+        user_id: id,
         checked: checked,
         username: checkboxItems[index].username
       })
@@ -162,7 +162,7 @@ Page({
           icon: 'none',
           duration: 5000
         });
-        //还得把选项改回来
+        // 出错了还得把选项改回来
         that.setData({
           ['checkboxItems[' + index + '].checked']: !checked
         });

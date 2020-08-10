@@ -1,4 +1,4 @@
-import { checkIn } from '../../check_in/check_in.js';
+import getActivityInfo from '../../../utils/get_activity_info'
 
 let app = getApp();
 const db = wx.cloud.database();
@@ -40,8 +40,28 @@ export function onLoad(e, page) {
 }
 
 export async function listChanged(options) {
-  options.activity_id = app.globalData.current_activity._id;
-  return await checkIn(options);
+  const _ = db.command;
+  const oper = options.checked ? _.push : _.pull; // 数据库操作：添加/删除
+  // 更新 list
+  let res = await db
+    .collection('activity_info')
+    .doc(app.globalData.current_activity._id)
+    .update({
+      data: {
+        check_in_list: oper(options.user_id)
+      }
+    });
+  // 获取新的 presenter_string 存储并刷新上一页
+  getActivityInfo({
+    id: app.globalData.current_activity._id
+  }).then(res => {
+    let cur = res[0];
+    app.globalData.current_activity = cur;
+    let pages = getCurrentPages();
+    let last_page = pages[pages.length - 2]; // 上一页
+    last_page.onPullDownRefresh();
+  });
+  return res;
 }
 
 export function elementIsChecked(Element) {

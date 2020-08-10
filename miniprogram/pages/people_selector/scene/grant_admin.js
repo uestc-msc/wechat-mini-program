@@ -46,7 +46,7 @@ export function elementIsChecked(Element) {
 export async function listChanged(options) {
   let res = await db
     .collection('user_info')
-    .doc(options.userid)
+    .doc(options.user_id)
     .update({
       data: {
         is_admin: options.checked
