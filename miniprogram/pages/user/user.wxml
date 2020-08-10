@@ -16,20 +16,17 @@
 		</view>
 
 		<view class="weui-cells">
-			<view class="weui-cell weui-cell_active weui-cell_access" bindtap="navigateToModifyAdmin" wx:if="{{can_grant_admin}}">
-				<!-- 只想让它在管理员的界面上出现 -->
-				<view class="weui-cell__bd">
-					<text style="vertical-align: middle;">管理员列表</text>
-				</view>
-				<view class="weui-cell__ft"></view>
-			</view>
-			<navigator url="about/about">
-				<view class="weui-cell weui-cell_active weui-cell_access">
+			<navigator url='/pages/people_selector/people_selector?modify=grant_admin' wx:if="{{can_grant_admin}}" class="weui-cell weui-cell_active weui-cell_access">
+					<view class="weui-cell__bd">
+						<text style="vertical-align: middle;">管理员列表</text>
+					</view>
+					<view class="weui-cell__ft"></view>
+			</navigator>
+			<navigator url="/pages/user/about/about" class="weui-cell weui-cell_active weui-cell_access">
 					<view class="weui-cell__bd">
 						<text style="vertical-align: middle;">关于</text>
 					</view>
 					<view class="weui-cell__ft"></view>
-				</view>
 			</navigator>
 		</view>
 	</view>

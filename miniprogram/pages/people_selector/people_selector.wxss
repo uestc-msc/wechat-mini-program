@@ -1,0 +1,28 @@
+/* pages/people_selector/people_selector.wxss */
+
+/*!
+ * WeUI v2.4.0 (https://github.com/weui/weui-wxss)
+ * Copyright 2020 Tencent, Inc.
+ * Licensed under the MIT license
+ */
+ .searchbar-result {
+  margin-top: 0;
+  font-size: 14px
+}
+
+.searchbar-result .weui-cell__bd {
+  padding: 2px 0 2px 20px;
+  color: var(--weui-FG-1)
+}
+
+.searchbar-result:before {
+  display: none
+}
+
+/* "只会显示搜索结果的前 N 项哦" */
+.placeholder {
+  color: var(--weui-FG-1);
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+}

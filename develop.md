@@ -6,7 +6,7 @@
 
 路径：`pages/activities/activities`
 
-展示前几次活动、“查看更多”。以及“创建沙龙”按钮、“签到”按钮。
+展示前几次活动、“查看更多”。以及“创建活动”按钮、“签到”按钮。
 
 点击某次活动进入其活动详情页面。
 
@@ -103,7 +103,7 @@
 `is_admin`|bool|是否为管理员
 `can_grant_admin`|bool|能授予别人管理员
 `register_date`|string|注册时间
-`exp`|int|参加沙龙/举办沙龙能获得经验值
+`exp`|int|参加活动/举办活动能获得经验值
 
 ### 活动信息 activity_info
 
@@ -115,8 +115,6 @@
 `_openid`|string|创建者的 openid
 `title`|string|标题
 `presenter_list`|[string]|主讲人的名单（列表，存储每个人的 openid）
-`presenter_namelist`|[string]|主讲人的姓名的名单（列表，存储每个人的姓名）作为冗余数据，也可以通过 `presenter_namelist` 在 `user_info` 表查到
-`avatar_url`|[string]|某位主讲人的头像（随机，算法上是取 `presenter_list[0]`）
 `date`|string|活动日期
 `time`|string|活动时间
 `location`|string|活动地点
@@ -150,16 +148,3 @@
 ```
 
 但是目前云存储安全规则并不支持查询数据库，因此目前采用所有人都可以读写的策略。
-
-## 已知 bug
-
-创建活动、修改活动页，日期、“时间”的字体和“地点”、“标题”的字体不同。
-
-## 长远计划
-
-* 更复杂的抽奖系统
-* 活动搜索（主页面和管理员页面都需要有）
-* 个人经验等级系统
-* 管理员授予勋章
-* 查看更多活动页面刚开始不加载所有页面，而是在上拉的时候加载更多
-* 下拉刷新

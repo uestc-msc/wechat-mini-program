@@ -1,5 +1,7 @@
 // pages/user/modify_information/modify_information.js
 
+var app = getApp();
+
 Page({
   /**
    * 页面的初始数据
@@ -34,7 +36,6 @@ Page({
     }
 
     //将信息保存为全局变量
-    var app = getApp();
     app.globalData.username = e.detail.value.username;
     app.globalData.student_id = e.detail.value.student_id;
     app.globalData.telephone = e.detail.value.telephone;
@@ -43,12 +44,13 @@ Page({
     const db = wx.cloud.database()
     const _ = db.command
     db.collection("user_info").doc(app.globalData.openid).update({
-      data: {
-        username: app.globalData.username,
-        student_id: app.globalData.student_id,
-        telephone: app.globalData.telephone,
-      },
-      success: res => {
+        data: {
+          username: app.globalData.username,
+          student_id: app.globalData.student_id,
+          telephone: app.globalData.telephone,
+        }
+      })
+      .then(res => {
         wx.navigateBack({
           delta: 1,
         });
@@ -57,14 +59,13 @@ Page({
           icon: 'success',
           duration: 2000
         });
-      },
-      fail: err => {
+      })
+      .catch(err => {
         console.log(err)
         wx.showToast({
           icon: 'none',
-          title: '向 user_info 数据库 修改记录失败'
+          title: '向数据库 修改记录失败'
         })
-      }
-    })
+      });
   }
 })

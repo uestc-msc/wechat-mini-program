@@ -3,7 +3,7 @@
 /* 文字右对齐 */
 .weui-input {
   text-align: right;
-} 
+}
 
 /* 签到二维码 */
 .weui-media-box__thumb {

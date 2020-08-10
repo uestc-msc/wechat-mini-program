@@ -3,6 +3,7 @@
 import {
   getDate
 } from '../../../utils/date.js';
+import getActivityInfo from '../../../utils/get_activity_info';
 
 var app = getApp();
 
@@ -14,15 +15,13 @@ Page({
     title: "",
     presenter_string: "",
     date: getDate(), // 默认日期为今天
-    time: "20:00",   // 默认时间
+    time: "20:00", // 默认时间
     location: ""
   },
   onLoad: function (options) {
     app.globalData.current_activity = {
       title: "",
       presenter_list: [app.globalData.openid], // 默认为本人
-      presenter_namelist: [app.globalData.username],
-      avatar_url: app.globalData.avatar_url,
       date: "",
       time: "",
       location: "",
@@ -52,13 +51,15 @@ Page({
       }
     })
   },
-  //非管理员尝试修改主讲人时的提示
   modifyPresenter() {
     if (app.globalData.is_admin) {
       wx.navigateTo({
-        url: 'url',
+        url: '/pages/people_selector/people_selector?id=' +
+          app.globalData.current_activity._id +
+          '&modify=presenter_list'
       })
     } else {
+      //非管理员尝试修改主讲人时的提示
       wx.showToast({
         title: '非管理员不能修改主讲人哦',
         icon: 'none',
@@ -84,7 +85,7 @@ Page({
   inputSubmit(e) {
     // console.log(e);
     var value = e.detail.value;
-    if (!value.location || !value.title){
+    if (!value.location || !value.title) {
       wx.showToast({
         title: '请把消息补充完整喔',
         icon: 'none',
@@ -101,83 +102,73 @@ Page({
     // 将其他信息存入数据库
     const db = wx.cloud.database();
     db.collection('activity_info')
-    .doc(app.globalData.current_activity._id)
-    .update({
-      data: {
-        title: value.title,
-        date: value.date,
-        time: value.time,
-        location: value.location,
-        is_hidden: false
-      },
-      success: res => {
-        wx.redirectTo({
-          url: '/pages/activities/activities_detail/activities_detail?id='
-          + app.globalData.current_activity._id,
-        });
-        wx.showToast({
-          title: '创建成功',
-          duration: 2000
-        })
-      },
-      fail: err => {
-        console.log(err);
-        wx.showToast({
-          title: '创建失败',
-          duration: 2000,
-          icon: 'none'
-        });
-      }
-    });
+      .doc(app.globalData.current_activity._id)
+      .update({
+        data: {
+          title: value.title,
+          date: value.date,
+          time: value.time,
+          location: value.location,
+          is_hidden: false
+        },
+        success: res => {
+          wx.redirectTo({
+            url: '/pages/activities/activities_detail/activities_detail?id=' +
+              app.globalData.current_activity._id,
+          });
+          wx.showToast({
+            title: '创建成功',
+            duration: 2000
+          })
+        },
+        fail: err => {
+          console.log(err);
+          wx.showToast({
+            title: '创建失败',
+            duration: 2000,
+            icon: 'none'
+          });
+        }
+      });
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    // console.log('onHide')
-  },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
     // console.log('onUnload')
     // console.log(this.data)
-    if(app.globalData.current_activity.is_hidden){
+    if (app.globalData.current_activity.is_hidden) {
       const db = wx.cloud.database();
       db.collection('activity_info')
-      .doc(app.globalData.current_activity._id)
-      .remove({
-        success: res => {
-          console.log('成功删除记录 ', activitiy_id);
-        },
-        fail: res => {
-          console.log('删除记录失败 ', activitiy_id);
-        }
-      })
+        .doc(app.globalData.current_activity._id)
+        .remove({
+          success: res => {
+            console.log('成功删除记录 ', activitiy_id);
+          },
+          fail: res => {
+            console.log('删除记录失败 ', activitiy_id);
+          }
+        })
     }
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-
+    onPullDownRefresh() {
+      getActivityInfo({
+        id: app.globalData.current_activity._id
+      })
+      .then(res => {
+        this.setData({
+          presenter_string: res[0].presenter_string
+        });
+        wx.showToast({
+          title: '刷新成功',
+          icon: 'none'
+        })
+        wx.stopPullDownRefresh()
+      });
   },
 
   /**

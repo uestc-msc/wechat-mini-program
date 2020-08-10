@@ -1,16 +1,12 @@
 // pages/activities/activities_detail_admin/activities_detail_admin.js
 
 import {
-  checkIn
-} from '../../check_in/check_in.js';
-import {
-  getPresenterString
-} from '../../../utils/get_presenter_string.js'
-import {
   getDate
 } from '../../../utils/date.js';
+import getActivityInfo from '../../../utils/get_activity_info.js';
 
 var app = getApp();
+var that;
 
 Page({
   data: {
@@ -22,82 +18,81 @@ Page({
     check_in_total: "",
     is_admin: false,
 
-    show_dialog: false,
+    wxacode_url: "",
+    show_wxacode: false
   },
   onLoad: function (e) {
-    //尝试从全局变量中读取是否有该次活动的信息，如果没有就从数据库获取
-    if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {} else {
-      // console.log(e)
-      const db = wx.cloud.database();
-      db
-        .collection('activity_info')
-        .doc(e.id)
-        .get({
-          success: res => {
-            app.globalData.current_activity = res.data;
-            console.log(res.data);
-          },
-          fail: err => {
-            console.log(err);
-            wx.redirectTo({
-              url: '/pages/activities/activities',
-            });
-            wx.showToast({
-              title: '获取活动信息失败',
-              icon: 'none'
-            });
-          }
-        });
+    that = this;
+    //尝试从全局变量中读取是否有该次活动的信息，如果有就先默认填上
+    if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {
+      setPageData();
     }
-    let current_activity = app.globalData.current_activity;
-    this.setData({
-      title: current_activity.title,
-      presenter_string: getPresenterString(current_activity.presenter_namelist, 0),
-      date: current_activity.date,
-      time: current_activity.time,
-      location: current_activity.location,
-      check_in_total: current_activity.check_in_list.length
+    //从数据库获取最新数据以后再覆盖
+    getActivityInfo({
+      id: e.id,
+    }).then(res => {
+      app.globalData.current_activity = res[0];
+      setPageData();
+    });
+    // 获取签到二维码
+    wx.cloud.callFunction({
+      name: "get_check_in_wxacode",
+      data: {
+        id: e.id
+      },
+      success(res) {
+        let wxacode_url = "data:image/png;base64," + wx.arrayBufferToBase64(res.result.buffer);
+        that.setData({
+          wxacode_url: wxacode_url
+        })
+      },
+      fail(err) {
+        console.log(err)
+        wx.showToast({
+          title: '获取签到二维码失败 请联系管理员',
+          icon: 'none'
+        })
+      }
     })
-    //如果本人是主讲人或全局的管理员，则也是这次活动的管理员
-    if (app.globalData.is_admin || current_activity.presenter_list.includes(app.globalData.openid)) {
-      this.setData({
-        is_admin: true
-      });
-    } else {
-      wx.navigateBack({
-        delta: 1,
-      })
+  },
+  onPullDownRefresh() {
+    getActivityInfo({
+      id: app.globalData.current_activity._id,
+    })
+    .then(res => {
+      app.globalData.current_activity = res[0];
+      setPageData();
       wx.showToast({
-        title: '你还不是管理员 不能进入这种地方的',
-        icon: 'none',
-        duration: 2000
+        title: '刷新成功',
+        icon: 'none'
       })
+      wx.stopPullDownRefresh()
+    });
+  },
+  modifyPresenter() {
+    if (app.globalData.is_admin) {
+      wx.navigateTo({
+        url: '/pages/people_selector/people_selector?id=' +
+          app.globalData.current_activity._id +
+          '&modify=presenter_list'
+      })
+    } else {
+      //非管理员尝试修改主讲人时的提示
+      wx.showToast({
+        title: '非管理员不能修改主讲人哦',
+        icon: 'none',
+        duration: 1000
+      });
     }
   },
-  bindDateChange: function (e) {
+  bindDateChange(e) {
     this.setData({
       date: e.detail.value
     })
   },
-  bindTimeChange: function (e) {
+  bindTimeChange(e) {
     this.setData({
       time: e.detail.value
-    })
-  },
-  callCheckInList() {
-    wx.navigateTo({
-      url: 'check_in_list/check_in_list',
-    })
-  },
-  callGallery() {
-
-  },
-  callCheckIn() {
-    checkIn();
-  },
-  callLottery() {
-    wx.navigateTo({
-      url: 'lottery/lottery',
     })
   },
   inputSubmit(e) {
@@ -132,7 +127,7 @@ Page({
           //修改上一页面的信息，然后 navigateBack 到上一页
           var pages = getCurrentPages();
           var prevPage = pages[pages.length - 2];
-          prevPage.setData( app.globalData.current_activity);
+          prevPage.setData(app.globalData.current_activity); // 把 current_activity 的每个属性直接给 page
           wx.navigateBack({
             delta: 1,
           });
@@ -155,38 +150,148 @@ Page({
     wx.showModal({
       title: '确认删除',
       content: '真的要删除吗？这是不可逆的哦',
-      success (res) {
+      success(res) {
         if (res.confirm) {
           const db = wx.cloud.database();
           db
-          .collection('activity_info')
-          .doc(app.globalData.current_activity._id)
-          .update({
-            data: {
-              is_hidden: true
-            },
-            success: res => {
-              wx.navigateBack({
-                delta: 2,
-              });
-              wx.showToast({
-                title: '删除成功',
-              });
-            },
-            fail: err => {
-              wx.showToast({
-                title: '删除失败',
-                icon: 'none'
-              });
-            }
-          });
-        } else if (res.cancel) {
+            .collection('activity_info')
+            .doc(app.globalData.current_activity._id)
+            .update({
+              data: {
+                // 只是隐藏了 activities 并没有删除
+                is_hidden: true
+              },
+              success: res => {
+                wx.navigateBack({
+                  delta: 2,
+                });
+                wx.showToast({
+                  title: '删除成功',
+                });
+              },
+              fail: err => {
+                wx.showToast({
+                  title: '删除失败',
+                  icon: 'none'
+                });
+              }
+            });
         }
       }
+    })
+  },
+  // 全屏查看小程序码
+  showWxacode() {
+    this.setData({
+      show_wxacode: true
+    });
+  },
+  closeWxacode() {
+    this.setData({
+      show_wxacode: false
+    });
+  },
+  downloadWxacode() {
+    let that = this;
+    wx.authorize({
+      scope: "scope.writePhotosAlbum",
+      success: res => {
+        wx.getFileSystemManager().writeFile({
+          filePath: wx.env.USER_DATA_PATH + '/temp.png',
+          data: that.data.wxacode_url.slice(22), // 把 data:image/png;base64, 去除
+          encoding: 'base64',
+          success: res => {
+            wx.saveImageToPhotosAlbum({
+              filePath: wx.env.USER_DATA_PATH + '/temp.png',
+              success: function (res) {
+                console.log(res);
+                wx.showToast({
+                  title: '保存成功',
+                  icon: 'none',
+                  duration: 5000
+                })
+              },
+              fail: function (err) {
+                console.log(err)
+                wx.showToast({
+                  title: '保存失败',
+                  icon: 'none'
+                })
+              }
+            })
+          },
+          fail: err => {
+            console.log(err)
+            wx.showToast({
+              title: '保存失败',
+              icon: 'none'
+            })
+          }
+        })
+      },
+      fail: err => {
+        console.log(err)
+        wx.showToast({
+          title: '没有写入相册的权限',
+          icon: 'none'
+        })
+      }
+    });
+  },
+  //手动签到
+  checkInManually(e) {
+    if (getDate() != app.globalData.current_activity.date) {
+      wx.showToast({
+        title: '活动当天才可以签到哦',
+        icon: 'none'
+      })
+      return;
+    }
+    wx.navigateTo({
+      url: '/pages/people_selector/people_selector?id=' +
+        app.globalData.current_activity._id +
+        '&modify=check_in_list',
+    })
+  },
+  showCheckInList() {
+    wx.navigateTo({
+      url: 'check_in_list/check_in_list?id=' +
+        app.globalData.current_activity._id +
+        '&modify=check_in_list',
+    })
+  },
+  callLottery() {
+    wx.navigateTo({
+      url: 'lottery/lottery?id=' +
+        app.globalData.current_activity._id
     })
   }
 });
 
+function setPageData() {
+  let cur = app.globalData.current_activity;
+  that.setData({
+    title: cur.title,
+    presenter_string: cur.presenter_string,
+    date: cur.date,
+    time: cur.time,
+    location: cur.location,
+    check_in_total: cur.check_in_list.length,
+    is_admin: app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)
+  })
+
+  //如果本人是主讲人或全局的管理员，则也是这次活动的管理员
+  if (!that.data.is_admin) {
+    wx.navigateBack({
+      delta: 1,
+    });
+    wx.showToast({
+      title: '你还不是管理员 不能进入这种地方的',
+      icon: 'none',
+      duration: 2000
+    });
+  }
+}
 
 // Page({
 
@@ -235,9 +340,7 @@ Page({
 //   /**
 //    * 页面相关事件处理函数--监听用户下拉动作
 //    */
-//   onPullDownRefresh: function () {
 
-//   },
 
 //   /**
 //    * 页面上拉触底事件的处理函数
