@@ -2,7 +2,7 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_version: "v0.3",
+        app_version: "v0.4.0",
 
         openid: "",
         avatar_url: "",
