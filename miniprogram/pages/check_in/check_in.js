@@ -10,15 +10,21 @@ const _ = db.command;
 
 // “扫码签到” 按钮的回调函数
 export function scanCode() {
-  wx.scanCode()
-    .then(res => {
+  wx.scanCode({
+    success: res => {
+      console.log(res);
       let id = res.result;
-      console.log(id);
-      return checkIn(id)
-    })
+      return checkIn({
+        activity_id: id
+      });
+    }
+  })
 };
 
-// 输入 acitivity_id，尝试进行签到
+/**
+ * 输入 acitivity_id，尝试进行签到
+ * @params `options.activity_id` 签到的活动
+ */
 export async function checkIn(options) {
   // 如果没有 openid 则每 0.5s 尝试 checkIn，直至获取到 openid
   if (app.globalData.openid == '') {
@@ -42,6 +48,9 @@ export async function checkIn(options) {
   let res = await db.collection('activity_info')
     .doc(options.activity_id)
     .get()
+    .catch(res => {
+      return Promise.reject({errMsg: "activity_id 错误: <" + options.activity_id + ">"});
+    })
     .then(res => {
       app.globalData.current_activity = res.data;
       if (res.data.date != getDate()) {
