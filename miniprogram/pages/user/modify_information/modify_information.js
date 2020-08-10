@@ -64,7 +64,7 @@ Page({
         console.log(err)
         wx.showToast({
           icon: 'none',
-          title: '向数据库 修改记录失败'
+          title: '向数据库修改记录失败 _(:з」∠)_'
         })
       });
   }

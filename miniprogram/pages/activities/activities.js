@@ -33,7 +33,7 @@ Page({
     }
   },
   onShow() {
-    app.globalData.current_activity = undefined;
+    app.globalData.current_activity = {};
     return getActivityInfo({
         limit: 2
       })

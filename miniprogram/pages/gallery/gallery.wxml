@@ -6,6 +6,7 @@
     wx:if="{{currentAlbum != null}}"></image>
   <view class="title">{{title}}</view>
   <view wx:if="{{currentAlbum == null}}" class="album-list">
+  <block wx:for="{{activities_arr}}" wx:for-item="activities" wx:key="index">
     <view class="album-wrapper"
       wx:for="{{activities}}"
       wx:for-item="item" 
@@ -14,11 +15,12 @@
       bindtap="tapAlbum">
       <view class="album-container">
         <view class="album-cover">
-          <image mode="heightFix" src="{{item.avatar_url}}"></image>
+          <image mode="aspectFit" src="{{item.avatar_url}}"></image>
         </view>
         <view class="album-name">{{item.title}}</view>
       </view>
     </view>
+    </block>
   </view>
   <view wx:if="{{currentAlbum != null}}" class="photo-list">
     <view class="photo-wrapper" bindtap="addPhoto">
@@ -32,12 +34,23 @@
       wx:for-item="item" 
       wx:key="_id"
       data-item="{{item}}"
-      bindtap="tapPhoto">
+      bindtap="tapPhotoToMaximize">
       <view class="photo-container">
         <view class="photo-cover">
-          <image mode="heightFix" src="{{item.url}}"></image>
+          <image mode="aspectFit" src="{{item.url}}"></image>
         </view>
       </view>
     </view>
   </view>
+  <!-- 全屏图像部分 -->
+	<view wx:if="{{fullScreenPhotoUrl}}" class="weui-gallery fadeIn" bindtap="tapPhotoToMinimize">
+		<view class="weui-gallery__img__wrp">
+			<image mode="aspectFit" class="weui-gallery__img" src="{{fullScreenPhotoUrl}}"></image>
+		</view>
+		<view class="weui-gallery__opr">
+			<view class="weui-gallery__download">
+				<i class="weui-icon-download" bindtap="downloadPhoto"></i>
+			</view>
+		</view>
+	</view>
 </view>
