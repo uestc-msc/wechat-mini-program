@@ -7,7 +7,7 @@ var app = getApp();
 const db = wx.cloud.database();
 const _ = db.command;
 
-let page_index = -1;
+let page_index;
 const activities_per_page = 20;
 
 Page({
@@ -15,28 +15,35 @@ Page({
     recent_activities_arr: []
   },
   onLoad() {
+    page_index = 0;
+    this.loadOnePage();
+  },
+  onShow() {
+    app.globalData.current_activity = undefined;
+  },
+  loadOnePage() {
+    console.log('Page:', page_index)
     // 从数据库获取活动的信息
-    page_index++;
     wx.showLoading({
       title: '加载中',
     });
     getActivityInfo({
       skip: page_index * activities_per_page,
       limit: activities_per_page,
-      callback: activities => {
-        wx.hideLoading();
-        if (activities.length == 0) {
-          wx.showToast({
-            title: '本薇薇也是有底线的',
-            icon: 'none'
-          });
-        } else {
-          this.setData({
-            ['recent_activities_arr[' + page_index + ']']: activities
-          })
-        }
-        // console.log(activities)
-      },
+    })
+    .then(activities => {
+      wx.hideLoading();
+      if (activities == undefined || activities.length == 0) {
+        wx.showToast({
+          title: '本薇薇也是有底线的',
+          icon: 'none'
+        });
+      } else {
+        this.setData({
+          ['recent_activities_arr[' + page_index + ']']: activities
+        });
+        page_index++;
+      }
     });
   },
   navigateToActivityDetail(e) {
@@ -54,76 +61,16 @@ Page({
     });
   },
   onPullDownRefresh() {
-    this.onLoad();
-    wx.showToast({
-      title: '刷新成功',
-      icon: 'none'
+    this.setData({
+      recent_activities_arr: []
     })
+    this.onLoad();
     sleep(500).then(() => {
       wx.stopPullDownRefresh()
     })
   },
   // 页面上拉触底事件的处理函数
   onReachBottom() {
-    this.onLoad();
+    this.loadOnePage();
   }
 });
-
-// Page({
-
-//   /**
-//    * 页面的初始数据
-//    */
-//   data: {
-
-//   },
-
-//   /**
-//    * 生命周期函数--监听页面加载
-//    */
-//   onLoad: function (options) {
-
-//   },
-
-//   /**
-//    * 生命周期函数--监听页面初次渲染完成
-//    */
-//   onReady: function () {
-
-//   },
-
-//   /**
-//    * 生命周期函数--监听页面显示
-//    */
-//   onShow: function () {
-
-//   },
-
-//   /**
-//    * 生命周期函数--监听页面隐藏
-//    */
-//   onHide: function () {
-
-//   },
-
-//   /**
-//    * 生命周期函数--监听页面卸载
-//    */
-//   onUnload: function () {
-
-//   },
-
-//   /**
-//    * 页面上拉触底事件的处理函数
-//    */
-//   onReachBottom: function () {
-
-//   },
-
-//   /**
-//    * 用户点击右上角分享
-//    */
-//   onShareAppMessage: function () {
-
-//   }
-// })

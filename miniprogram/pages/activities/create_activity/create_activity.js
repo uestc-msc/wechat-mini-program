@@ -157,17 +157,17 @@ Page({
    */
     onPullDownRefresh() {
       getActivityInfo({
-        id: app.globalData.current_activity._id,
-        callback: res => {
-          this.setData({
-            presenter_string: res[0].presenter_string
-          });
-          wx.showToast({
-            title: '刷新成功',
-            icon: 'none'
-          })
-          wx.stopPullDownRefresh()
-        }
+        id: app.globalData.current_activity._id
+      })
+      .then(res => {
+        this.setData({
+          presenter_string: res[0].presenter_string
+        });
+        wx.showToast({
+          title: '刷新成功',
+          icon: 'none'
+        })
+        wx.stopPullDownRefresh()
       });
   },
 

@@ -26,13 +26,13 @@ Page({
     }
     //从数据库获取最新数据以后再覆盖
     getActivityInfo({
-      id: e.id,
-      callback: res => {
+        id: e.id,
+      })
+      .then(res => {
         let cur = res[0];
         app.globalData.current_activity = cur;
         setPageData()
-      }
-    });
+      });
   },
   // tapTitle () {
   //   tap_title_total++;
@@ -46,6 +46,11 @@ Page({
   //     })
   //   }
   // },
+  callGallery() {
+    wx.switchTab({
+      url: '/pages/gallery/gallery'
+    });
+  },
   callCheckIn() {
     scanCode();
   },
@@ -57,8 +62,9 @@ Page({
   },
   onPullDownRefresh() {
     getActivityInfo({
-      id: app.globalData.current_activity._id,
-      callback: res => {
+        id: app.globalData.current_activity._id,
+      })
+      .then(res => {
         app.globalData.current_activity = res[0];
         setPageData();
         wx.showToast({
@@ -66,8 +72,7 @@ Page({
           icon: 'none'
         })
         wx.stopPullDownRefresh()
-      }
-    });
+      });
   },
 });
 

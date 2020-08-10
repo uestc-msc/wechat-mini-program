@@ -1,14 +1,12 @@
 // pages/activities/activities_detail/check_in_list/check_in_list.js
 
-import sleep from '../../../../utils/sleep';
-
 var app = getApp();
 var that;
 
 Page({
   data: {
     title: '',
-    checke_in_total: 0,
+    check_in_total: 0,
     check_in_name_text: ''
   },
   copyListToClipBoard(e) {
@@ -17,7 +15,6 @@ Page({
       data: text
     });
   },
-
   onLoad: function (e) {
     that = this;
     //尝试从全局变量中读取是否有该次活动的信息，如果有就先默认填上
@@ -28,7 +25,6 @@ Page({
     fetchData(e.id).then(setPageData);
     getCheckInList(e.id);
   },
-
   async onPullDownRefresh() {
     await getCheckInList(app.globalData.current_activity._id);
     wx.stopPullDownRefresh();
@@ -61,13 +57,14 @@ async function fetchData(id) {
 function setPageData() {
   let cur = app.globalData.current_activity;
   that.setData({
-    title: cur.title
+    title: cur.title,
+    check_in_total: cur.check_in_list.length
   })
 }
 
 async function getCheckInList(id) {
   wx.showLoading({
-    title: '加载中',
+    title: '正在拿出点名册',
     complete: res => {}
   });
   await wx.cloud.callFunction({

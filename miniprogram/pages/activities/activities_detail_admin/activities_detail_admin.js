@@ -30,10 +30,9 @@ Page({
     //从数据库获取最新数据以后再覆盖
     getActivityInfo({
       id: e.id,
-      callback: res => {
-        app.globalData.current_activity = res[0];
-        setPageData();
-      }
+    }).then(res => {
+      app.globalData.current_activity = res[0];
+      setPageData();
     });
     // 获取签到二维码
     wx.cloud.callFunction({
@@ -59,15 +58,15 @@ Page({
   onPullDownRefresh() {
     getActivityInfo({
       id: app.globalData.current_activity._id,
-      callback: res => {
-        app.globalData.current_activity = res[0];
-        setPageData();
-        wx.showToast({
-          title: '刷新成功',
-          icon: 'none'
-        })
-        wx.stopPullDownRefresh()
-      }
+    })
+    .then(res => {
+      app.globalData.current_activity = res[0];
+      setPageData();
+      wx.showToast({
+        title: '刷新成功',
+        icon: 'none'
+      })
+      wx.stopPullDownRefresh()
     });
   },
   modifyPresenter() {
@@ -260,9 +259,6 @@ Page({
         app.globalData.current_activity._id +
         '&modify=check_in_list',
     })
-  },
-  callGallery() {
-
   },
   callLottery() {
     wx.navigateTo({

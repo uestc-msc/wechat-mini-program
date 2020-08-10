@@ -22,26 +22,23 @@ Page({
       wx.showLoading({
         title: '加载中',
       });
-      getActivityInfo({
-        limit: 2,
-        callback: res => {
-          this.setData({
-            recent_activities: res
-          })
+      this.onShow()
+      .then(res => {
           wx.hideLoading();
-        }
-      });
+        });
     }
   },
   onShow() {
-    getActivityInfo({
-      limit: 2,
-      callback: res => {
+    app.globalData.current_activity = undefined;
+    return getActivityInfo({
+        limit: 2
+      })
+      .then(res => {
+        // console.log(res)
         this.setData({
           recent_activities: res
         })
-      }
-    });
+      });
   },
   navigateToActivityDetail(e) {
     // 找到对应活动的信息并丢给全局变量，节约从数据库获取的时间
@@ -70,21 +67,14 @@ Page({
   },
   // 监听用户下拉动作：刷新列表
   onPullDownRefresh() {
-    getActivityInfo({
-      limit: 2,
-      callback: res => {
-        this.setData({
-          recent_activities: res
-        })
+    this.onShow()
+    .then(res => {
         wx.showToast({
           title: '刷新成功',
           icon: 'none'
         })
         wx.stopPullDownRefresh()
-      }
-    });
-
-
+      });
   }
 });
 

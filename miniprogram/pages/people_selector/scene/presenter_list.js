@@ -38,15 +38,13 @@ export async function listChanged(options) {
     });
   // 获取新的 presenter_string 并刷新上一页
   getActivityInfo({
-    id: app.globalData.current_activity._id,
-    callback: res => {
-      let cur = res[0];
-      app.globalData.current_activity = cur;
-      let pages = getCurrentPages();
-      let last_page = pages[pages.length - 2]; // 上一页
-      last_page.onPullDownRefresh();
-    }
-  })
-
+    id: app.globalData.current_activity._id
+  }).then(res => {
+    let cur = res[0];
+    app.globalData.current_activity = cur;
+    let pages = getCurrentPages();
+    let last_page = pages[pages.length - 2]; // 上一页
+    last_page.onPullDownRefresh();
+  });
   return res;
 }

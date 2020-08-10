@@ -32,8 +32,13 @@ Page({
     if (app.globalData.username == '') {
       sleep(500).then(() => this.onShow());
     } else {
+      if (app.globalData.is_admin) {
+        var usertitle = '（管理员）';
+      } else {
+        var usertitle = '';
+      }
       this.setData({
-        username: app.globalData.username,
+        username: app.globalData.username + usertitle,
         avatar_url: app.globalData.avatar_url,
         student_id: app.globalData.student_id,
         can_grant_admin: app.globalData.can_grant_admin
