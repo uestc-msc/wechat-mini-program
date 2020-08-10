@@ -1,4 +1,7 @@
 # wechat-mini-program
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 电子科技大学微软学生俱乐部（UESTC-MSC）的微信小程序，记录每次活动活动的信息。
 
@@ -89,3 +92,22 @@
 
 长远计划 x  
 没有需求就咕了 √
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/lyh543"><img src="https://avatars2.githubusercontent.com/u/15522311?v=4" width="100px;" alt=""/><br /><sub><b>刘俨晖</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=lyh543" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

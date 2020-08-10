@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "lyh543",
+      "name": "刘俨晖",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/15522311?v=4",
+      "profile": "https://github.com/lyh543",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "wechat-mini-program",
+  "projectOwner": "uestc-msc",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
