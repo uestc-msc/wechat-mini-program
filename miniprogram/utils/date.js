@@ -1,6 +1,6 @@
 /**
- * 获取 "2020-08-01" 格式的当前日期
- * @returns string
+ * 获取 `2020-08-01` 格式的当前日期
+ * @returns `string`
  */
 export function getDate() {
   const d = new Date();
@@ -12,11 +12,11 @@ export function getDate() {
 
 /**
  * 获取 `16:41` 或 `16:41:01` 格式时间
- * @param show_seconds 为 `true` 时，输出包含秒数
+ * @param show_seconds 默认为 `false`。为 `true` 时，输出包含秒数
  * @returns `string`
  */
 export function getTime(show_seconds = false) {
-  time = new Date().toLocaleTimeString('zh-cn', {hour12: false});
+  let time = new Date().toLocaleTimeString('zh-cn', {hour12: false});
   if (!show_seconds) {
     time = time.slice(0,5);
   }
