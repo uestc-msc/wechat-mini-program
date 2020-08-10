@@ -1,5 +1,7 @@
 // pages/activities/activities_detail/lottery/lottery.js
 
+import shuffle from '../../../../utils/shuffle'
+
 var app = getApp();
 var that;
 
@@ -10,7 +12,7 @@ Page({
     picker_range: [],
     lottery_list_text: "阮薇薇已经等不及开奖了~",
     picker_index: 0,
-    button_name: '开奖'
+    button_name: '开奖！'
   },
   onLoad: function (e) {
     that = this;
@@ -28,7 +30,7 @@ Page({
   },
   bindPickerChange: function (e) {
     this.setData({
-      index: parseInt(e.detail.value)
+      picker_index: parseInt(e.detail.value)
     })
   },
   copyListToClipBoard(e) {
@@ -38,15 +40,19 @@ Page({
     });
   },
   drawLottery() {
+    let namelist = this.data.check_in_namelist,
+      shuffled_namelist = shuffle(namelist),
+      lottery_namelist = shuffled_namelist.slice(0, this.data.picker_index + 1),
+      formatted_namelist = lottery_namelist.map((Element, index) => (index + 1) + ': ' + Element);
     this.setData({
-      lottery_list_text: this.data.check_in_namelist.join('\n')
+      lottery_list_text: formatted_namelist.join('\n')
     });
     wx.showToast({
       title: '请及时截图保存~',
       icon: 'none'
     });
     this.setData({
-      button_name: '再开一次奖！'
+      button_name: '再开一次！'
     })
   },
 })
@@ -78,7 +84,8 @@ function setPageData() {
   let cur = app.globalData.current_activity;
   that.setData({
     title: cur.title,
-    check_in_total: cur.check_in_list.length
+    check_in_total: cur.check_in_list.length,
+    picker_range: [...new Array(cur.check_in_list.length+1).keys()].slice(1) // 生成 [1, 2, ..., {{cur.check_in_list.length}}]
   })
 }
 

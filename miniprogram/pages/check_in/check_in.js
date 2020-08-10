@@ -35,7 +35,7 @@ export async function checkIn(options) {
   // 从数据库加载该次活动信息
   if (getApp().globalData.current_activity.current_activity == undefined
       || options.activity_id != app.globalData.current_activity._id) {
-        await db.collection('activity_info')
+        let res = await db.collection('activity_info')
         .doc(options.activity_id)
         .get({
           success: res => {
@@ -59,7 +59,8 @@ export async function checkIn(options) {
       title: '活动当天才可以签到哦',
       icon: 'none'
     })
-    return;
+    return res;
   }
   wx.hideLoading();
+  return res;
 }
