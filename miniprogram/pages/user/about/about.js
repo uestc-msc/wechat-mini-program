@@ -1,10 +1,13 @@
 // pages/about/about.js
+
+let app = getApp();
+
 Page({
   data: {
-    version: "v0.1",
+    version: app.globalData.app_version,
     link: [
       "https://github.com/uestc-msc/wechat-mini-program/",
-      "https://uestc-msc.github.io/"
+      "https://uestc-msc.com/"
     ]
   },
   copyLinkToClipBoard(e) {

@@ -2,11 +2,11 @@
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__bd">
 		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd">近期沙龙</view>
+			<view class="weui-panel__hd">近期活动</view>
 			<view class="weui-panel__bd">
 				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{recent_activities}}" wx:for-item="recent_activities" wx:key="id">
 						<view class="weui-media-box__hd" bindtap="navigateToActivityDetail" data-id="{{recent_activities._id}}">
-							<image class="weui-media-box__thumb" src="{{recent_activities.avatar_url}}" alt></image>
+							<image class="weui-media-box__thumb" src="{{recent_activities.avatar_url}}" wx:if="{{recent_activities.avatar_url}}"></image>
 						</view>
 						<view class="weui-media-box__bd" bindtap="navigateToActivityDetail" data-id="{{recent_activities._id}}"><!-- 图片和文字不能包含在另一个 view 里面，有点奇怪  -->
 							<h4 class="weui-media-box__title">{{recent_activities.title}}</h4>
@@ -21,29 +21,11 @@
 			</view>
 		</view>
 		<view class="button-sp-area">
-			<a class="weui-btn weui-btn_primary" bindtap="navigateToCreateActivity">创建沙龙</a>
+			<a class="weui-btn weui-btn_primary" bindtap="navigateToCreateActivity">创建活动</a>
 		</view>
 		<view class="button-sp-area">
 			<a class="weui-btn weui-btn_primary" bindtap="callCheckIn">签到</a>
 		</view>
-		<!--<view class="weui-tab">
-      <view class="weui-tab__panel">
-      </view>
-      <view class="weui-tabbar">
-        <view class="weui-tabbar__item weui-bar__item_on">
-          <image src="../../images/icon_date_filling.png" alt class="weui-tabbar__icon"></image>
-          <view class="weui-tabbar__label">活动</view>
-        </view>
-        <view class="weui-tabbar__item">
-          <image src="../../images/icon_gallery.png" alt class="weui-tabbar__icon"></image>
-          <view class="weui-tabbar__label">相册</view>
-        </view>
-        <view class="weui-tabbar__item">
-          <image src="../../images/icon_user.png" alt class="weui-tabbar__icon"></image>
-          <view class="weui-tabbar__label">我</view>
-        </view>
-      </view>
-    </view> -->
 		<mp-tabbar style="position:fixed;bottom:0;width:100%;left:0;right:0;" list="{{list}}" bindchange="tabChange"></mp-tabbar>
 	</view>
 </view>

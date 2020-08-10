@@ -1,4 +1,7 @@
 // pages/user/user.js
+import sleep from '../../utils/sleep';
+
+var app = getApp();
 
 Page({
   /**
@@ -14,27 +17,33 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-  },
+  onLoad: function (options) {},
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  },
+  onReady: function () {},
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var app = getApp();
-    // console.log(app.globalData.username);
-    this.setData({
-      username: app.globalData.username,
-      avatar_url: app.globalData.avatar_url,
-      student_id: app.globalData.student_id,
-      can_grant_admin: app.globalData.can_grant_admin
-    })
+    // 如果没有 username 则每 0.5s 尝试 onShow
+    if (app.globalData.username == '') {
+      sleep(500).then(() => this.onShow());
+      return;
+    }
+      if (app.globalData.is_admin) {
+        var usertitle = '（管理员）';
+      } else {
+        var usertitle = '';
+      }
+      this.setData({
+        username: app.globalData.username + usertitle,
+        avatar_url: app.globalData.avatar_url,
+        student_id: app.globalData.student_id,
+        can_grant_admin: app.globalData.can_grant_admin
+      })
   },
 
   /**
@@ -52,12 +61,16 @@ Page({
   },
 
   // 监听用户下拉动作：刷新列表
-  onPullDownRefresh: function () {
+  onPullDownRefresh() {
     this.onShow();
-    function sleep (time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
-    }
-    sleep(500).then(() => {
+    wx.showLoading({
+      title: 'title',
+    })
+    wx.showToast({
+      title: '刷新成功',
+      icon: 'none'
+    })
+    sleep(300).then(() => {
       wx.stopPullDownRefresh()
     })
   },

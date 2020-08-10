@@ -1,7 +1,6 @@
-//每天定时删除临时创建但没保存的沙龙
+//每天定时删除临时创建但没保存的活动
 
 // 云函数入口函数
-
 const cloud = require('wx-server-sdk')
 
 // 初始化 cloud
@@ -13,9 +12,13 @@ cloud.init({
 exports.main = async (event, context) => {
   console.log(event)
   console.log(context)
-  
-  // const db = wx.cloud.database();
-  // db.collection('activity_info').where({
-  //   date: ""
-  // }).remove();
+
+  const db = cloud.database();
+  try {
+    return await db.collection('activity_info').where({
+      date: ""
+    }).remove();
+  } catch (e) {
+    console.error(e)
+  }
 }

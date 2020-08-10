@@ -1,7 +1,7 @@
 <!--pages/activities/activities_detail/lottery/lottery.wxml-->
 <view class="page__hd">
-	<view class="page__title">阮薇薇的第一次沙龙</view>
-	<view class="page__desc">抽奖，共 5 人参与</view>
+	<view class="page__title">{{title}}</view>
+	<view class="page__desc">抽奖，共 {{check_in_total}} 人参与</view>
 </view>
 
 <view class="weui-cells weui-cells_form">
@@ -10,9 +10,9 @@
 			<label class="weui-label">中奖人数</label>
 		</view>
 		<view class="weui-cell__bd">
-			<picker bindchange="bindPickerChange" value="{{index}}" range="{{[1,2,3,4,5]}}">
+			<picker bindchange="bindPickerChange" value="{{picker_index}}" range="{{picker_range}}">
 				<view class="picker">
-					{{index+1}}
+					{{picker_index+1}}
 				</view>
 			</picker>
 		</view>
@@ -22,10 +22,10 @@
 <view class="weui-cells__title">中奖名单</view>
 <view class="weui-cells weui-cells_after-title">
 	<view class="weui-cell" bindtap="copyListToClipBoard">
-		<text class="weui-cell__ft">{{lotteryListText}}</text>
+		<text class="weui-cell__ft">{{lottery_list_text}}</text>
 	</view>
 </view>
 
 <view class="button-sp-area">
-	<a class="weui-btn weui-btn_primary" bindtap="drawLottery">开奖</a>
+	<a class="weui-btn weui-btn_primary" bindtap="drawLottery">{{button_name}}</a>
 </view>
