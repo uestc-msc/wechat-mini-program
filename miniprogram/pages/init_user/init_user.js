@@ -69,7 +69,7 @@ Page({
       fail: err => {
         wx.showToast({
           icon: 'none',
-          title: '向 user_info 数据库 新增记录失败'
+          title: '向 user_info 数据库 新增记录失败_(:з」∠)_'
         })
       }
     })

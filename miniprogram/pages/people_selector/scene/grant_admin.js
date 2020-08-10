@@ -32,7 +32,7 @@ export function onLoad(e, page) {
       fail: res => {
         console.log(res);
         wx.showToast({
-          title: '获取总人数失败',
+          title: '获取总人数_(:з」∠)_',
           icon: 'none'
         });
       }

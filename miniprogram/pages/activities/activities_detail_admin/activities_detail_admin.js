@@ -139,7 +139,7 @@ Page({
         fail: err => {
           console.log(err);
           wx.showToast({
-            title: '修改失败',
+            title: '修改失败 _(:з」∠)_',
             duration: 2000,
             icon: 'none'
           });
@@ -171,7 +171,7 @@ Page({
               },
               fail: err => {
                 wx.showToast({
-                  title: '删除失败',
+                  title: '删除失败 _(:з」∠)_',
                   icon: 'none'
                 });
               }
@@ -181,12 +181,12 @@ Page({
     })
   },
   // 全屏查看小程序码
-  showWxacode() {
+  maximizeWxacode() {
     this.setData({
       show_wxacode: true
     });
   },
-  closeWxacode() {
+  minimizeWxacode() {
     this.setData({
       show_wxacode: false
     });
@@ -214,7 +214,7 @@ Page({
               fail: function (err) {
                 console.log(err)
                 wx.showToast({
-                  title: '保存失败',
+                  title: '保存失败 _(:з」∠)_',
                   icon: 'none'
                 })
               }
@@ -223,7 +223,7 @@ Page({
           fail: err => {
             console.log(err)
             wx.showToast({
-              title: '保存失败',
+              title: '保存失败 _(:з」∠)_',
               icon: 'none'
             })
           }
@@ -232,7 +232,7 @@ Page({
       fail: err => {
         console.log(err)
         wx.showToast({
-          title: '没有写入相册的权限',
+          title: '没有写入相册的权限 _(:з」∠)_',
           icon: 'none'
         })
       }

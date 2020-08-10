@@ -45,7 +45,7 @@ Page({
       fail: err => {
         wx.showToast({
           icon: 'none',
-          title: '新增记录失败'
+          title: '新增记录失败 _(:з」∠)_'
         })
         console.log(err);
       }
@@ -124,7 +124,7 @@ Page({
         fail: err => {
           console.log(err);
           wx.showToast({
-            title: '创建失败',
+            title: '创建失败 _(:з」∠)_',
             duration: 2000,
             icon: 'none'
           });

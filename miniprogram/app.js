@@ -2,7 +2,7 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_version: "v0.4.0",
+        app_version: "v0.4.1",
 
         openid: "",
         avatar_url: "",
@@ -81,7 +81,7 @@ App({
         fail(err) {
           console.log(err);
           wx.showToast({
-            title: '获取 openid 失败 请联系管理员',
+            title: '获取 openid 失败 _(:з」∠)_',
             icon: 'none'
           })
         }
