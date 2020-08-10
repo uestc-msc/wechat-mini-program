@@ -24,19 +24,20 @@
 							<input class="weui-input" type="number" name="student_id" value="{{student_id}}" placeholder="阮薇薇才不会没事去找你辅导员" placeholder-class="weui-input__placeholder" />
 						</view>
 					</view>
-					<view class="weui-cell weui-cell_active">
+					<!-- <view class="weui-cell weui-cell_active">
 						<view class="weui-cell__hd">
 							<label class="weui-label">联系电话</label>
 						</view>
 						<view class="weui-cell__bd">
 							<input class="weui-input" type="number" name="telephone" value="{{telephone}}" placeholder="也不会打骚扰电话" placeholder-class="weui-input__placeholder" />
 						</view>
-					</view>
+					</view> -->
 				</view>
 			</view>
 		</view>
 		<view class="weui-form__opr-area">
 			<button class="weui-btn weui-btn_primary" formType="submit">确定修改</button>
+			<button wx:if="{{needGetUserInfo}}" class="weui-btn weui-btn_primary" open-type="getUserInfo" bindgetuserinfo="getUserInfomation">点击授权获取头像</button>
 		</view>
 	</form>
 </view>

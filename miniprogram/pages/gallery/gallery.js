@@ -240,6 +240,13 @@ Page({
             })
           }
         })
+      },
+      fail: err => {
+        console.log(err)
+        wx.showToast({
+          title: '没有写入相册的权限 _(:з」∠)_',
+          icon: 'none'
+        })
       }
     })
   },

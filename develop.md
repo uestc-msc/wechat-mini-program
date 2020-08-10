@@ -99,7 +99,6 @@
 `avatar_url`|string|头像的链接
 `username`|string|姓名
 `student_id`|string|学号
-`telephone`|string|电话
 `is_admin`|bool|是否为管理员
 `can_grant_admin`|bool|能授予别人管理员
 `register_date`|string|注册时间

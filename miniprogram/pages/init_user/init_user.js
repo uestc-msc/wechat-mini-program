@@ -6,7 +6,7 @@ Page({
   data: {
     username: "",
     student_id: "",
-    telephone: ""
+    // telephone: ""
   },
   // 隐藏左上角的 home
   onShow(){
@@ -20,12 +20,12 @@ Page({
   inputSchoolId(e) {
     this.data.student_id = e.detail.value;
   },
-  inputTelephone(e) {
-    this.data.telephone = e.detail.value;
-  },
+  // inputTelephone(e) {
+    // this.data.telephone = e.detail.value;
+  // },
   //按钮触发的函数
   getUserInfomation(e) {
-    if (!this.data.username || !this.data.student_id || !this.data.telephone) { //如果输入信息不完整
+    if (!this.data.username || !this.data.student_id) { //如果输入信息不完整
       wx.showToast({
         title: '请输入完整信息哦',
         icon: 'none',
@@ -38,8 +38,8 @@ Page({
     //将信息保存为全局变量
     app.globalData.username = this.data.username;
     app.globalData.student_id = this.data.student_id;
-    app.globalData.telephone = this.data.telephone;
-    app.globalData.avatar_url = e.detail.userInfo.avatarUrl;
+    // app.globalData.telephone = this.data.telephone;
+    app.globalData.avatar_url = '/images/icon_ruanweiwei.png';
     app.globalData.is_admin = false;
     app.globalData.can_grant_admin = false;
     app.globalData.register_date = getDate(); // "2020-08-01"
@@ -50,7 +50,7 @@ Page({
         _id: app.globalData.openid, //将本条记录的 id 也设置为 openid
         username: app.globalData.username,
         student_id: app.globalData.student_id,
-        telephone: app.globalData.telephone,
+        // telephone: app.globalData.telephone,
         avatar_url: app.globalData.avatar_url,
         is_admin: app.globalData.is_admin,
         can_grant_admin: app.globalData.can_grant_admin,
