@@ -1,6 +1,6 @@
 # wechat-mini-program
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 电子科技大学微软学生俱乐部（UESTC-MSC）的微信小程序，记录每次活动活动的信息。
@@ -103,6 +103,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/lyh543"><img src="https://avatars2.githubusercontent.com/u/15522311?v=4" width="100px;" alt=""/><br /><sub><b>刘俨晖</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=lyh543" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/guyaqi"><img src="https://avatars2.githubusercontent.com/u/26341682?v=4" width="100px;" alt=""/><br /><sub><b>Guyaqi</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=guyaqi" title="Code">💻</a></td>
   </tr>
 </table>
 
