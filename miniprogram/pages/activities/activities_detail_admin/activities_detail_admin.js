@@ -182,9 +182,9 @@ Page({
   },
   // 全屏查看小程序码
   maximizeWxacode() {
-    this.setData({
-      show_wxacode: true
-    });
+    wx.previewImage({
+      urls: [this.data.wxacode_url] // 需要预览的图片http链接列表
+    })
   },
   minimizeWxacode() {
     this.setData({
