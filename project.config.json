@@ -56,22 +56,7 @@
 		},
 		"miniprogram": {
 			"current": -1,
-			"list": [
-				{
-					"id": 0,
-					"name": "pages/activities/activities",
-					"pathName": "pages/activities/activities",
-					"query": "scene=b1cb7d3a5f30d8640056c33f4d4e0f67",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/activities/activities_detail/activities_detail",
-					"pathName": "pages/activities/activities",
-					"query": "scene=4a46c0515f3212730069257d645efe74",
-					"scene": null
-				}
-			]
+			"list": []
 		}
 	}
 }

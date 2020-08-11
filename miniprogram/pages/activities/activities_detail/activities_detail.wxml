@@ -3,6 +3,12 @@
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__hd">
 		<view class="page__title">{{title}}</view>
+		<view class="page__desc" wx:if="{{checked_in}}">已签到
+			<icon class="icon-small" type="success_no_circle"></icon>
+		</view>
+		<view class="page__desc" wx:if="{{!checked_in && is_today}}">未签到
+			 <icon class="icon-small" type="info_circle" size="18" color="red"></icon>
+		</view>
 		<!-- <view class="page__desc" wx:if="{{show_id}}">activity_id: {{_id}}</view> -->
 	</view>
 	<view class="page__bd">

@@ -4,6 +4,7 @@ import {
   scanCode
 } from '../../check_in/check_in.js';
 import getActivityInfo from '../../../utils/get_activity_info.js'
+import {getDate} from '../../../utils/date';
 
 var app = getApp();
 var that;
@@ -14,8 +15,10 @@ Page({
     title: "",
     presenter_string: "",
     date: "",
+    is_today: false,
     time: "",
     check_in_total: "",
+    checked_in: false, // 用户已签到
     is_admin: app.globalData.is_admin
   },
   onLoad: function (e) {
@@ -84,9 +87,11 @@ function setPageData() {
     title: cur.title,
     presenter_string: cur.presenter_string,
     date: cur.date,
+    is_today: cur.date == getDate(),
     time: cur.time,
     location: cur.location,
     check_in_total: cur.check_in_list.length,
+    checked_in: cur.check_in_list.includes(app.globalData.openid),
     //如果本人是主讲人，则也是这次活动的管理员
     is_admin: app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)
   })

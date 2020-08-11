@@ -68,10 +68,9 @@
 
 ## 开发
 
-微信小程序开发入门教程：https://cloudbase.net/community/guides/handbook/tcb01.html
-
-使用 [WeUI](https://github.com/Tencent/weui-wxss) 作为 UI 框架库。使用教程可见：https://cloudbase.net/community/guides/handbook/tcb04.html
-图标库来自 [weui-icon](https://github.com/weui/weui-icon)
+* 微信小程序开发入门教程：https://cloudbase.net/community/guides/handbook/tcb01.html
+* 使用 [WeUI](https://github.com/Tencent/weui-wxss) 作为 UI 框架库。使用教程可见：https://cloudbase.net/community/guides/handbook/tcb04.html
+* 图标库来自 [weui-icon](https://github.com/weui/weui-icon)
 
 [项目开发文档](develop.md)
 
