@@ -16,6 +16,6 @@
 <view wx:for="{{link}}" wx:for-item="link" wx:key="*this">
 		<a class="weui-footer__link" bindtap="copyLinkToClipBoard" data-link="{{link}}">{{link}}</a>
     </view>
-		<view class="weui-footer__text">Copyright © 2003-2020 UESTC-MSC</view>
+		<view class="weui-footer__text">Copyright © 2002-2020 UESTC-MSC</view>
 	</view>
 </view>

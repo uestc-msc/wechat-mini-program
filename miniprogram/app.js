@@ -2,13 +2,13 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_version: "v0.4.2",
+        app_version: "v0.4.3",
 
         openid: "",
         avatar_url: "",
         username: "",
         student_id: "",
-        // telephone: "",
+        telephone: "",
         is_admin: false,
         can_grant_admin: false,
         register_date: "",
@@ -58,13 +58,12 @@ App({
                       }
                     })
                 },
-                fail(){}
               })
               // 将已有的信息存为全局变量
               that.globalData.avatar_url = res.data.avatar_url;
               that.globalData.username = res.data.username;
               that.globalData.student_id = res.data.student_id;
-              // that.globalData.telephone = res.data.telephone;
+              that.globalData.telephone = res.data.telephone;
               that.globalData.is_admin = res.data.is_admin;
               that.globalData.can_grant_admin = res.data.can_grant_admin;
               that.globalData.register_date = res.data.register_date;
