@@ -73,9 +73,14 @@ async function getCheckInList(id) {
       id: app.globalData.current_activity._id
     },
     success: res => {
+      let namelist_string = res.result.namelist.join('\n');
+      //如果有人未完善信息就签到，会导致 namelist 没有这个人，但 check_in_list 有
+      let unregistered_check_in = app.globalData.current_activity.check_in_list.length - res.result.namelist.length;
+      if (unregistered_check_in > 0) {
+        namelist_string += '\n（' + unregistered_check_in + ' 人尚未完善信息）'
+      }
       that.setData({
-        check_in_total: res.result.namelist.length,
-        check_in_name_text: res.result.namelist.join('\n')
+        check_in_name_text: namelist_string
       })
       wx.hideLoading();
     }
