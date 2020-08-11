@@ -18,8 +18,7 @@ Page({
     check_in_total: "",
     is_admin: false,
 
-    wxacode_url: "",
-    show_wxacode: false
+    wxacode_url: ""
   },
   onLoad: function (e) {
     that = this;
@@ -186,58 +185,7 @@ Page({
       urls: [this.data.wxacode_url] // 需要预览的图片http链接列表
     })
   },
-  minimizeWxacode() {
-    this.setData({
-      show_wxacode: false
-    });
-  },
-  downloadWxacode() {
-    let that = this;
-    wx.authorize({
-      scope: "scope.writePhotosAlbum",
-      success: res => {
-        wx.getFileSystemManager().writeFile({
-          filePath: wx.env.USER_DATA_PATH + '/temp.png',
-          data: that.data.wxacode_url.slice(22), // 把 data:image/png;base64, 去除
-          encoding: 'base64',
-          success: res => {
-            wx.saveImageToPhotosAlbum({
-              filePath: wx.env.USER_DATA_PATH + '/temp.png',
-              success: function (res) {
-                console.log(res);
-                wx.showToast({
-                  title: '保存成功',
-                  icon: 'none',
-                  duration: 5000
-                })
-              },
-              fail: function (err) {
-                console.log(err)
-                wx.showToast({
-                  title: '保存失败 _(:з」∠)_',
-                  icon: 'none'
-                })
-              }
-            })
-          },
-          fail: err => {
-            console.log(err)
-            wx.showToast({
-              title: '保存失败 _(:з」∠)_',
-              icon: 'none'
-            })
-          }
-        })
-      },
-      fail: err => {
-        console.log(err)
-        wx.showToast({
-          title: '没有写入相册的权限 _(:з」∠)_',
-          icon: 'none'
-        })
-      }
-    });
-  },
+
   //手动签到
   checkInManually(e) {
     if (getDate() != app.globalData.current_activity.date) {

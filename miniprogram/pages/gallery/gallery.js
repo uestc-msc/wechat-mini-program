@@ -201,13 +201,8 @@ Page({
       })
   },
   tapPhotoToMaximize: function (e) {
-    this.setData({
-      fullScreenPhotoUrl: e.currentTarget.dataset.item.url
-    })
-  },
-  tapPhotoToMinimize: function (e) {
-    this.setData({
-      fullScreenPhotoUrl: null
+    wx.previewImage({
+      urls: [e.currentTarget.dataset.item.url],
     })
   },
   tapBack: function () {
@@ -215,39 +210,6 @@ Page({
     this.setData({
       currentAlbum: null,
       title: `相册(${this.activities_total})`
-    })
-  },
-  downloadPhoto() {
-    let that = this;
-    wx.authorize({
-      scope: "scope.writePhotosAlbum",
-      success: res => {
-        wx.saveImageToPhotosAlbum({
-          filePath: wx.env.USER_DATA_PATH + '/temp.png',
-          success: function (res) {
-            console.log(res);
-            wx.showToast({
-              title: '保存成功',
-              icon: 'none',
-              duration: 5000
-            })
-          },
-          fail: function (err) {
-            console.log(err)
-            wx.showToast({
-              title: '保存失败 _(:з」∠)_',
-              icon: 'none'
-            })
-          }
-        })
-      },
-      fail: err => {
-        console.log(err)
-        wx.showToast({
-          title: '没有写入相册的权限 _(:з」∠)_',
-          icon: 'none'
-        })
-      }
     })
   },
 })

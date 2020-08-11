@@ -13,9 +13,7 @@ const _ = db.command;
 export function scanCode() {
   wx.scanCode({
     success: res => {
-      console.log(res);
       let obj = resolveUrl(res.path);
-      console.log(obj);
       if (obj.scene == undefined) {
         wx.showToast({
           title: '小程序码中没有识别到活动信息',
