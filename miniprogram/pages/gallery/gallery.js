@@ -113,7 +113,7 @@ Page({
     const db = wx.cloud.database();
     //获取前 activities_per_page 个活动信息
     wx.showLoading({
-      title: '加载中',
+      title: '加载中'
     });
     getActivityInfo({
         skip: this.page_index * this.activities_per_page,

@@ -65,7 +65,7 @@ function setPageData() {
 async function getCheckInList(id) {
   wx.showLoading({
     title: '正在拿出点名册',
-    complete: res => {}
+    mask: true
   });
   await wx.cloud.callFunction({
     name: 'get_check_in_list',

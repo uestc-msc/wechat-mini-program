@@ -49,7 +49,8 @@ export async function checkIn(options) {
     return;
   }
   wx.showLoading({
-    title: '正在签到'
+    title: '正在签到',
+    mask: true
   });
   options.user_id = app.globalData.openid;
   // 从数据库加载该次活动信息（需要核对是不是今天）
