@@ -84,15 +84,4 @@
 			<a class="weui-btn weui-btn_primary" bindtap="callLottery">抽奖</a>
 		</view>
 	</view>
-
-	<view wx:if="{{show_wxacode}}" class="weui-gallery fadeIn" bindtap="minimizeWxacode">
-		<view class="weui-gallery__img__wrp">
-			<image mode="aspectFit" class="weui-gallery__img" src="{{wxacode_url}}"></image>
-		</view>
-		<view class="weui-gallery__opr">
-			<view class="weui-gallery__download">
-				<i class="weui-icon-download" bindtap="downloadWxacode"></i>
-			</view>
-		</view>
-	</view>
 </view>

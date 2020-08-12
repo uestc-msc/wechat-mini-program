@@ -5,21 +5,22 @@ import {
 } from '../check_in/check_in.js';
 import getActivityInfo from '../../utils/get_activity_info';
 import log from '../../utils/log';
+import sleep from '../../utils/sleep';
 
 var app = getApp();
 
 Page({
   data: {},
-  //扫码进入时的情形
   onLoad(query) {
     // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
     const scene = decodeURIComponent(query.scene)
-    if (scene != 'undefined') {
-      wx.setClipboardData({
-        data: scene,
-      })
+    if (scene != 'undefined') { //扫码进入时的情形
       checkIn({
         activity_id: scene
+      });
+    } else if (app.globalData.avatar_url == "") { //用户未完善信息
+      wx.reLaunch({
+        url: '/pages/init_user/init_user',
       });
     } else {
       // 从数据库获取活动的信息

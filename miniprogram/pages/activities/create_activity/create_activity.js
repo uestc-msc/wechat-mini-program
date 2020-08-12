@@ -87,7 +87,7 @@ Page({
     var value = e.detail.value;
     if (!value.location || !value.title) {
       wx.showToast({
-        title: '请把消息补充完整喔',
+        title: '请把信息补充完整喔',
         icon: 'none',
         duration: 2000
       });

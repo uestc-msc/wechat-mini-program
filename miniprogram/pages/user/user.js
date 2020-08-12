@@ -63,9 +63,6 @@ Page({
   // 监听用户下拉动作：刷新列表
   onPullDownRefresh() {
     this.onShow();
-    wx.showLoading({
-      title: 'title',
-    })
     wx.showToast({
       title: '刷新成功',
       icon: 'none'

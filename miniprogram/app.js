@@ -2,13 +2,14 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_version: "v0.4.2",
+        app_version: "v0.4.4",
 
         openid: "",
-        avatar_url: "",
+        // 如果数据库发现没有用户信息，应使 avatar_url 为空
+        avatar_url: '/images/icon_ruanweiwei.png',
         username: "",
         student_id: "",
-        // telephone: "",
+        telephone: "",
         is_admin: false,
         can_grant_admin: false,
         register_date: "",
@@ -58,20 +59,19 @@ App({
                       }
                     })
                 },
-                fail(){}
               })
               // 将已有的信息存为全局变量
               that.globalData.avatar_url = res.data.avatar_url;
               that.globalData.username = res.data.username;
               that.globalData.student_id = res.data.student_id;
-              // that.globalData.telephone = res.data.telephone;
+              that.globalData.telephone = res.data.telephone;
               that.globalData.is_admin = res.data.is_admin;
               that.globalData.can_grant_admin = res.data.can_grant_admin;
               that.globalData.register_date = res.data.register_date;
-
             },
             fail: err => {
-              // console.log(err);
+              // 用户完善信息前应使 avatar_url 为空
+              getApp().globalData.avatar_url = "";
               wx.reLaunch({
                 url: '/pages/init_user/init_user',
               });
