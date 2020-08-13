@@ -2,7 +2,8 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_version: "v1.0.0",
+        app_version: "v1.0.1",
+        can_upload: false, // 禁止添加活动、上传图片
 
         openid: "",
         // 如果数据库发现没有用户信息，应使 avatar_url 为空
@@ -18,7 +19,6 @@ App({
         current_activity: {} //在几个页面中传递的当前活动的对象
       }
 
-      let that = this;
       //初始化云服务
       if (!wx.cloud) {
         console.error('请使用 2.2.3 或以上的基础库以使用云能力')
@@ -32,6 +32,12 @@ App({
           traceUser: true,
         })
       }
+      let that = this;
+      const db = wx.cloud.database()
+      // 查询是否可以上传
+      db.collection('app_info').get().then(res => {
+        this.globalData.can_upload = res.data[0].can_upload
+      });
       //获取 openid 并查询数据库中是否有该人信息
       wx.cloud.callFunction({
         name: "login",
@@ -40,7 +46,6 @@ App({
           // console.log(e)
           that.globalData.openid = e.result.openid;
           //查询数据库
-          const db = wx.cloud.database()
           db.collection('user_info').doc(
             that.globalData.openid
           ).get({

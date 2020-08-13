@@ -20,7 +20,7 @@
 				</a>
 			</view>
 		</view>
-		<view class="button-sp-area">
+		<view class="button-sp-area" wx:if="{{can_upload}}">
 			<a class="weui-btn weui-btn_primary" bindtap="navigateToCreateActivity">创建活动</a>
 		</view>
 		<view class="button-sp-area">
