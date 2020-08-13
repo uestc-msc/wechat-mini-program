@@ -2,7 +2,7 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_version: "v0.4.4",
+        app_version: "v1.0.0",
 
         openid: "",
         // 如果数据库发现没有用户信息，应使 avatar_url 为空
