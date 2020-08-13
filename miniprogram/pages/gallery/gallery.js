@@ -14,7 +14,8 @@ Page({
     activities_length: 0,
     photos: [],
     currentAlbum: null,
-    fullScreenPhotoUrl: null
+    fullScreenPhotoUrl: null,
+    can_upload: false
   },
 
   /**
@@ -26,6 +27,9 @@ Page({
     this.page_index = 0;
     this.activities_per_page = 20;
     this.activities_total = 0;
+    this.setData({
+      can_upload: app.globalData.can_upload
+    });
     // 获取前 activities_per_page 个活动
     this.loadOnePage();
     // 获取活动总数

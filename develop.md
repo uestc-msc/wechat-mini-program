@@ -120,7 +120,12 @@
 `check_in_list`|[string]|签到名单（列表，存储每个人的 openid）
 `is_hidden`|bool|活动是否被删除（实际上是隐藏）
 
-### 活动签到记录 check_in_list
+### 小程序信息 app_info
+
+该集合中仅有一个记录，其字段如下：
+
+字段|值|含义
+`can_upload`|bool|用户是否可以创建活动、上传图片
 
 ### 安全规则
 

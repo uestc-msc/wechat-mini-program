@@ -23,7 +23,7 @@
     </block>
   </view>
   <view wx:if="{{currentAlbum != null}}" class="photo-list">
-    <view class="photo-wrapper" bindtap="addPhoto">
+    <view wx:if="{{can_upload}}" class="photo-wrapper" bindtap="addPhoto">
       <view class="photo-container photo-add">
         <image class="iadd" src="../../images/iadd.svg"></image>
         <view>上传图片</view>
