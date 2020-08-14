@@ -56,7 +56,14 @@
 		},
 		"miniprogram": {
 			"current": -1,
-			"list": []
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/activities/create_activity/create_activity",
+					"pathName": "pages/activities/create_activity/create_activity",
+					"scene": null
+				}
+			]
 		}
 	}
 }

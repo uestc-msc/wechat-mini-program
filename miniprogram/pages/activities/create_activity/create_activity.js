@@ -19,37 +19,44 @@ Page({
     location: ""
   },
   onLoad: function (options) {
-    app.globalData.current_activity = {
-      title: "",
-      presenter_list: [app.globalData.openid], // 默认为本人
-      date: "",
-      time: "",
-      location: "",
-      check_in_list: [],
-      is_hidden: true
-    };
-    this.setData({
-      presenter_string: app.globalData.username
-    });
-    // 由于主讲人列表是在另一个页面写入
-    // 所以就先在数据库中创建本次活动的记录
-    // 如果最后活动没有被创建，就再删除本条记录
-    const db = wx.cloud.database()
-    db.collection('activity_info').add({
-      data: app.globalData.current_activity,
-      success: res => {
-        app.globalData.current_activity._id = res._id;
-        app.globalData.current_activity._openid = app.globalData.openid;
-        console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
-      },
-      fail: err => {
-        wx.showToast({
-          icon: 'none',
-          title: '新增记录失败 _(:з」∠)_'
-        })
-        console.log(err);
-      }
-    })
+    if (!app.globalData.can_upload) {
+      wx.switchTab({
+        url: '/pages/activities/activities',
+      })
+    } else {
+      app.globalData.current_activity = {
+        title: "",
+        presenter_list: [app.globalData.openid], // 默认为本人
+        date: "",
+        time: "",
+        location: "",
+        check_in_list: [],
+        is_hidden: true
+      };
+      this.setData({
+        presenter_string: app.globalData.username,
+        can_upload: app.globalData.can_upload
+      });
+      // 由于主讲人列表是在另一个页面写入
+      // 所以就先在数据库中创建本次活动的记录
+      // 如果最后活动没有被创建，就再删除本条记录
+      const db = wx.cloud.database()
+      db.collection('activity_info').add({
+        data: app.globalData.current_activity,
+        success: res => {
+          app.globalData.current_activity._id = res._id;
+          app.globalData.current_activity._openid = app.globalData.openid;
+          console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+        },
+        fail: err => {
+          wx.showToast({
+            icon: 'none',
+            title: '新增记录失败 _(:з」∠)_'
+          })
+          console.log(err);
+        }
+      })
+    }
   },
   modifyPresenter() {
     if (app.globalData.is_admin) {
@@ -141,13 +148,12 @@ Page({
       const db = wx.cloud.database();
       db.collection('activity_info')
         .doc(app.globalData.current_activity._id)
-        .remove({
-          success: res => {
-            console.log('成功删除记录 ', activitiy_id);
-          },
-          fail: res => {
-            console.log('删除记录失败 ', activitiy_id);
-          }
+        .remove()
+        .then(res => {
+          console.log('成功删除记录 ', activitiy_id);
+        })
+        .catch(res => {
+          console.log('删除记录失败 ', activitiy_id);
         })
     }
   },
@@ -155,8 +161,8 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-    onPullDownRefresh() {
-      getActivityInfo({
+  onPullDownRefresh() {
+    getActivityInfo({
         id: app.globalData.current_activity._id
       })
       .then(res => {

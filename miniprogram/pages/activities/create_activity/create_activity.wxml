@@ -1,5 +1,5 @@
 <!--pages/activities/create_activity/create_activity.wxml-->
-<view class="page" data-weui-theme="{{theme}}">
+<view class="page" data-weui-theme="{{theme}}" wx:if="{{can_upload}}">
 	<view class="page__hd">
 		<view class="page__title">创建活动</view>
 	</view>
