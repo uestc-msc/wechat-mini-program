@@ -1,12 +1,7 @@
 <!--pages/gallery/gallery.wxml-->
 <view class="page gallery-root">
-  <image class="iback"
-    bindtap="tapBack" 
-    src="../../images/iback.svg"
-    wx:if="{{currentAlbum != null}}"></image>
   <view class="title">{{title}}</view>
-  <view wx:if="{{currentAlbum == null}}" class="album-list">
-  <block wx:for="{{activities_arr}}" wx:for-item="activities" wx:key="index">
+  <view wx:for="{{activities_arr}}" wx:for-item="activities" wx:key="index" class="album-list">
     <view class="album-wrapper"
       wx:for="{{activities}}"
       wx:for-item="item" 
@@ -18,27 +13,6 @@
           <image mode="aspectFit" src="{{item.avatar_url}}"></image>
         </view>
         <view class="album-name">{{item.title}}</view>
-      </view>
-    </view>
-    </block>
-  </view>
-  <view wx:if="{{currentAlbum != null}}" class="photo-list">
-    <view wx:if="{{can_upload}}" class="photo-wrapper" bindtap="addPhoto">
-      <view class="photo-container photo-add">
-        <image class="iadd" src="../../images/iadd.svg"></image>
-        <view>上传图片</view>
-      </view>
-    </view>
-    <view class="photo-wrapper"
-      wx:for="{{photos}}"
-      wx:for-item="item" 
-      wx:key="_id"
-      data-item="{{item}}"
-      bindtap="tapPhotoToMaximize">
-      <view class="photo-container">
-        <view class="photo-cover">
-          <image mode="aspectFit" src="{{item.url}}"></image>
-        </view>
       </view>
     </view>
   </view>

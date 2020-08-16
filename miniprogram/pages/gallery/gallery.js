@@ -3,6 +3,8 @@
 import getActivityInfo from '../../utils/get_activity_info.js';
 import sleep from '../../utils/sleep.js'
 
+let app = getApp();
+
 Page({
 
   /**
@@ -12,24 +14,16 @@ Page({
     title: '',
     activities_arr: [],
     activities_length: 0,
-    photos: [],
-    currentAlbum: null,
-    fullScreenPhotoUrl: null,
-    can_upload: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let app = getApp();
     this.photoDB = wx.cloud.database().collection('album_info');
     this.page_index = 0;
-    this.activities_per_page = 20;
+    this.activities_per_page = 20; // 一定要是偶数
     this.activities_total = 0;
-    this.setData({
-      can_upload: app.globalData.can_upload
-    });
     // 获取前 activities_per_page 个活动
     this.loadOnePage();
     // 获取活动总数
@@ -39,15 +33,10 @@ Page({
       })
       .count()
       .then(res => {
-        console.log(res.total);
         this.activities_total = res.total;
-        //如果不满足 if 应该直接跳到某个相册
-        if (app.globalData.current_activity == undefined ||
-          app.globalData.current_activity._id == undefined) {
-          this.setData({
-            title: `相册(${this.activities_total})`
-          })
-        }
+        this.setData({
+          title: `相册(${this.activities_total})`
+        })
       })
   },
 
@@ -62,14 +51,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let app = getApp();
-    if (app.globalData.current_activity != undefined &&
-      app.globalData.current_activity._id != undefined)
-      this.setData({
-        currentAlbum: app.globalData.current_activity,
-        title: app.globalData.current_activity.title
-      })
-    this.showPhotos(app.globalData.current_activity._id);
   },
 
   /**
@@ -147,78 +128,9 @@ Page({
   },
 
   tapAlbum: function (event) {
-    const item = event.currentTarget.dataset.item;
-    // console.warn(item)
-    this.setData({
-      currentAlbum: item,
-      title: item.title,
-      photos: []
-    })
-    this.showPhotos(item._id)
-  },
-
-  // tapPhoto: funtion (event) {
-
-  // }
-  addPhoto: function () {
-    const that = this
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed', 'original'],
-      sourceType: ['album', 'camera'],
-      success: res => {
-        const imagePath = res.tempFilePaths[0]
-        console.warn(imagePath)
-
-        wx.cloud.uploadFile({
-          filePath: imagePath,
-          cloudPath: `${Math.random()}_${Date.now()}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
-          success: res => {
-            console.warn('图片上传成功')
-            that.photoDB.add({
-              data: {
-                url: res.fileID,
-                album_id: that.data.currentAlbum._id
-              },
-              success: res => {
-                that.showPhotos(that.data.currentAlbum._id)
-              },
-              fail: err => {
-                console.error(err)
-              }
-            })
-          },
-        })
-      }
-    })
-  },
-  showPhotos: function (album_id) {
-    wx.showNavigationBarLoading();
-    this.photoDB
-      .where({
-        album_id
-      })
-      .get({
-        success: res => {
-          this.setData({
-            photos: res.data
-          });
-          wx.hideNavigationBarLoading();
-        }
-      })
-  },
-  tapPhotoToMaximize: function (e) {
-    let that = this;
-    wx.previewImage({
-      current: e.currentTarget.dataset.item.url,
-      urls: that.data.photos.map(Element => Element.url)
-    });
-  },
-  tapBack: function () {
-    getApp().globalData.current_activity = {};
-    this.setData({
-      currentAlbum: null,
-      title: `相册(${this.activities_total})`
+    wx.navigateTo({
+      url: '/pages/gallery/gallery_detail?album_id='
+       + event.currentTarget.dataset.item._id,
     })
   },
 })
