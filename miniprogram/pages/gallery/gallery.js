@@ -147,11 +147,12 @@ Page({
   },
 
   tapAlbum: function (event) {
-    const item = event.currentTarget.dataset.item
-    console.warn(item)
+    const item = event.currentTarget.dataset.item;
+    // console.warn(item)
     this.setData({
       currentAlbum: item,
-      title: item.title
+      title: item.title,
+      photos: []
     })
     this.showPhotos(item._id)
   },
@@ -192,6 +193,7 @@ Page({
     })
   },
   showPhotos: function (album_id) {
+    wx.showNavigationBarLoading();
     this.photoDB
       .where({
         album_id
@@ -200,14 +202,17 @@ Page({
         success: res => {
           this.setData({
             photos: res.data
-          })
+          });
+          wx.hideNavigationBarLoading();
         }
       })
   },
   tapPhotoToMaximize: function (e) {
+    let that = this;
     wx.previewImage({
-      urls: [e.currentTarget.dataset.item.url],
-    })
+      current: e.currentTarget.dataset.item.url,
+      urls: that.data.photos.map(Element => Element.url)
+    });
   },
   tapBack: function () {
     getApp().globalData.current_activity = {};
