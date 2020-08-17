@@ -188,6 +188,14 @@ Page({
                 wx.showToast({
                   title: '删除成功',
                 });
+                //刷新上两页（活动页）
+                try {
+                let pages = getCurrentPages();
+                let activity_page = pages[pages.length - 3]; // 上两页
+                activity_page.onPullDownRefresh();
+                } catch (e) {
+                  ; //啥也不做
+                };
               },
               fail: err => {
                 wx.showToast({
