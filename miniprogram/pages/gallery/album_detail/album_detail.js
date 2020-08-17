@@ -1,9 +1,9 @@
 // pages/gallery/gallery_detail/gallery_detail.js
-
 import sleep from '../../../utils/sleep.js'
 import getActivityInfo from '../../../utils/get_activity_info.js'
 import bytesToString from '../../../utils/bytes_to_string.js'
 import log from '../../../utils/log.js'
+import add_exp, * as const_exp from '../../../utils/add_exp';
 
 const app = getApp();
 const db = wx.cloud.database();
@@ -198,8 +198,10 @@ Page({
               },
               success: res2 => {
                 wx.showToast({
-                  title: '上传成功',
+                  title: '经验+' + const_exp.photo,
                 });
+                // 加经验
+                add_exp(app.globalData.openid, const_exp.photo);
                 // 在本地更新数据
                 // console.log(res2)
                 photos_arr.unshift({
@@ -262,6 +264,8 @@ Page({
               wx.showToast({
                 title: '删除成功',
               })
+              // 扣上传者的经验
+              add_exp(photo._openid, -const_exp.photo);
               // 在客户端删除
               let deleted_index = photos_arr.findIndex(Element => Element._id == photo._id);
               photos_arr.splice(deleted_index, 1); // 删除一个元素

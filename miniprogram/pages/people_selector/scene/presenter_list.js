@@ -1,5 +1,6 @@
 import getActivityInfo from '../../../utils/get_activity_info';
 import log from '../../../utils/log';
+import add_exp, * as const_exp from '../../../utils/add_exp';
 
 let app = getApp();
 const db = wx.cloud.database();
@@ -38,6 +39,9 @@ export async function listChanged(options) {
       }
     });
     promise.then(res => {
+    // 加减经验
+    const offset = options.checked ? 1 : -1;
+    add_exp(options.user_id, const_exp.presenter * offset * app.globalData.current_activity.check_in_list.length);
     // 记录日志
     log({
       oper: 'modify_presenter',

@@ -1,6 +1,7 @@
 //app.js
 App({
     onLaunch: function () {
+      const that = this;
       this.globalData = {
         app_version: "v1.1.0",
         can_upload: false, // 禁止添加活动、上传图片
@@ -32,12 +33,6 @@ App({
           traceUser: true,
         })
       }
-      let that = this;
-      const db = wx.cloud.database()
-      // 查询是否可以上传
-      db.collection('app_info').get().then(res => {
-        this.globalData.can_upload = res.data[0].can_upload
-      });
       //获取 openid 并查询数据库中是否有该人信息
       wx.cloud.callFunction({
         name: "login",
@@ -45,44 +40,7 @@ App({
         success(e) {
           // console.log(e)
           that.globalData.openid = e.result.openid;
-          //查询数据库
-          db.collection('user_info').doc(
-            that.globalData.openid
-          ).get({
-            success: res => {
-              // console.log('res:', res);
-              // 每次登陆都要更新头像 url
-              wx.getUserInfo({
-                success: res2 => {
-                  // console.log(res2);
-                  if (res2.userInfo.avatarUrl != res.data.avatar_url)
-                    db.collection('user_info').doc(
-                      that.globalData.openid
-                    ).update({
-                      data: {
-                        avatar_url: res2.userInfo.avatarUrl
-                      }
-                    })
-                },
-              })
-              // 将已有的信息存为全局变量
-              that.globalData.avatar_url = res.data.avatar_url;
-              that.globalData.username = res.data.username;
-              that.globalData.student_id = res.data.student_id;
-              that.globalData.telephone = res.data.telephone;
-              that.globalData.is_admin = res.data.is_admin;
-              that.globalData.can_grant_admin = res.data.can_grant_admin;
-              that.globalData.register_date = res.data.register_date;
-            },
-            fail: err => {
-              // 用户完善信息前应使 avatar_url 为空
-              getApp().globalData.avatar_url = "";
-              wx.reLaunch({
-                url: '/pages/init_user/init_user',
-              });
-              return;
-            }
-          })
+          that.get_user_info();
         },
         fail(err) {
           console.log(err);
@@ -92,7 +50,54 @@ App({
           })
         }
       })
-    }
+    },
+    async get_user_info() {
+      const that = this;
+      const db = wx.cloud.database()
+      // 查询是否可以上传
+      db.collection('app_info').get().then(res => {
+        this.globalData.can_upload = res.data[0].can_upload
+      });
+      //查询数据库
+      return db.collection('user_info').doc(
+          that.globalData.openid
+        ).get()
+        .then(res => {
+          // console.log('res:', res);
+          // 每次登陆都要更新头像 url
+          wx.getUserInfo({
+            success: res2 => {
+              // console.log(res2);
+              if (res2.userInfo.avatarUrl != res.data.avatar_url)
+                db.collection('user_info').doc(
+                  that.globalData.openid
+                ).update({
+                  data: {
+                    avatar_url: res2.userInfo.avatarUrl
+                  }
+                })
+            },
+          })
+          // 将已有的信息存为全局变量
+          that.globalData.avatar_url = res.data.avatar_url;
+          that.globalData.username = res.data.username;
+          that.globalData.student_id = res.data.student_id;
+          that.globalData.telephone = res.data.telephone;
+          that.globalData.is_admin = res.data.is_admin;
+          that.globalData.can_grant_admin = res.data.can_grant_admin;
+          that.globalData.register_date = res.data.register_date;
+          that.globalData.exp = res.data.exp;
+          return res;
+        })
+        .catch(err => {
+          // 用户完善信息前应使 avatar_url 为空
+          getApp().globalData.avatar_url = "";
+          wx.reLaunch({
+            url: '/pages/init_user/init_user',
+          });
+          return err;
+        })
+    },
   })
 
   /**

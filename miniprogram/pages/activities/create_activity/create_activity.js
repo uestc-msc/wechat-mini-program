@@ -28,6 +28,7 @@ Page({
       app.globalData.current_activity = {
         title: "",
         presenter_list: [app.globalData.openid], // 默认为本人
+        presenter_string: app.globalData.username,
         date: "",
         time: "",
         location: "",
