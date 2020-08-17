@@ -9,14 +9,26 @@ const _ = db.command;
 
 let page_index;
 const activities_per_page = 20;
+let activities_arr;
 
 Page({
   data: {
-    recent_activities_arr: []
+    activities_arr: []
   },
   onLoad() {
     page_index = 0;
+    activities_arr = [];
     this.loadOnePage();
+    wx.cloud.database().collection('activity_info')
+    .where({
+      is_hidden: false
+    })
+    .count()
+    .then(res => {
+      this.setData({
+        activities_total: res.total
+      })
+    })
   },
   onShow() {
     app.globalData.current_activity = undefined;
@@ -39,16 +51,24 @@ Page({
           icon: 'none'
         });
       } else {
+        Array().push.apply(activities_arr, activities); // 合并两个数组
         this.setData({
-          ['recent_activities_arr[' + page_index + ']']: activities
+          activities_arr: activities_arr
         });
         page_index++;
       }
+    })
+    .catch(err => {
+      console.log(err);
+      wx.showToast({
+        title: '数据出错啦 _(:з」∠)_',
+        icon: 'none'
+      });
     });
   },
   navigateToActivityDetail(e) {
     // 找到对应活动的信息并丢给全局变量，节约从数据库获取的时间
-    this.data.recent_activities_arr.forEach(page => {
+    this.data.activities_arr.forEach(page => {
       page.forEach(Element => {
         if (Element._id == e.currentTarget.dataset.id) {
           app.globalData.current_activity = Element;
@@ -61,9 +81,6 @@ Page({
     });
   },
   onPullDownRefresh() {
-    this.setData({
-      recent_activities_arr: []
-    })
     this.onLoad();
     sleep(500).then(() => {
       wx.stopPullDownRefresh()

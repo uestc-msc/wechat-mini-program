@@ -1,15 +1,13 @@
 <!--pages/gallery/gallery_detail/gallery_detail.wxml-->
 <view class="page gallery-root">
-  <view class="title">{{title}}</view>
+<image class="iadd"
+    bindtap="addPhoto" 
+    src="../../../images/iadd.svg"
+    wx:if="{{can_upload}}"></image>
+  <view class="title">{{title}}({{photos_total}})</view>
   <view class="photo-list">
-    <view wx:if="{{can_upload}}" class="photo-wrapper" bindtap="addPhoto">
-      <view class="photo-container photo-add">
-        <image class="iadd" src="../../images/iadd.svg"></image>
-        <view>上传图片</view>
-      </view>
-    </view>
     <view class="photo-wrapper"
-      wx:for="{{photos}}"
+      wx:for="{{photos_arr}}"
       wx:for-item="item" 
       wx:key="_id"
       data-item="{{item}}"

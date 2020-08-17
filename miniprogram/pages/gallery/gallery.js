@@ -4,6 +4,9 @@ import getActivityInfo from '../../utils/get_activity_info.js';
 import sleep from '../../utils/sleep.js'
 
 let app = getApp();
+let page_index;
+const activities_per_page = 20;
+let activities_arr;
 
 Page({
 
@@ -20,12 +23,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.photoDB = wx.cloud.database().collection('album_info');
-    this.page_index = 0;
-    this.activities_per_page = 20; // 一定要是偶数
-    this.activities_total = 0;
-    // 获取前 activities_per_page 个活动
-    this.loadOnePage();
+    page_index = 0;
+    activities_arr = [];
     // 获取活动总数
     wx.cloud.database().collection('activity_info')
       .where({
@@ -33,11 +32,11 @@ Page({
       })
       .count()
       .then(res => {
-        this.activities_total = res.total;
         this.setData({
-          title: `相册(${this.activities_total})`
+          activities_total: res.total
         })
       })
+    this.loadOnePage();
   },
 
   /**
@@ -51,6 +50,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    app.globalData.current_activity = undefined;
   },
 
   /**
@@ -71,9 +71,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    this.setData({
-      activities_arr: []
-    })
     this.onLoad();
     sleep(500).then(() => {
       wx.stopPullDownRefresh()
@@ -101,8 +98,8 @@ Page({
       title: '加载中'
     });
     getActivityInfo({
-        skip: this.page_index * this.activities_per_page,
-        limit: this.activities_per_page,
+        skip: page_index * activities_per_page,
+        limit: activities_per_page,
       })
       .then(res => {
         wx.hideLoading();
@@ -112,10 +109,11 @@ Page({
             icon: 'none'
           });
         } else {
+          Array().push.apply(activities_arr, res); // 合并两个数组
           this.setData({
-            ['activities_arr[' + this.page_index + ']']: Array.from(res)
+            activities_arr: activities_arr
           });
-          this.page_index++;
+          page_index++;
         }
       })
       .catch(err => {
@@ -128,9 +126,10 @@ Page({
   },
 
   tapAlbum: function (event) {
+    app.globalData.current_activity = event.currentTarget.dataset.item;
     wx.navigateTo({
-      url: '/pages/gallery/gallery_detail?album_id='
-       + event.currentTarget.dataset.item._id,
+      url: '/pages/gallery/album_detail/album_detail?album_id=' +
+        event.currentTarget.dataset.item._id,
     })
   },
 })

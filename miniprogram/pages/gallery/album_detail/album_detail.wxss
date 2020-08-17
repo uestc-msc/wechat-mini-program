@@ -3,6 +3,14 @@
   position: relative;
 }
 
+.iadd {
+  width: 72px;
+  height: 72px;
+  position: fixed;
+  bottom: 6px;
+  right: 12px;
+}
+
 .album-list {
   width: 100%;
   /* box-sizing: border-box; */

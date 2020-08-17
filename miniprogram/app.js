@@ -2,7 +2,7 @@
 App({
     onLaunch: function () {
       this.globalData = {
-        app_version: "v1.0.2",
+        app_version: "v1.1.0",
         can_upload: false, // 禁止添加活动、上传图片
 
         openid: "",

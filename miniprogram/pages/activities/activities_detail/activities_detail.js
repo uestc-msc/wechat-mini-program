@@ -51,7 +51,7 @@ Page({
   // },
   callGallery() {
     wx.navigateTo({
-      url: '/pages/gallery/gallery_detail?album_id=' + app.globalData.current_activity._id,
+      url: '/pages/gallery/album_detail/album_detail?album_id=' + app.globalData.current_activity._id,
     })
   },
   callCheckIn() {

@@ -2,7 +2,7 @@
 
 ## 功能、界面描述
 
-### 活动页面
+### 近期活动页面
 
 路径：`pages/activities/activities`
 
@@ -10,11 +10,18 @@
 
 点击某次活动进入其活动详情页面。
 
-### 查看更多活动页面
+### 所有活动页面
 
 路径：`pages/activities/activities_all/activities_all`
 
 查看所有活动。
+
+由于微信小程序查询数据库只能返回 20 个记录，因此需要分页查询，一页 20 个活动。函数大致逻辑如下：
+
+* `loadOnePage`：读取目前页码 `page_index`，然后向数据库查询 `[page_index*20, (page_index+1)*20)` 范围的活动，并追加到 `activities_arr` 数组，最后 `page_index++`。
+* `onLoad` 进入页面：设置 `page_index` 为 0、`activities_arr` 为空，然后 `loadOnePage`。
+* `onPullDownRefresh` 下拉刷新：调用 `onLoad`。
+* `onReachBottom` 上拉触底加载更多：调用 `loadOnePage`。
 
 点击一次活动进入其活动详情页面。
 
@@ -48,8 +55,13 @@
 
 路径：`pages/gallery/gallery`
 
-* 按活动分展示。
-* 提供批量下载。但个人限制次数。
+按活动分类展示相册。由于可能有超过 20 个活动，这里的处理逻辑与[所有活动页面](#所有活动页面)类似。
+
+#### 相册详情界面
+
+路径：`pages/gallery/gallery`
+
+展示单次活动的图片。由于一个活动可能有超过 20 个图片，这里的处理逻辑与[所有活动页面](#所有活动页面)类似。
 
 ### 个人管理界面
 
@@ -75,8 +87,6 @@
 签到不需要单写页面，但是为使得多个页面能调用，单独写一个 js 供其他地方调用。
 
 `pages/check_in/check_in.js`
-
-如果存在 `uuid` 参数，则直接进行签到；否则调用微信扫码功能。
 
 ### 初始化用户
 

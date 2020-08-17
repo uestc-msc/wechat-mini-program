@@ -2,27 +2,18 @@
 <view class="page" data-weui-theme="{{theme}}">
 	<view class="page__bd">
 		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd">全部活动</view>
+			<view class="weui-panel__hd">全部活动({{activities_total}})</view>
 			<view class="weui-panel__bd">
-				<block wx:for="{{recent_activities_arr}}" wx:for-item="recent_activities" wx:key="id">
-					<a class="weui-media-box weui-media-box_appmsg" wx:for="{{recent_activities}}" wx:for-item="activities" wx:key="id">
-						<view class="weui-media-box__hd" bindtap="navigateToActivityDetail" data-id="{{activities._id}}">
-							<image class="weui-media-box__thumb" src="{{activities.avatar_url}}" wx:if="{{activities.avatar_url}}"></image>
-						</view>
-						<view class="weui-media-box__bd" bindtap="navigateToActivityDetail" data-id="{{activities._id}}">
-							<!-- 图片和文字不能包含在另一个 view 里面，有点奇怪  -->
-							<h4 class="weui-media-box__title">{{activities.title}}</h4>
-							<view class="weui-media-box__desc"><text>{{activities.date}} {{activities.time}}\n{{activities.presenter_string}} | {{activities.location}}</text></view>
-						</view>
-					</a>
-				</block>
-				<!-- <view class="weui-loadmore" wx:if="{{loading_more}}">
-					<i class="weui-loading"></i>
-					<text class="weui-loadmore__tips">正在加载</text>
-				</view>
-				<view class="weui-loadmore weui-loadmore_line" wx:if="{{no-more}}">
-					<text class="weui-loadmore__tips">本薇薇也是有底线的</text>
-				</view> -->
+				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{activities_arr}}" wx:for-item="activities" wx:key="id">
+					<view class="weui-media-box__hd" bindtap="navigateToActivityDetail" data-id="{{activities._id}}">
+						<image class="weui-media-box__thumb" src="{{activities.avatar_url}}" wx:if="{{activities.avatar_url}}"></image>
+					</view>
+					<view class="weui-media-box__bd" bindtap="navigateToActivityDetail" data-id="{{activities._id}}">
+						<!-- 图片和文字不能包含在另一个 view 里面，有点奇怪  -->
+						<h4 class="weui-media-box__title">{{activities.title}}</h4>
+						<view class="weui-media-box__desc"><text>{{activities.date}} {{activities.time}}\n{{activities.presenter_string}} | {{activities.location}}</text></view>
+					</view>
+				</a>
 			</view>
 		</view>
 	</view>

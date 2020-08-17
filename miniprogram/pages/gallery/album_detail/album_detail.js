@@ -1,7 +1,14 @@
 // pages/gallery/gallery_detail/gallery_detail.js
 
-import getActivityInfo from '../../utils/get_activity_info.js';
-import sleep from '../../utils/sleep.js'
+import sleep from '../../../utils/sleep.js'
+import getActivityInfo from '../../../utils/get_activity_info.js'
+import bytesToString from '../../../utils/bytes_to_string.js'
+
+const app = getApp();
+const db = wx.cloud.database();
+let page_index = 0;
+const photos_per_page = 20;
+let photos_arr = [];
 
 Page({
 
@@ -10,11 +17,8 @@ Page({
    */
   data: {
     title: '',
-    activities_arr: [],
-    activities_length: 0,
-    photos: [],
-    currentAlbum: null,
-    fullScreenPhotoUrl: null,
+    photos_total: '',
+    photos_arr: [],
     can_upload: false
   },
 
@@ -22,32 +26,54 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let app = getApp();
-    this.photoDB = wx.cloud.database().collection('album_info');
-    this.page_index = 0;
-    this.activities_per_page = 20;
-    this.activities_total = 0;
+    // 判断链接错误
+    if (options.album_id == undefined) {
+      wx.switchTab({
+        url: '/pages/gallery/gallery',
+      });
+      wx.showToast({
+        title: '参数错误',
+        icon: 'none'
+      });
+      return;
+    }
+    // 尝试从全局变量中读取是否有该次活动的信息，如果有就先默认填上
+    if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == options.album_id) {
+      this.setData({
+        title: app.globalData.current_activity.title
+      });
+    } else {
+      app.globalData.current_activity._id = options.album_id;
+    }
+    // 从数据库获取最新数据以后再覆盖
+    getActivityInfo({
+        id: options.album_id,
+      })
+      .then(res => {
+        let cur = res[0];
+        app.globalData.current_activity = cur;
+        this.setData({
+          title: app.globalData.current_activity.title
+        });
+      });
     this.setData({
       can_upload: app.globalData.can_upload
     });
-    // 获取前 activities_per_page 个活动
-    this.loadOnePage();
-    // 获取活动总数
-    wx.cloud.database().collection('activity_info')
+    // 获取 photos 总数
+    db.collection('album_info')
       .where({
-        is_hidden: false
+        album_id: options.album_id
       })
       .count()
       .then(res => {
-        this.activities_total = res.total;
-        //如果不满足 if 应该直接跳到某个相册
-        if (app.globalData.current_activity == undefined ||
-          app.globalData.current_activity._id == undefined) {
-          this.setData({
-            title: `相册(${this.activities_total})`
-          })
-        }
-      })
+        this.setData({
+          photos_total: res.total
+        });
+      });
+    // 获取前 photos_per_page 个活动
+    page_index = 0;
+    photos_arr = [];
+    this.loadOnePage();
   },
 
   /**
@@ -61,15 +87,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let app = getApp();
-    if (app.globalData.current_activity != undefined &&
-      app.globalData.current_activity._id != undefined) {
-      this.setData({
-        currentAlbum: app.globalData.current_activity,
-        title: app.globalData.current_activity.title
-      })
-      this.showPhotos(app.globalData.current_activity._id);
-    }
+
   },
 
   /**
@@ -90,12 +108,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    let current_activity = getApp().globalData.current_activity;
-    if (current_activity == undefined || )
-    this.setData({
-      activities_arr: []
-    })
-    this.onLoad();
+    this.onLoad({
+      album_id: app.globalData.current_activity._id
+    });
     sleep(500).then(() => {
       wx.stopPullDownRefresh()
     })
@@ -116,47 +131,41 @@ Page({
   },
 
   loadOnePage() {
-    const db = wx.cloud.database();
-    //获取前 activities_per_page 个活动信息
+    //获取前 photos_per_page 个活动信息
     wx.showLoading({
       title: '加载中'
     });
-    getActivityInfo({
-        skip: this.page_index * this.activities_per_page,
-        limit: this.activities_per_page,
+    db.collection('album_info')
+      .where({
+        album_id: app.globalData.current_activity._id
       })
+      .orderBy('url', 'desc')
+      .skip(page_index * photos_per_page)
+      .limit(photos_per_page)
+      .get()
       .then(res => {
         wx.hideLoading();
-        if (res == undefined || res.length == 0) {
+        if (res.data == undefined || res.data.length == 0) {
           wx.showToast({
             title: '本薇薇也是有底线的',
             icon: 'none'
           });
         } else {
+          Array().push.apply(photos_arr, res.data);
           this.setData({
-            ['activities_arr[' + this.page_index + ']']: Array.from(res)
+            photos_arr: photos_arr
           });
-          this.page_index++;
+          page_index++;
         }
       })
       .catch(err => {
         console.log(err);
+        wx.hideLoading();
         wx.showToast({
           title: '数据出错啦 _(:з」∠)_',
           icon: 'none'
         });
       })
-  },
-
-  tapAlbum: function (event) {
-    const item = event.currentTarget.dataset.item;
-    // console.warn(item)
-    this.setData({
-      currentAlbum: item,
-      title: item.title,
-      photos: []
-    })
-    this.showPhotos(item._id)
   },
 
   // tapPhoto: funtion (event) {
@@ -171,21 +180,37 @@ Page({
       success: res => {
         const imagePath = res.tempFilePaths[0]
         console.warn(imagePath)
-        wx.cloud.uploadFile({
+        let user_id = app.globalData.openid;
+        let album_id = app.globalData.current_activity._id;
+        const uploadTask = wx.cloud.uploadFile({
           filePath: imagePath,
-          cloudPath: `${Math.random()}_${Date.now()}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
+          cloudPath: `${album_id}/${Date.now()}_${user_id}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
           success: res => {
-            console.warn('图片上传成功')
-            that.photoDB.add({
+            wx.showLoading({
+              title: '写入数据库中',
+              mask: 'true'
+            })
+            db.collection('album_info').add({
               data: {
                 url: res.fileID,
-                album_id: that.data.currentAlbum._id
+                album_id: app.globalData.current_activity._id
               },
-              success: res => {
+              success: res2 => {
                 wx.showToast({
                   title: '上传成功',
                 });
-                that.showPhotos(that.data.currentAlbum._id)
+                // 在本地更新数据
+                // console.log(res2)
+                photos_arr.unshift({
+                  _id: res2._id,
+                  _openid: app.globalData.openid,
+                  url: res.fileID,
+                  album_id: app.globalData.current_activity._id
+                });
+                that.setData({
+                  photos_total: that.data.photos_total + 1,
+                  photos_arr: photos_arr
+                })
               },
               fail: err => {
                 console.error(err)
@@ -193,25 +218,15 @@ Page({
             })
           },
         })
+        uploadTask.onProgressUpdate((res) => {
+          wx.showLoading({
+            title: bytesToString(res.totalBytesSent) +
+              '/' + bytesToString(res.totalBytesExpectedToSend),
+            mask: 'true'
+          });
+        })
       }
     })
-  },
-  showPhotos: function (album_id) {
-    let app = getApp();
-    app.globalData.current_activity._id = album_id;
-    wx.showNavigationBarLoading();
-    this.photoDB
-      .where({
-        album_id
-      })
-      .get({
-        success: res => {
-          this.setData({
-            photos: res.data
-          });
-          wx.hideNavigationBarLoading();
-        }
-      })
   },
   touchStartPhoto: function (e) {
     this.startTap = Date.now();
@@ -221,33 +236,39 @@ Page({
       let that = this;
       wx.previewImage({
         current: e.currentTarget.dataset.item.url,
-        urls: that.data.photos.map(Element => Element.url)
+        urls: that.data.photos_arr.map(Element => Element.url)
       });
     }
   },
   longPressPhoto: function (e) {
+    let that = this;
     let photo = e.currentTarget.dataset.item;
-    let app = getApp();
     if (app.globalData.is_admin || photo._openid == app.globalData.openid) { // 有权限删除
       wx.showActionSheet({
         itemList: ['删除图片'],
         itemColor: 'red',
         success: res => {
-          console.log(photo)
+          // console.log(photo)
           wx.cloud.database().collection('album_info').doc(photo._id).remove()
-          .then(res => {
-            console.log(res);
-            return wx.cloud.deleteFile({
-              fileList: [photo.url]
-            });
-          })
-          .then(res => {
-            console.log(res);
-            wx.showToast({
-              title: '删除成功',
+            .then(res => {
+              // console.log(res);
+              return wx.cloud.deleteFile({
+                fileList: [photo.url]
+              });
             })
-            // 2fasadf // mark: xxx
-          })
+            .then(res => {
+              // console.log(res);
+              wx.showToast({
+                title: '删除成功',
+              })
+              // 在客户端删除
+              let deleted_index = photos_arr.findIndex(Element => Element._id == photo._id);
+              photos_arr.splice(deleted_index, 1); // 删除一个元素
+              that.setData({
+                photos_arr: photos_arr,
+                photos_total: that.data.photos_total - 1
+              })
+            })
         }
       })
     } else {
@@ -257,12 +278,5 @@ Page({
       })
     }
 
-  },
-  tapBack: function () {
-    getApp().globalData.current_activity = {};
-    this.setData({
-      currentAlbum: null,
-      title: `相册(${this.activities_total})`
-    })
   },
 })

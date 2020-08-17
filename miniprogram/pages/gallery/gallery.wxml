@@ -1,9 +1,9 @@
 <!--pages/gallery/gallery.wxml-->
 <view class="page gallery-root">
-  <view class="title">{{title}}</view>
-  <view wx:for="{{activities_arr}}" wx:for-item="activities" wx:key="index" class="album-list">
+  <view class="title">相册({{activities_total}})</view>
+  <view class="album-list">
     <view class="album-wrapper"
-      wx:for="{{activities}}"
+      wx:for="{{activities_arr}}"
       wx:for-item="item" 
       wx:key="_id"
       data-item="{{item}}"
