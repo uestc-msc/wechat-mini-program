@@ -8,9 +8,9 @@
     "pages/activities/activities_detail_admin/lottery/lottery",
     "pages/activities/create_activity/create_activity",
     "pages/gallery/gallery",
+    "pages/gallery/album_detail/album_detail",
     "pages/user/user",
     "pages/user/modify_information/modify_information",
-    "pages/user/modify_admin/modify_admin",
     "pages/user/about/about",
     "pages/people_selector/people_selector",
     "pages/init_user/init_user"

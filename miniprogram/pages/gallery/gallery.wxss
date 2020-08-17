@@ -3,19 +3,6 @@
   position: relative;
 }
 
-.iback {
-  width: 48px;
-  height: 48px;
-  position: fixed;
-  bottom: 6px;
-  right: 12px;
-}
-
-.iadd {
-  width: 32px;
-  height: 32px;
-}
-
 .album-list {
   width: 100%;
   /* box-sizing: border-box; */

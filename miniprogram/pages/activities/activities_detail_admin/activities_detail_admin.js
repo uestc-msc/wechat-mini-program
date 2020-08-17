@@ -4,6 +4,7 @@ import {
   getDate
 } from '../../../utils/date.js';
 import getActivityInfo from '../../../utils/get_activity_info.js';
+import log from '../../../utils/log.js';
 
 var app = getApp();
 var that;
@@ -106,6 +107,19 @@ Page({
       });
       return;
     }
+    // 记录日志
+    log({
+      oper: 'modify_activity',
+      data: {
+        before: app.globalData.current_activity,
+        after: {
+          title: value.title,
+          date: value.date,
+          time: value.time,
+          location: value.location
+        }
+      }
+    })
     // 将其他信息存入为全局变量
     app.globalData.current_activity.title = value.title;
     app.globalData.current_activity.date = value.date;
@@ -161,12 +175,27 @@ Page({
                 is_hidden: true
               },
               success: res => {
+                console.log(app.globalData.current_activity)
+                log({
+                  oper: 'delete_activity',
+                  data: {
+                    item: app.globalData.current_activity
+                  }
+                })
                 wx.navigateBack({
                   delta: 2,
                 });
                 wx.showToast({
                   title: '删除成功',
                 });
+                //刷新上两页（活动页）
+                try {
+                let pages = getCurrentPages();
+                let activity_page = pages[pages.length - 3]; // 上两页
+                activity_page.onPullDownRefresh();
+                } catch (e) {
+                  ; //啥也不做
+                };
               },
               fail: err => {
                 wx.showToast({

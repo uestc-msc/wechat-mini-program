@@ -8,7 +8,7 @@
 				</view>
 				<view class="weui-cell__bd">
 					<view>{{username}}</view>
-					<view style="font-size: 13px; color: #888;">{{student_id}}</view>
+					<view style="font-size: 13px; color: #888;">{{student_id}}，经验 {{exp}}</view>
 				</view>
 				<view class="weui-cell__ft">修改</view>
 			</navigator>

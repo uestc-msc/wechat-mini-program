@@ -43,6 +43,7 @@ Page({
     app.globalData.is_admin = false;
     app.globalData.can_grant_admin = false;
     app.globalData.register_date = getDate(); // "2020-08-01"
+    app.globalData.exp = 0;
 
     const db = wx.cloud.database()
     db.collection("user_info").add({
@@ -54,7 +55,8 @@ Page({
         avatar_url: app.globalData.avatar_url,
         is_admin: app.globalData.is_admin,
         can_grant_admin: app.globalData.can_grant_admin,
-        register_date: app.globalData.register_date
+        register_date: app.globalData.register_date,
+        exp: 0
       },
       success: res => {
         wx.switchTab({

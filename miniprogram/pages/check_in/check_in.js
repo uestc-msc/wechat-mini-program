@@ -4,10 +4,12 @@ import {
 } from '../../utils/date';
 import sleep from '../../utils/sleep'
 import resolveUrl from '../../utils/resolve_url'
+import add_exp, * as const_exp from '../../utils/add_exp';
 
 var app = getApp();
 const db = wx.cloud.database();
 const _ = db.command;
+
 
 // “扫码签到” 按钮的回调函数
 export function scanCode() {
@@ -97,12 +99,15 @@ export async function checkIn(options) {
     })
     .then(res => {
       wx.hideLoading();
+      // 加经验
+      add_exp([app.globalData.openid], const_exp.check_in);
+      add_exp(app.globalData.current_activity.presenter_list, const_exp.presenter);
       // 跳转到对应活动页
       wx.navigateTo({
         url: '/pages/activities/activities_detail/activities_detail?id=' + options.activity_id
       });
       wx.showToast({
-        title: '签到成功'
+        title: '经验+' + const_exp.check_in
       });
       return res;
     })

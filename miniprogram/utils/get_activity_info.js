@@ -71,7 +71,9 @@ export default async function (options) {
       } else {
         return Promise.all(promise_array).then(res_arr => {
           // console.log(res_arr[res_arr.length - 1])
-          return res_arr[res_arr.length - 1];
+          // console.log(res_arr[1] == res_arr[0])
+          // 所有 res 是同一个的引用
+          return res_arr[0];
         })
       }
     })

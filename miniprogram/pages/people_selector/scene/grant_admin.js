@@ -1,3 +1,5 @@
+import log from "../../../utils/log";
+
 let app = getApp();
 const db = wx.cloud.database();
 
@@ -32,7 +34,7 @@ export function onLoad(e, page) {
       fail: res => {
         console.log(res);
         wx.showToast({
-          title: '获取总人数_(:з」∠)_',
+          title: '获取总人数失败 _(:з」∠)_',
           icon: 'none'
         });
       }
@@ -44,7 +46,7 @@ export function elementIsChecked(Element) {
 }
 
 export async function listChanged(options) {
-  let res = await db
+  let promise = db
     .collection('user_info')
     .doc(options.user_id)
     .update({
@@ -52,6 +54,16 @@ export async function listChanged(options) {
         is_admin: options.checked
       }
     });
+    promise.then(res => { // 更新日志
+    log({
+      oper: 'modify_admin',
+      data: {
+        user: options.user_id,
+        oper: options.checked ? 'set' : 'unset'
+      }
+    });
+  });
+  let res = await promise;
   // console.log(res);
   return res;
 }

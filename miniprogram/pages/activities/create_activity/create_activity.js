@@ -4,6 +4,7 @@ import {
   getDate
 } from '../../../utils/date.js';
 import getActivityInfo from '../../../utils/get_activity_info';
+import log from '../../../utils/log';
 
 var app = getApp();
 
@@ -27,6 +28,7 @@ Page({
       app.globalData.current_activity = {
         title: "",
         presenter_list: [app.globalData.openid], // 默认为本人
+        presenter_string: app.globalData.username,
         date: "",
         time: "",
         location: "",
@@ -142,18 +144,19 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
+    let activity_id = app.globalData.current_activity._id;
     // console.log('onUnload')
     // console.log(this.data)
     if (app.globalData.current_activity.is_hidden) {
       const db = wx.cloud.database();
       db.collection('activity_info')
-        .doc(app.globalData.current_activity._id)
+        .doc(activity_id)
         .remove()
         .then(res => {
-          console.log('成功删除记录 ', activitiy_id);
+          console.log('成功删除记录 ', activity_id);
         })
         .catch(res => {
-          console.log('删除记录失败 ', activitiy_id);
+          console.log('删除记录失败 ', activity_id);
         })
     }
   },

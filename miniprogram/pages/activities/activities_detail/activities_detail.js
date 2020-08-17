@@ -50,9 +50,9 @@ Page({
   //   }
   // },
   callGallery() {
-    wx.switchTab({
-      url: '/pages/gallery/gallery'
-    });
+    wx.navigateTo({
+      url: '/pages/gallery/album_detail/album_detail?album_id=' + app.globalData.current_activity._id,
+    })
   },
   callCheckIn() {
     scanCode();

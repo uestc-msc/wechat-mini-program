@@ -1,5 +1,7 @@
 // pages/user/modify_information/modify_information.js
 
+const { default: log } = require("../../../utils/log");
+
 var app = getApp();
 
 Page({
@@ -36,6 +38,21 @@ Page({
       });
       return;
     }
+
+    //写入日志
+    log({
+      oper: 'modify_userinfo',
+      data: {
+        before: {
+          username: app.globalData.username,
+          student_id: app.globalData.student_id
+        },
+        after: {
+          username: e.detail.value.username,
+          student_id: e.detail.value.student_id
+        }
+      }
+    });
 
     //将信息保存为全局变量
     app.globalData.username = e.detail.value.username;

@@ -25,6 +25,15 @@
 
 ### 经验系统
 
+用户初始经验值为 0。以下行为会增加/扣除经验（正值为增加，反之为扣除）。其他行为（如删除活动）均不会影响经验。
+
+* 一位参与者签到，参与者 +50 经验，每位主讲人 +10 经验。
+* 管理员取消某人签到，该人 -50 经验，每位主讲人 -10 经验。
+* 设置主讲人时，该人 +10*`已签到人数` 经验
+* 取消设置主讲人时，该人 -10*`已签到人数` 经验
+* 上传一张图片，上传者 +5 经验。
+* 删除一张图片，上传者 -5 经验。
+
 ### 权限管理
 
 #### 所有人的权限
@@ -58,6 +67,8 @@
 
 #### 管理员授予者权限
 
+~~这个名字实在绕口，可是我也没有想到什么更好的名字了，如果有，欢迎提 issue / PR / 私聊开发者~~
+
 小程序中存在管理员授予者 `admin_grantor`。管理员授予者的定位为俱乐部主席。
 
 管理员授予者可以在小程序中修改管理员的名单。
@@ -65,6 +76,14 @@
 管理员授予者默认不拥有管理员权限。但可以授予自身管理员权限。
 
 管理员授予者只能通过开发者修改数据库 `user_info` 集合的 `can_grant_admin` 字段来修改名单。
+
+### 签到记录导出
+
+由于开发一个页面的时间远大于写几行代码直接查询数据库，再加上这个功能利用率实在太低、变种还可以有很多，因此就不做了。
+
+开发者如有需求，可以参考[文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-sdk-api/Cloud.database.html)，花半天时间自学一下；
+
+其他用户可以私聊开发者。
 
 ## 开发
 
@@ -76,17 +95,11 @@
 
 ## 已知 bug
 
-创建活动、修改活动页，日期、“时间”的字体和“地点”、“标题”的字体不同。
+* activities_all 页和 gallery 页上下颜色不一致（上面为 `#EDEDED`，下面为 `#F6F6F6`）
 
 ## 长远计划（由简至难）
 
-* 照片按活动以文件夹形式进行分类
-* 管理员删除图片
-* 签到记录批量导出
-* 数据库写入日志
-* 更复杂的抽奖系统
 * 活动搜索（主页面、相册页面都需要有）
-* 个人经验等级系统
 * 管理员授予勋章
 * DarkMode
 
@@ -104,7 +117,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/lyh543"><img src="https://avatars2.githubusercontent.com/u/15522311?v=4" width="100px;" alt=""/><br /><sub><b>刘俨晖</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=lyh543" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/guyaqi"><img src="https://avatars2.githubusercontent.com/u/26341682?v=4" width="100px;" alt=""/><br /><sub><b>Guyaqi</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=guyaqi" title="Code">💻</a></td>
-    <td align="center"><a href="http://luosuu.github.io"><img src="https://avatars2.githubusercontent.com/u/43507393?v=4" width="100px;" alt=""/><br /><sub><b>Tianle Zhong</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=Luosuu" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/luosuu"><img src="https://avatars2.githubusercontent.com/u/43507393?v=4" width="100px;" alt=""/><br /><sub><b>Tianle Zhong</b></sub></a><br /><a href="https://github.com/uestc-msc/wechat-mini-program/commits?author=Luosuu" title="Code">💻</a></td>
   </tr>
 </table>
 

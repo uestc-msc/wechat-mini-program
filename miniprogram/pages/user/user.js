@@ -11,6 +11,7 @@ Page({
     username: "",
     avatar_url: "",
     student_id: "",
+    exp: "",
     can_grant_admin: false
   },
 
@@ -27,23 +28,24 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: async function () {
+    let that = this;
     // 如果没有 username 则每 0.5s 尝试 onShow
-    if (app.globalData.username == '') {
-      sleep(500).then(() => this.onShow());
-      return;
-    }
-      if (app.globalData.is_admin) {
-        var usertitle = '（管理员）';
-      } else {
-        var usertitle = '';
-      }
-      this.setData({
-        username: app.globalData.username + usertitle,
-        avatar_url: app.globalData.avatar_url,
-        student_id: app.globalData.student_id,
-        can_grant_admin: app.globalData.can_grant_admin
-      })
+    return app.get_user_info()
+      .then(res => {
+        if (app.globalData.is_admin) {
+          var usertitle = '（管理员）';
+        } else {
+          var usertitle = '';
+        }
+        that.setData({
+          username: app.globalData.username + usertitle,
+          avatar_url: app.globalData.avatar_url,
+          student_id: app.globalData.student_id,
+          can_grant_admin: app.globalData.can_grant_admin,
+          exp: app.globalData.exp
+        })
+      });
   },
 
   /**
@@ -62,13 +64,12 @@ Page({
 
   // 监听用户下拉动作：刷新列表
   onPullDownRefresh() {
-    this.onShow();
-    wx.showToast({
-      title: '刷新成功',
-      icon: 'none'
-    })
-    sleep(300).then(() => {
-      wx.stopPullDownRefresh()
+    this.onShow().then(res => {
+      wx.showToast({
+        title: '刷新成功',
+        icon: 'none'
+      })
+      wx.stopPullDownRefresh();
     })
   },
 

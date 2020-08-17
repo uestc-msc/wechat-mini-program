@@ -1,0 +1,24 @@
+<!--pages/gallery/gallery_detail/gallery_detail.wxml-->
+<view class="page gallery-root">
+<image class="iadd"
+    bindtap="addPhoto" 
+    src="../../../images/iadd.svg"
+    wx:if="{{can_upload}}"></image>
+  <view class="title">{{title}}({{photos_total}})</view>
+  <view class="photo-list">
+    <view class="photo-wrapper"
+      wx:for="{{photos_arr}}"
+      wx:for-item="item" 
+      wx:key="_id"
+      data-item="{{item}}"
+      bindtouchstart="touchStartPhoto"
+      bindlongpress="longPressPhoto"
+      bindtap="tapPhoto">
+      <view class="photo-container">
+        <view class="photo-cover">
+          <image mode="aspectFit" src="{{item.url}}"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
