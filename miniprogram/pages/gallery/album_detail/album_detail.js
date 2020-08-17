@@ -3,6 +3,7 @@
 import sleep from '../../../utils/sleep.js'
 import getActivityInfo from '../../../utils/get_activity_info.js'
 import bytesToString from '../../../utils/bytes_to_string.js'
+import log from '../../../utils/log.js'
 
 const app = getApp();
 const db = wx.cloud.database();
@@ -184,7 +185,7 @@ Page({
         let album_id = app.globalData.current_activity._id;
         const uploadTask = wx.cloud.uploadFile({
           filePath: imagePath,
-          cloudPath: `${album_id}/${Date.now()}_${user_id}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
+          cloudPath: `album/${album_id}/${Date.now()}_${user_id}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
           success: res => {
             wx.showLoading({
               title: '写入数据库中',
@@ -268,6 +269,13 @@ Page({
                 photos_arr: photos_arr,
                 photos_total: that.data.photos_total - 1
               })
+              // 记录日志
+              log({
+                oper: 'delete_photo',
+                data: {
+                  item: e.currentTarget.dataset.item
+                }
+              });
             })
         }
       })

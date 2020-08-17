@@ -20,15 +20,15 @@ Page({
     activities_arr = [];
     this.loadOnePage();
     wx.cloud.database().collection('activity_info')
-    .where({
-      is_hidden: false
-    })
-    .count()
-    .then(res => {
-      this.setData({
-        activities_total: res.total
+      .where({
+        is_hidden: false
       })
-    })
+      .count()
+      .then(res => {
+        this.setData({
+          activities_total: res.total
+        })
+      })
   },
   onShow() {
     app.globalData.current_activity = undefined;
@@ -40,41 +40,39 @@ Page({
       title: '加载中',
     });
     getActivityInfo({
-      skip: page_index * activities_per_page,
-      limit: activities_per_page,
-    })
-    .then(activities => {
-      wx.hideLoading();
-      if (activities == undefined || activities.length == 0) {
+        skip: page_index * activities_per_page,
+        limit: activities_per_page,
+      })
+      .then(activities => {
+        wx.hideLoading();
+        if (activities == undefined || activities.length == 0) {
+          wx.showToast({
+            title: '本薇薇也是有底线的',
+            icon: 'none'
+          });
+        } else {
+          Array().push.apply(activities_arr, activities); // 合并两个数组
+          this.setData({
+            activities_arr: activities_arr
+          });
+          page_index++;
+        }
+      })
+      .catch(err => {
+        console.log(err);
         wx.showToast({
-          title: '本薇薇也是有底线的',
+          title: '数据出错啦 _(:з」∠)_',
           icon: 'none'
         });
-      } else {
-        Array().push.apply(activities_arr, activities); // 合并两个数组
-        this.setData({
-          activities_arr: activities_arr
-        });
-        page_index++;
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      wx.showToast({
-        title: '数据出错啦 _(:з」∠)_',
-        icon: 'none'
       });
-    });
   },
   navigateToActivityDetail(e) {
     // 找到对应活动的信息并丢给全局变量，节约从数据库获取的时间
-    this.data.activities_arr.forEach(page => {
-      page.forEach(Element => {
-        if (Element._id == e.currentTarget.dataset.id) {
-          app.globalData.current_activity = Element;
-          return;
-        }
-      })
+    this.data.activities_arr.forEach(Element => {
+      if (Element._id == e.currentTarget.dataset.id) {
+        app.globalData.current_activity = Element;
+        return;
+      }
     });
     wx.navigateTo({
       url: '/pages/activities/activities_detail/activities_detail?id=' + e.currentTarget.dataset.id

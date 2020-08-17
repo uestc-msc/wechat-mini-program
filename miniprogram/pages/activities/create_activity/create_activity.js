@@ -4,6 +4,7 @@ import {
   getDate
 } from '../../../utils/date.js';
 import getActivityInfo from '../../../utils/get_activity_info';
+import log from '../../../utils/log';
 
 var app = getApp();
 

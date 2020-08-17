@@ -1,4 +1,5 @@
 import getActivityInfo from '../../../utils/get_activity_info';
+import log from '../../../utils/log';
 
 let app = getApp();
 const db = wx.cloud.database();
@@ -28,7 +29,7 @@ export async function listChanged(options) {
   const _ = db.command;
   const oper = options.checked ? _.push : _.pull; // 数据库操作：添加/删除
   // 更新 list
-  let res = await db
+  let promise = db
     .collection('activity_info')
     .doc(app.globalData.current_activity._id)
     .update({
@@ -36,6 +37,18 @@ export async function listChanged(options) {
         presenter_list: oper(options.user_id)
       }
     });
+    promise.then(res => {
+    // 记录日志
+    log({
+      oper: 'modify_presenter',
+      data: {
+        activity: app.globalData.current_activity._id,
+        user: options.user_id,
+        oper: options.checked ? 'set' : 'unset'
+      }
+    });
+  })
+  let res = await(promise);
   // 获取新的 presenter_string 存储并刷新上一页
   getActivityInfo({
     id: app.globalData.current_activity._id
