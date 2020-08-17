@@ -88,6 +88,7 @@
 三个场景如下：
 
 场景|`modify` 参数|额外参数
+-|-|-
 修改活动的签到名单|`check_in_list`|`id`：活动 id
 修改活动的主讲人|`presener_list`|`id`：活动 id
 修改管理员|`grant_admin`|无
