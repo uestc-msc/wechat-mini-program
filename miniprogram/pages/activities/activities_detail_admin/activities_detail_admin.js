@@ -57,17 +57,17 @@ Page({
   },
   onPullDownRefresh() {
     getActivityInfo({
-      id: app.globalData.current_activity._id,
-    })
-    .then(res => {
-      app.globalData.current_activity = res[0];
-      setPageData();
-      wx.showToast({
-        title: '刷新成功',
-        icon: 'none'
+        id: app.globalData.current_activity._id,
       })
-      wx.stopPullDownRefresh()
-    });
+      .then(res => {
+        app.globalData.current_activity = res[0];
+        setPageData();
+        wx.showToast({
+          title: '刷新成功',
+          icon: 'none'
+        })
+        wx.stopPullDownRefresh()
+      });
   },
   modifyPresenter() {
     if (app.globalData.is_admin) {
@@ -190,9 +190,9 @@ Page({
                 });
                 //刷新上两页（活动页）
                 try {
-                let pages = getCurrentPages();
-                let activity_page = pages[pages.length - 3]; // 上两页
-                activity_page.onPullDownRefresh();
+                  let pages = getCurrentPages();
+                  let activity_page = pages[pages.length - 3]; // 上两页
+                  activity_page.onPullDownRefresh();
                 } catch (e) {
                   ; //啥也不做
                 };
@@ -210,9 +210,11 @@ Page({
   },
   // 全屏查看小程序码
   maximizeWxacode() {
-    wx.previewImage({
-      urls: [this.data.wxacode_url] // 需要预览的图片http链接列表
-    })
+    if (this.data.wxacode_url != "") {
+      wx.previewImage({
+        urls: [this.data.wxacode_url] // 需要预览的图片http链接列表
+      })
+    }
   },
 
   //手动签到
