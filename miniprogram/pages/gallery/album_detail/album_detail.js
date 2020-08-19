@@ -246,7 +246,9 @@ Page({
   longPressPhoto: function (e) {
     let that = this;
     let photo = e.currentTarget.dataset.item;
-    if (app.globalData.is_admin || photo._openid == app.globalData.openid) { // 有权限删除
+    if (app.globalData.is_admin ||                                                      // 管理员
+      photo._openid == app.globalData.openid ||                                         // 图片上传者
+      app.globalData.current_activity.presenter_list.includes(app.globalData.openid)) { // 活动主讲人
       wx.showActionSheet({
         itemList: ['删除图片'],
         itemColor: 'red',
