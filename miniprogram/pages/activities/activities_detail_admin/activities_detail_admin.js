@@ -237,8 +237,7 @@ Page({
   showCheckInList() {
     wx.navigateTo({
       url: 'check_in_list/check_in_list?id=' +
-        app.globalData.current_activity._id +
-        '&modify=check_in_list',
+        app.globalData.current_activity._id,
     })
   },
   // 切换签到状态

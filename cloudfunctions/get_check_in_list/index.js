@@ -1,21 +1,18 @@
 // 获取某次活动的签到名单
 // 由于涉及到获取大量用户的名字
-// 且云数据库限制小程序一次只能获取 20 条记录
-// 因此使用云函数
-// 但云函数一次也只能获取 100 条记录（不过你部的一次活动能有这么多人？）
+// 小程序限制 LIMIT 20，云函数限制 LIMIT 100，故使用云函数一次拉取
 
-// 云函数入口文件
 const cloud = require('wx-server-sdk')
-
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 });
-
-let list, namelist;
-let errMsg1, errMsg2;
+const db = cloud.database();
+const MAX_LIMIT = 100;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  let list;
+  let errMsg1;
   const wxContext = cloud.getWXContext()
 
   const db = cloud.database();
@@ -28,28 +25,49 @@ exports.main = async (event, context) => {
     .then(res => {
       errMsg1 = res;
       list = res.data.check_in_list;
-    }).catch(err => {
+    })
+    .catch(err => {
       errMsg1 = err;
     })
   // 将名单的 openid 变为 username 即可返回
-  await db
+  const check_in_collection = db
     .collection('user_info')
     .where({
       _id: _.in(list)
     })
-    .get()
-    .then(res => {
-      namelist = [];
-      errMsg2 = res;
-      res.data.forEach(Element => {
-        namelist.push(Element.student_id.padEnd(18, ' ') + Element.username);
-      });
-    }).catch(err => {
-      errMsg2 = err;
-    })
-
-
-  console.log(namelist, errMsg1, errMsg2)
+    .field({
+      _id: false,
+      username: true,
+      student_id: true
+    });
+  // 先取出集合记录总数
+  const countResult = await check_in_collection.count()
+  const total = countResult.total
+  // 计算需分几次取
+  const batchTimes = Math.ceil(total / MAX_LIMIT)
+  // 承载所有读操作的 promise 的数组
+  const tasks = []
+  for (let i = 0; i < batchTimes; i++) {
+    const promise = check_in_collection.skip(i * MAX_LIMIT).limit(MAX_LIMIT).get()
+    tasks.push(promise)
+  }
+  // 等待所有 promise 完成
+  let res = (await Promise.all(tasks)).reduce((acc, cur) => {
+    return {
+      data: acc.data.concat(cur.data),
+      errMsg: acc.errMsg,
+    }
+  });
+  // 解析姓名学号并拼接
+  let namelist = res.data.map(Element =>
+    Element.student_id.padEnd(18, ' ') + Element.username
+  );
+  return {
+    event: event,
+    namelist: namelist,
+    errMsg1: errMsg1,
+    errMsg2: res.errMsg
+  }
   return {
     event: event,
     namelist: namelist,

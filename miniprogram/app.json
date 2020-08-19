@@ -11,6 +11,7 @@
     "pages/gallery/album_detail/album_detail",
     "pages/user/user",
     "pages/user/modify_information/modify_information",
+    "pages/user/admin_list/admin_list",
     "pages/user/about/about",
     "pages/people_selector/people_selector",
     "pages/init_user/init_user"
@@ -23,22 +24,26 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "list": [{
-      "pagePath": "pages/activities/activities",
-      "iconPath": "images/icon_discover.png",
-      "selectedIconPath": "images/icon_discover_filling.png",
-      "text": "活动"
-    }, {
-      "pagePath": "pages/gallery/gallery",
-      "iconPath": "images/icon_gallery.png",
-      "selectedIconPath": "images/icon_gallery_filling.png",
-      "text": "相册"
-    }, {
-      "pagePath": "pages/user/user",
-      "iconPath": "images/icon_user.png",
-      "selectedIconPath": "images/icon_user_filling.png",
-      "text": "我"
-    }]
+    "list": [
+      {
+        "pagePath": "pages/activities/activities",
+        "iconPath": "images/icon_discover.png",
+        "selectedIconPath": "images/icon_discover_filling.png",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/gallery/gallery",
+        "iconPath": "images/icon_gallery.png",
+        "selectedIconPath": "images/icon_gallery_filling.png",
+        "text": "相册"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "images/icon_user.png",
+        "selectedIconPath": "images/icon_user_filling.png",
+        "text": "我"
+      }
+    ]
   },
   "networkTimeout": {
     "request": 10000,
