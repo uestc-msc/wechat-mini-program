@@ -145,6 +145,7 @@
 `time`|string|活动时间
 `location`|string|活动地点
 `check_in_list`|Array|签到名单（数组，存储每个人的 openid）
+`check_in_closed`|bool|管理员是否关闭签到（为空或 `false` 时可以签到；默认为空；该字段不影响管理员手动签到）
 `is_hidden`|bool|活动是否被删除（实际上是隐藏）
 
 ### 相册信息 album_info

@@ -18,6 +18,7 @@ Page({
     time: "",
     check_in_total: "",
     is_admin: false,
+    check_in_status: "",        // 三种值，'not_today', 'open', 'closed'
 
     wxacode_url: ""
   },
@@ -232,6 +233,7 @@ Page({
         '&modify=check_in_list',
     })
   },
+  // 签到名单
   showCheckInList() {
     wx.navigateTo({
       url: 'check_in_list/check_in_list?id=' +
@@ -239,6 +241,33 @@ Page({
         '&modify=check_in_list',
     })
   },
+  // 切换签到状态
+  changeCheckInStatus() {
+    let current_status = this.data.check_in_status;
+    if (current_status == 'not_today') {
+      return;
+    } else {
+      let check_in_closed = (current_status == 'closed');
+      let that = this;
+      wx.cloud.database()
+      .collection('activity_info')
+      .doc(app.globalData.current_activity._id)
+      .update({
+        data: {
+          check_in_closed: !check_in_closed
+        }
+      })
+      .then(res => {
+        app.globalData.current_activity.check_in_closed = !check_in_closed; 
+        setPageData();
+        wx.showToast({
+          title: '操作成功',
+        })
+      })
+    }
+    
+  },
+  // 抽奖
   callLottery() {
     wx.navigateTo({
       url: 'lottery/lottery?id=' +
@@ -249,6 +278,16 @@ Page({
 
 function setPageData() {
   let cur = app.globalData.current_activity;
+  const check_in_status_string = {
+    open: "（签到开放中）",
+    closed: "（签到已关闭）",
+    not_today: ""
+  };
+  if (cur.date != getDate()) {
+    var check_in_status = 'not_today'
+  } else {
+    var check_in_status = cur.check_in_closed ? "closed" : "open"
+  }
   that.setData({
     title: cur.title,
     presenter_string: cur.presenter_string,
@@ -256,6 +295,8 @@ function setPageData() {
     time: cur.time,
     location: cur.location,
     check_in_total: cur.check_in_list.length,
+    check_in_status: check_in_status,
+    check_in_status_string: check_in_status_string[check_in_status],
     is_admin: app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid)
   })
 

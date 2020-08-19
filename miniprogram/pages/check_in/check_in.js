@@ -55,7 +55,7 @@ export async function checkIn(options) {
     mask: true
   });
   options.user_id = app.globalData.openid;
-  // 从数据库加载该次活动信息（需要核对是不是今天）
+  // 从数据库加载该次活动信息（需要核对是不是今天、且管理员开放签到）
   console.log(options.activity_id)
   let res = await (async () => {
       if (!options.activity_id || options.activity_id == '') {
@@ -86,7 +86,11 @@ export async function checkIn(options) {
         return Promise.reject({
           errMsg: "你已经签过到啦"
         });
-      } else {
+      } else if (res.data.check_in_closed == true) {
+        return Promise.reject({
+          errMsg: "管理员已关闭签到 请联系管理员"
+        });
+      }else {
         // 开始签到
         return db.collection('activity_info')
           .doc(options.activity_id)
