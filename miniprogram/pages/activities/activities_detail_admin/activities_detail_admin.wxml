@@ -81,8 +81,8 @@
 			</view>
 		</view>
 		<view class="button-sp-area">
-			<a wx:if="{{check_in_status=='closed'}}" class="weui-btn weui-btn_primary" bindtap="changeCheckInStatus">允许签到</a>
-			<a wx:if="{{check_in_status=='open'}}" class="weui-btn weui-btn_primary" bindtap="changeCheckInStatus">禁止签到</a>
+			<a wx:if="{{check_in_status=='closed'}}" class="weui-btn weui-btn_primary" bindtap="changeCheckInStatus">开放签到</a>
+			<a wx:if="{{check_in_status=='open'}}" class="weui-btn weui-btn_primary" bindtap="changeCheckInStatus">关闭签到</a>
 		</view>
 		<view class="button-sp-area">
 			<a class="weui-btn weui-btn_primary" bindtap="callLottery">抽奖</a>
