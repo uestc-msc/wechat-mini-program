@@ -84,7 +84,9 @@
 
 其他用户可以私聊开发者。
 
-## 开发
+## 部署、开发
+
+[部署方法](develop.md#部署)
 
 * 微信小程序开发入门教程：https://cloudbase.net/community/guides/handbook/tcb01.html
 * 使用 [WeUI](https://github.com/Tencent/weui-wxss) 作为 UI 框架库。使用教程可见：https://cloudbase.net/community/guides/handbook/tcb04.html
