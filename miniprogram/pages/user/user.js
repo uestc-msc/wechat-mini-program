@@ -33,7 +33,9 @@ Page({
     // 如果没有 username 则每 0.5s 尝试 onShow
     return app.get_user_info()
       .then(res => {
-        if (app.globalData.is_admin) {
+        if (app.globalData.can_grant_admin) {
+          var usertitle = '（超级管理员）';
+        } else if (app.globalData.is_admin) {
           var usertitle = '（管理员）';
         } else {
           var usertitle = '';
