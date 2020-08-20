@@ -35,6 +35,7 @@ exports.main = async (event, context) => {
     .where({
       _id: _.in(list)
     })
+    .orderBy('student_id', 'asc')
     .field({
       _id: false,
       username: true,

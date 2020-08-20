@@ -14,7 +14,9 @@ exports.main = async (event, context) => {
 
   const admin_collection = db.collection('user_info').where({
     is_admin: true
-  }).field({
+  })
+  .orderBy('student_id', 'asc')
+  .field({
     _id: false,
     username: true,
     student_id: true

@@ -1,1 +1,5 @@
 /* pages/activities/activities_detail/check_in_list/check_in_list.wxss */
+
+.weui-cells {
+  margin-bottom: 50px;
+}
