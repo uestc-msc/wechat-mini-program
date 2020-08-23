@@ -26,7 +26,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
     // 判断链接错误
     if (options.album_id == undefined) {
       wx.switchTab({
@@ -74,7 +74,7 @@ Page({
     // 获取前 photos_per_page 个活动
     page_index = 0;
     photos_arr = [];
-    this.loadOnePage();
+    return this.loadOnePage();
   },
 
   /**
@@ -111,8 +111,8 @@ Page({
   onPullDownRefresh() {
     this.onLoad({
       album_id: app.globalData.current_activity._id
-    });
-    sleep(500).then(() => {
+    })
+    .finally(() => {
       wx.stopPullDownRefresh()
     })
   },
@@ -131,12 +131,12 @@ Page({
 
   },
 
-  loadOnePage() {
+  async loadOnePage() {
     //获取前 photos_per_page 个活动信息
     wx.showLoading({
       title: '加载中'
     });
-    db.collection('album_info')
+    return db.collection('album_info')
       .where({
         album_id: app.globalData.current_activity._id
       })
@@ -246,7 +246,9 @@ Page({
   longPressPhoto: function (e) {
     let that = this;
     let photo = e.currentTarget.dataset.item;
-    if (app.globalData.is_admin || photo._openid == app.globalData.openid) { // 有权限删除
+    if (app.globalData.is_admin ||                                                      // 管理员
+      photo._openid == app.globalData.openid ||                                         // 图片上传者
+      app.globalData.current_activity.presenter_list.includes(app.globalData.openid)) { // 活动主讲人
       wx.showActionSheet({
         itemList: ['删除图片'],
         itemColor: 'red',

@@ -1,5 +1,54 @@
 # 项目开发文档
 
+## 部署
+
+### “阮薇薇点名啦”开发者的部署方法
+
+1. clone 项目到本地。
+
+```sh
+git clone https://github.com/uestc-msc/wechat-mini-program.git
+```
+
+2. 使用[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)，导入项目根目录。
+
+3. 分别在 `cloudfunctions` 下的每个子文件夹下运行：
+
+```sh
+npm install
+```
+
+### 其他项目的开发者的部署方法
+
+
+1. clone 项目到本地。
+
+```sh
+git clone https://github.com/uestc-msc/wechat-mini-program.git
+```
+
+2. 使用[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)，导入项目根目录，并在导入界面修改 AppID 为开发者账号下的 AppID。
+
+3. 修改 `/app.js` 中云环境 id 为开发者账号下的 id。（本项目的云环境 id 为 `uestc-msc-activities`）
+
+4. 在云数据库中新建集合：`activity_info`、`user_info`、`album_info`、`app_info`、`log`，并在 `app_info` 中添加字段：
+
+```json
+{
+  _id: xxx,      // 默认
+  _openid: xxxx, // 开发者本人的 openid
+  can_upload: true 
+}
+```
+
+5. 分别在 `cloudfunctions` 下的每个子文件夹下运行：
+
+```sh
+npm install
+```
+
+执行完成后，在微信开发者工具右键点击各子文件夹，点击“上传并部署：所有文件”。
+
 ## 功能、界面描述
 
 ### 近期活动页面
@@ -88,6 +137,7 @@
 三个场景如下：
 
 场景|`modify` 参数|额外参数
+-|-|-
 修改活动的签到名单|`check_in_list`|`id`：活动 id
 修改活动的主讲人|`presener_list`|`id`：活动 id
 修改管理员|`grant_admin`|无
@@ -144,6 +194,7 @@
 `time`|string|活动时间
 `location`|string|活动地点
 `check_in_list`|Array|签到名单（数组，存储每个人的 openid）
+`check_in_closed`|bool|管理员是否关闭签到（为空或 `false` 时可以签到；默认为空；该字段不影响管理员手动签到）
 `is_hidden`|bool|活动是否被删除（实际上是隐藏）
 
 ### 相册信息 album_info

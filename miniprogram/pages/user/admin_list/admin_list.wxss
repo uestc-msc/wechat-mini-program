@@ -1,0 +1,5 @@
+/* miniprogram/pages/user/admin_list/admin_list.wxss */
+
+.weui-cells {
+  margin-bottom: 50px;
+}

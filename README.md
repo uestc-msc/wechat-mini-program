@@ -21,9 +21,9 @@
 * MSCer 在小程序中首页或活动详情的“签到”入口，扫描本次活动对应的小程序码，完成签到；
 * 管理员在活动管理界面手动为 MSCer 签到。
 
-以上三种签到形式均要求在活动当天进行。
+以上三种签到形式均要求在活动当天进行。前两种形式还要求活动为“开放签到”状态（在活动管理页面设置，默认为开放签到，活动当天可设置）。
 
-### 经验系统
+### 经验
 
 用户初始经验值为 0。以下行为会增加/扣除经验（正值为增加，反之为扣除）。其他行为（如删除活动）均不会影响经验。
 
@@ -55,6 +55,7 @@
 * 删除活动
 * 获取活动的签到二维码
 * 手动为其他用户进行签到
+* 开放/关闭通过小程序码的签到（活动当天可设置）
 * 查看、导出活动的签到名单
 * 删除本次活动的照片
 
@@ -65,17 +66,15 @@
 1. 管理员授予者在在小程序中修改
 2. 开发者直接修改数据库 `user_info` 集合的 `is_admin` 字段
 
-#### 管理员授予者权限
+#### 超级管理员权限
 
-~~这个名字实在绕口，可是我也没有想到什么更好的名字了，如果有，欢迎提 issue / PR / 私聊开发者~~
+小程序中存在超级管理员。超级管理员的定位为俱乐部主席。
 
-小程序中存在管理员授予者 `admin_grantor`。管理员授予者的定位为俱乐部主席。
+超级管理员可以在小程序中修改管理员的名单。
 
-管理员授予者可以在小程序中修改管理员的名单。
+超级管理员默认不拥有管理员权限。但可以授予自身管理员权限。
 
-管理员授予者默认不拥有管理员权限。但可以授予自身管理员权限。
-
-管理员授予者只能通过开发者修改数据库 `user_info` 集合的 `can_grant_admin` 字段来修改名单。
+超级管理员只能通过开发者修改数据库 `user_info` 集合的 `can_grant_admin` 字段来修改名单。
 
 ### 签到记录导出
 
@@ -85,7 +84,9 @@
 
 其他用户可以私聊开发者。
 
-## 开发
+## 部署、开发
+
+[部署方法](develop.md#部署)
 
 * 微信小程序开发入门教程：https://cloudbase.net/community/guides/handbook/tcb01.html
 * 使用 [WeUI](https://github.com/Tencent/weui-wxss) 作为 UI 框架库。使用教程可见：https://cloudbase.net/community/guides/handbook/tcb04.html
@@ -124,5 +125,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+Icon by [@盐酥盐酥尧KRY](https://weibo.com/u/6576509353)。
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

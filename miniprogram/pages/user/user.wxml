@@ -16,17 +16,25 @@
 		</view>
 
 		<view class="weui-cells">
-			<navigator url='/pages/people_selector/people_selector?modify=grant_admin' wx:if="{{can_grant_admin}}" class="weui-cell weui-cell_active weui-cell_access">
+			<block wx:if="{{can_grant_admin}}">
+				<navigator url='/pages/people_selector/people_selector?modify=grant_admin' class="weui-cell weui-cell_active weui-cell_access">
 					<view class="weui-cell__bd">
-						<text style="vertical-align: middle;">管理员列表</text>
+						<text style="vertical-align: middle;">设置管理员</text>
 					</view>
 					<view class="weui-cell__ft"></view>
-			</navigator>
+				</navigator>
+				<navigator url='/pages/user/admin_list/admin_list' class="weui-cell weui-cell_active weui-cell_access">
+					<view class="weui-cell__bd">
+						<text style="vertical-align: middle;">导出管理员名单</text>
+					</view>
+					<view class="weui-cell__ft"></view>
+				</navigator>
+			</block>
 			<navigator url="/pages/user/about/about" class="weui-cell weui-cell_active weui-cell_access">
-					<view class="weui-cell__bd">
-						<text style="vertical-align: middle;">关于</text>
-					</view>
-					<view class="weui-cell__ft"></view>
+				<view class="weui-cell__bd">
+					<text style="vertical-align: middle;">关于</text>
+				</view>
+				<view class="weui-cell__ft"></view>
 			</navigator>
 		</view>
 	</view>

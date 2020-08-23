@@ -15,10 +15,9 @@ Page({
   data: {
     activities_arr: []
   },
-  onLoad() {
+  async onLoad() {
     page_index = 0;
     activities_arr = [];
-    this.loadOnePage();
     wx.cloud.database().collection('activity_info')
       .where({
         is_hidden: false
@@ -29,17 +28,18 @@ Page({
           activities_total: res.total
         })
       })
+    return this.loadOnePage();
   },
   onShow() {
     app.globalData.current_activity = undefined;
   },
-  loadOnePage() {
+  async loadOnePage() {
     console.log('Page:', page_index)
     // 从数据库获取活动的信息
     wx.showLoading({
       title: '加载中',
     });
-    getActivityInfo({
+    return getActivityInfo({
         skip: page_index * activities_per_page,
         limit: activities_per_page,
       })
@@ -79,10 +79,10 @@ Page({
     });
   },
   onPullDownRefresh() {
-    this.onLoad();
-    sleep(500).then(() => {
-      wx.stopPullDownRefresh()
-    })
+    this.onLoad()
+      .then(() => {
+        wx.stopPullDownRefresh()
+      })
   },
   // 页面上拉触底事件的处理函数
   onReachBottom() {

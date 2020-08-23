@@ -23,10 +23,10 @@ Page({
     }
     //从数据库获取最新数据以后再覆盖
     fetchData(e.id).then(setPageData);
-    getCheckInList(e.id);
+    getAdminList(e.id);
   },
   async onPullDownRefresh() {
-    await getCheckInList(app.globalData.current_activity._id);
+    await getAdminList(app.globalData.current_activity._id);
     wx.stopPullDownRefresh();
   }
 })
@@ -62,7 +62,7 @@ function setPageData() {
   })
 }
 
-async function getCheckInList(id) {
+async function getAdminList(id) {
   wx.showLoading({
     title: '正在拿出点名册',
     mask: true

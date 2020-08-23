@@ -22,7 +22,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
     page_index = 0;
     activities_arr = [];
     // 获取活动总数
@@ -36,7 +36,7 @@ Page({
           activities_total: res.total
         })
       })
-    this.loadOnePage();
+    return this.loadOnePage();
   },
 
   /**
@@ -71,10 +71,10 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    this.onLoad();
-    sleep(500).then(() => {
+    this.onLoad()
+    .finally(() => {
       wx.stopPullDownRefresh()
-    })
+    });
   },
 
   /**
@@ -91,13 +91,13 @@ Page({
 
   },
 
-  loadOnePage() {
+  async loadOnePage() {
     const db = wx.cloud.database();
     //获取前 activities_per_page 个活动信息
     wx.showLoading({
       title: '加载中'
     });
-    getActivityInfo({
+    return getActivityInfo({
         skip: page_index * activities_per_page,
         limit: activities_per_page,
       })

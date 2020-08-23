@@ -19,6 +19,8 @@ export function getTime(show_seconds = false) {
   let time = new Date().toLocaleTimeString('zh-cn', {hour12: false});
   if (!show_seconds) {
     time = time.slice(0,5);
+  } else {
+    time = time.slive(0,8);
   }
   return time;
 }
