@@ -251,7 +251,7 @@ Page({
       app.globalData.current_activity.presenter_list.includes(app.globalData.openid)) { // 活动主讲人
       wx.showActionSheet({
         itemList: ['删除图片'],
-        itemColor: 'red',
+        itemColor: '#FF3030',
         success: res => {
           // console.log(photo)
           wx.cloud.database().collection('album_info').doc(photo._id).remove()

@@ -22,6 +22,7 @@ Page({
     is_admin: app.globalData.is_admin
   },
   onLoad: function (e) {
+    wx.showNavigationBarLoading();
     that = this;
     //尝试从全局变量中读取是否有该次活动的信息，如果有就先默认填上
     if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {
@@ -34,7 +35,8 @@ Page({
       .then(res => {
         let cur = res[0];
         app.globalData.current_activity = cur;
-        setPageData()
+        setPageData();
+        wx.hideNavigationBarLoading();
       });
   },
   // tapTitle () {

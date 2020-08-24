@@ -34,7 +34,7 @@
 				<view class="weui-cell__ft weui-cell__ft_in-access"></view>
 			</view>
 		</view>
-		<view class="button-sp-area">
+		<view class="button-sp-area" wx:if="{{!checked_in && is_today}}">
 			<view class="weui-btn weui-btn_primary" bindtap="callCheckIn">签到</view>
 		</view>
 		<view class="button-sp-area" wx:if="{{is_admin}}">
