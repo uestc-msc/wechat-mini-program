@@ -3,7 +3,7 @@ App({
     onLaunch: function () {
       const that = this;
       this.globalData = {
-        app_version: "v1.2.0",
+        app_version: "v1.2.1",
         can_upload: false, // 禁止添加活动、上传图片
 
         openid: "",
@@ -49,15 +49,29 @@ App({
             icon: 'none'
           })
         }
-      })
+      });
+
+      // ios 端没有 Promise.finally()，需要自己定义
+      Promise.prototype.finally = function (callback) {
+        let P = this.constructor;
+        return this.then(
+          value => P.resolve(callback()).then(() => value),
+          reason => P.resolve(callback()).then(() => {
+            throw reason
+          })
+        );
+      };
     },
     async get_user_info() {
       const that = this;
       const db = wx.cloud.database()
       // 查询是否可以上传
-      db.collection('app_info').get().then(res => {
-        this.globalData.can_upload = res.data[0].can_upload
-      });
+      db.collection('app_info')
+        .doc('settings')
+        .get()
+        .then(res => {
+          this.globalData.can_upload = res.data.can_upload
+        });
       //查询数据库
       return db.collection('user_info').doc(
           that.globalData.openid

@@ -35,11 +35,12 @@ git clone https://github.com/uestc-msc/wechat-mini-program.git
 
 ```json
 {
-  _id: xxx,      // 默认
-  _openid: xxxx, // 开发者本人的 openid
+  _id: 'settings',
   can_upload: true 
 }
 ```
+
+5. 修改云数据库所有集合和云存储的访问权限为：任何人可读、任何人可写。
 
 5. 分别在 `cloudfunctions` 下的每个子文件夹下运行：
 
@@ -245,14 +246,9 @@ npm install
 
 ### 安全规则
 
-数据库的安全规则设定为所有人可读、创建者或管理员可写，即：
+由于微信云数据库的权限管理并不支持对某个字段进行单独设置，加上微信小程序用户看不到源码，难以自己访问数据库，因此不对安全规则进行严格限制。
 
-```json
-{
-  "read": true,
-  "write": "doc._openid == auth.openid || get(`database.user_info.${auth.openid}`).is_admin == true"
-}
-```
+数据库的安全规则设定为所有人可读、所有人可写，即：
 
 ## 云存储
 
@@ -262,13 +258,4 @@ npm install
 
 ### 安全规则
 
-云存储的安全规则希望能设定为所有人可读、创建者或管理员可写，即：
-
-```json
-{
-  "read": true,
-  "write": "resource.openid == auth.openid || get(`database.user_info.${auth.openid}`).is_admin == true"
-}
-```
-
-但是目前云存储安全规则并不支持查询数据库，因此目前采用所有人都可以读写的策略。
+目前采用所有人都可以读写的策略。

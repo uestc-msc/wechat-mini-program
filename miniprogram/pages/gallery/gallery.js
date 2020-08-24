@@ -73,6 +73,7 @@ Page({
   onPullDownRefresh() {
     this.onLoad()
     .finally(() => {
+      console.log(1)
       wx.stopPullDownRefresh()
     });
   },
@@ -114,6 +115,7 @@ Page({
             activities_arr: activities_arr
           });
           page_index++;
+          return res;
         }
       })
       .catch(err => {
@@ -122,6 +124,7 @@ Page({
           title: '数据出错啦 _(:з」∠)_',
           icon: 'none'
         });
+        return err;
       })
   },
 
