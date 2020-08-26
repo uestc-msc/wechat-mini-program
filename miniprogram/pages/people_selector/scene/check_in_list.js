@@ -7,14 +7,15 @@ const db = wx.cloud.database();
 export var title = '手动签到';
 
 // 缓存当前活动的信息
-export function getCurrentActivity(e) {
+export async function getCurrentActivity(e) {
   if (e.id != app.globalData.current_activity._id) {
-    db
+    return db
       .collection('activity_info')
       .doc(e.id)
       .get({
         success: res => {
           app.globalData.current_activity = res.data;
+          return res;
         },
         fail: res => {
           console.log(res);
@@ -23,21 +24,24 @@ export function getCurrentActivity(e) {
           });
           wx.showToast({
             title: '活动 id 错误或无法访问数据库',
-          })
+          });
+          return res;
         }
       })
   }
 }
 
 export function onLoad(e, page) {
-  getCurrentActivity(e);
-  page.setData({
-    title: title + page.data.title,
-    total: app.globalData.current_activity.check_in_list.length
+  getCurrentActivity(e)
+  .then(res => {
+    page.setData({
+      title: title + page.data.title,
+      total: app.globalData.current_activity.check_in_list.length
+    });
+    wx.setNavigationBarTitle({
+      title: page.data.title + page.data.total,
+    })
   });
-  wx.setNavigationBarTitle({
-    title: page.data.title + page.data.total,
-  })
 }
 
 export async function listChanged(options) {

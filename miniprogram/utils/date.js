@@ -20,7 +20,7 @@ export function getTime(show_seconds = false) {
   if (!show_seconds) {
     time = time.slice(0,5);
   } else {
-    time = time.slive(0,8);
+    time = time.slice(0,8);
   }
   return time;
 }

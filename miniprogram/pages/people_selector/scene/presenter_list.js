@@ -13,13 +13,15 @@ import {
 
 export function onLoad(e, page) {
   getCurrentActivity(e)
-  page.setData({
-    title: title + page.data.title,
-    total: app.globalData.current_activity.presenter_list.length
-  });
-  wx.setNavigationBarTitle({
-    title: page.data.title + page.data.total,
-  })
+    .then(res => {
+      page.setData({
+        title: title + page.data.title,
+        total: app.globalData.current_activity.presenter_list.length
+      });
+      wx.setNavigationBarTitle({
+        title: page.data.title + page.data.total,
+      })
+    })
 }
 
 export function elementIsChecked(Element) {
@@ -38,7 +40,7 @@ export async function listChanged(options) {
         presenter_list: oper(options.user_id)
       }
     });
-    promise.then(res => {
+  promise.then(res => {
     // 加减经验
     const offset = options.checked ? 1 : -1;
     add_exp(options.user_id, const_exp.presenter * offset * app.globalData.current_activity.check_in_list.length);
@@ -52,7 +54,7 @@ export async function listChanged(options) {
       }
     });
   })
-  let res = await(promise);
+  let res = await (promise);
   // 获取新的 presenter_string 存储并刷新上一页
   getActivityInfo({
     id: app.globalData.current_activity._id

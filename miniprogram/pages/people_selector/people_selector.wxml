@@ -16,10 +16,10 @@
 			</form>
 			<view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
 		</view>
-		<view class="weui-cells weui-cells_checkbox weui-cells_after-title" wx:if="{{checkboxItems.length > 0}}">
+		<view class="weui-cells weui-cells_checkbox weui-cells_after-title" wx:if="{{checkbox_items.length > 0}}">
 			<!-- 由于这里需要单独知道哪一个被触发了，而不是得到完整的表，因此没有使用官方的 checkbox-group 的 bindchange 而是 view 的 bindtap -->
 			<checkbox-group>
-				<block wx:for="{{checkboxItems}}" wx:key="value">
+				<block wx:for="{{checkbox_items}}" wx:key="value">
 					<label class="weui-cell weui-check__label" bindtap="checkboxChange" data-id="{{item.value}}">
 						<view class="weui-cell__hd">
 							<checkbox class="weui-check" checked="{{item.checked}}" />
@@ -32,12 +32,12 @@
 				</block>
 			</checkbox-group>
 		</view>
-		<view class="page__bd page__bd_spacing" wx:else>
+		<!-- <view class="page__bd page__bd_spacing" wx:else>
 			<view class="weui-flex">
 				<view class="weui-flex__item">
 					<view class="placeholder">只会显示搜索结果的前 20 项哦</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </view>
