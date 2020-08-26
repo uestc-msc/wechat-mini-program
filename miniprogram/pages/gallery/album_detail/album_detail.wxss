@@ -1,6 +1,7 @@
 /* pages/gallery/gallery_detail/gallery_detail.wxss */
 .gallery-root {
   position: relative;
+  height: max-content;
 }
 
 .iadd {
@@ -11,51 +12,15 @@
   right: 12px;
 }
 
-.album-list {
-  width: 100%;
-  /* box-sizing: border-box; */
-  display: flex;
-  flex-flow: row wrap;
-}
-
 .title {
   text-align: center;
   font-size: large;
   margin: 10px 0;
 }
 
-.album-wrapper {
-  width: 50%;
-  box-sizing: border-box;
-  background-color: transparent;
-}
-.album-container {
-  margin: 10px;
-  background-color: whitesmoke;
-  box-shadow: 0 0 7px #ccc;
-  border-radius: 7px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.album-cover {
-  width: 100%;
-  overflow: hidden;
-  height: 100px;
-
-}
-.album-cover image {
-  height: 100px;
-}
-.album-name {
-  text-align: center;
-  line-height: 2;
-  font-size: 12px;
-}
-
-
 .photo-list {
   width: 100%;
+  height: max-content;
   /* box-sizing: border-box; */
   display: flex;
   flex-flow: row wrap;

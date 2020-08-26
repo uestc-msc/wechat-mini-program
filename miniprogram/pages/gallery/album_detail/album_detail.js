@@ -10,6 +10,7 @@ const db = wx.cloud.database();
 let page_index = 0;
 const photos_per_page = 20;
 let photos_arr = [];
+var that;
 
 Page({
 
@@ -27,6 +28,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    that = this;
     // 判断链接错误
     if (options.album_id == undefined) {
       wx.switchTab({
@@ -53,7 +55,7 @@ Page({
       .then(res => {
         let cur = res[0];
         app.globalData.current_activity = cur;
-        this.setData({
+        that.setData({
           title: app.globalData.current_activity.title
         });
       });
@@ -71,9 +73,13 @@ Page({
           photos_total: res.total
         });
       });
-    // 获取前 photos_per_page 个活动
+    // 清空数据
     page_index = 0;
     photos_arr = [];
+    that.setData({
+      photos_arr: []
+    });
+    // 获取前 photos_per_page 个活动
     return this.loadOnePage();
   },
 
