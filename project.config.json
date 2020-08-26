@@ -61,6 +61,14 @@
 					"id": -1,
 					"name": "pages/activities/create_activity/create_activity",
 					"pathName": "pages/activities/create_activity/create_activity",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/people_selector/people_selector",
+					"pathName": "pages/people_selector/people_selector",
+					"query": "modify=grant_admin",
 					"scene": null
 				}
 			]
