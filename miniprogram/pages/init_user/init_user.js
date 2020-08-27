@@ -34,7 +34,15 @@ Page({
       return;
     }
     var app = getApp();
-
+    //判断是否开放注册
+    if (!app.globalData.app_settings.can_register) {
+      wx.showToast({
+        title: '暂不开放注册 请联系管理员',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
     //将信息保存为全局变量
     app.globalData.username = this.data.username;
     app.globalData.student_id = this.data.student_id;

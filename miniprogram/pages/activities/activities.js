@@ -42,7 +42,7 @@ Page({
         // console.log(res)
         this.setData({
           recent_activities: res,
-          can_upload: app.globalData.can_upload
+          can_upload: app.globalData.app_settings.can_upload
         })
       });
   },

@@ -60,7 +60,7 @@ Page({
         });
       });
     this.setData({
-      can_upload: app.globalData.can_upload
+      can_upload: app.globalData.app_settings.can_upload
     });
     // 获取 photos 总数
     db.collection('album_info')
@@ -116,11 +116,11 @@ Page({
    */
   onPullDownRefresh() {
     this.onLoad({
-      album_id: app.globalData.current_activity._id
-    })
-    .finally(() => {
-      wx.stopPullDownRefresh()
-    })
+        album_id: app.globalData.current_activity._id
+      })
+      .finally(() => {
+        wx.stopPullDownRefresh()
+      })
   },
 
   /**
@@ -180,60 +180,67 @@ Page({
   // }
   addPhoto: function () {
     const that = this
+    //选择图片
     wx.chooseImage({
-      count: 1,
+      count: 9,
       sizeType: ['compressed', 'original'],
       sourceType: ['album', 'camera'],
       success: res => {
-        const imagePath = res.tempFilePaths[0]
-        console.warn(imagePath)
-        let user_id = app.globalData.openid;
-        let album_id = app.globalData.current_activity._id;
-        const uploadTask = wx.cloud.uploadFile({
-          filePath: imagePath,
-          cloudPath: `album/${album_id}/${Date.now()}_${user_id}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
-          success: res => {
-            wx.showLoading({
-              title: '写入数据库中',
-              mask: 'true'
-            })
-            db.collection('album_info').add({
-              data: {
-                url: res.fileID,
-                album_id: app.globalData.current_activity._id
-              },
-              success: res2 => {
-                wx.showToast({
-                  title: '经验+' + const_exp.photo,
-                });
-                // 加经验
-                add_exp(app.globalData.openid, const_exp.photo);
-                // 在本地更新数据
-                // console.log(res2)
-                photos_arr.unshift({
-                  _id: res2._id,
-                  _openid: app.globalData.openid,
-                  url: res.fileID,
-                  album_id: app.globalData.current_activity._id
-                });
-                that.setData({
-                  photos_total: that.data.photos_total + 1,
-                  photos_arr: photos_arr
+        const user_id = app.globalData.openid;
+        const album_id = app.globalData.current_activity._id;
+        let current_uploading_n = 1;
+        const total_uploading_n = res.tempFilePaths.length;
+        wx.showLoading({
+          title: '正在上传：' + current_uploading_n + '/' + total_uploading_n,
+        })
+        res.tempFilePaths.forEach((imagePath, index) => {
+          //上传每一张图片
+          wx.cloud.uploadFile({
+            filePath: imagePath,
+            cloudPath: `album/${album_id}/${Date.now()}_${user_id}_${index}.${imagePath.match(/\.(\w+)$/)[1]}`,
+            success: res => {
+              // 向数据库写入已上传照片的信息，每上传一张写一次
+              db.collection('album_info').add({
+                  data: {
+                    url: res.fileID,
+                    album_id: app.globalData.current_activity._id
+                  },
                 })
-              },
-              fail: err => {
-                console.error(err)
-              }
-            })
-          },
-        })
-        uploadTask.onProgressUpdate((res) => {
-          wx.showLoading({
-            title: bytesToString(res.totalBytesSent) +
-              '/' + bytesToString(res.totalBytesExpectedToSend),
-            mask: 'true'
-          });
-        })
+                .then(res2 => {
+                  // 在本地更新数据
+                  // console.log(res2)
+                  photos_arr.unshift({
+                    _id: res2._id,
+                    _openid: app.globalData.openid,
+                    url: res.fileID,
+                    album_id: app.globalData.current_activity._id
+                  });
+                  that.setData({
+                    photos_total: that.data.photos_total + 1,
+                    photos_arr: photos_arr
+                  })
+                  // 如果不是上传的最后一张，显示正在上传第 x 张
+                  if (current_uploading_n != total_uploading_n) {
+                    current_uploading_n++;
+                    wx.showLoading({
+                      title: '正在上传：' + current_uploading_n + '/' + total_uploading_n,
+                    })
+                  } else {
+                    //如果是最后一张，显示上传成功，经验增加
+                    let exp = const_exp.photo * total_uploading_n;
+                    wx.showToast({
+                      title: '经验+' + exp,
+                    });
+                    // 加经验
+                    add_exp(app.globalData.openid, exp);
+                  }
+                })
+                .catch(err => {
+                  console.error(err)
+                })
+            },
+          })
+        });
       }
     })
   },
@@ -252,8 +259,8 @@ Page({
   longPressPhoto: function (e) {
     let that = this;
     let photo = e.currentTarget.dataset.item;
-    if (app.globalData.is_admin ||                                                      // 管理员
-      photo._openid == app.globalData.openid ||                                         // 图片上传者
+    if (app.globalData.is_admin || // 管理员
+      photo._openid == app.globalData.openid || // 图片上传者
       app.globalData.current_activity.presenter_list.includes(app.globalData.openid)) { // 活动主讲人
       wx.showActionSheet({
         itemList: ['删除图片'],

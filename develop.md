@@ -36,7 +36,8 @@ git clone https://github.com/uestc-msc/wechat-mini-program.git
 ```json
 {
   _id: 'settings',
-  can_upload: true 
+  can_upload: true,
+  can_register: true
 }
 ```
 
@@ -243,6 +244,7 @@ npm install
 
 字段|值|含义
 `can_upload`|bool|用户是否可以创建活动、上传图片
+`can_register`|bool|未注册的用户是否可以注册（在 `init_user` 页面）
 
 ### 安全规则
 

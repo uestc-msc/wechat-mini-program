@@ -20,7 +20,7 @@ Page({
     location: ""
   },
   onLoad: function (options) {
-    if (!app.globalData.can_upload) {
+    if (!app.globalData.app_settings.can_upload) {
       wx.switchTab({
         url: '/pages/activities/activities',
       })
@@ -37,7 +37,7 @@ Page({
       };
       this.setData({
         presenter_string: app.globalData.username,
-        can_upload: app.globalData.can_upload
+        can_upload: app.globalData.app_settings.can_upload
       });
       // 由于主讲人列表是在另一个页面写入
       // 所以就先在数据库中创建本次活动的记录

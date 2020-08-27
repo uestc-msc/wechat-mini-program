@@ -35,12 +35,15 @@
 		</view>
 		<view class="weui-form__tips-area">
 			<text class="weui-form__tips">
-				由于微信限制不能在用户注册时获取头像，
-				请前往“我-修改用户信息-点击授权获取头像”授权。
+				由于微信限制不能在注册时获取用户信息，
+				请前往“我-修改用户信息-授权获取头像”授权。
 			</text>
 		</view>
 		<view class="weui-form__opr-area">
 			<button class="weui-btn weui-btn_primary" bindtap="getUserInfomation">确定</button>
 		</view>
 	</form>
+	<view class="weui-footer weui-footer_fixed-bottom">
+		<view class="weui-footer__text">Copyright © 2002-2020 UESTC-MSC</view>
+	</view>
 </view>
