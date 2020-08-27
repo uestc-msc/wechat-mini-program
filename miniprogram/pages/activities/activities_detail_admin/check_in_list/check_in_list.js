@@ -68,8 +68,9 @@ async function getAdminList(id) {
     mask: true
   });
   await wx.cloud.callFunction({
-    name: 'get_check_in_list',
+    name: 'get_collection',
     data: {
+      collection: 'check_in_list',
       id: app.globalData.current_activity._id
     },
     success: res => {

@@ -30,7 +30,10 @@ async function getAdminList(id) {
     mask: true
   });
   await wx.cloud.callFunction({
-    name: 'get_admin_list',
+    name: 'get_collection',
+    data: {
+      collection: 'admin_list'
+    },
     success: res => {
       that.setData({
         admin_name_text: res.result.namelist.join('\n'),
