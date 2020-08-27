@@ -67,7 +67,7 @@ async function construct_collection(event) {
   } else if (event.collection == 'album_photo_list') {
     const collection = db.collection('album_info')
       .where({
-        album_id: app.globalData.current_activity._id
+        album_id: event.id
       })
       .orderBy('url', 'desc');
     return collection;
