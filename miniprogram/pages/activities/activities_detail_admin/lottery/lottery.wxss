@@ -3,3 +3,6 @@
 .picker {
   text-align: right;
 }
+.namelist {
+  text-align: left;
+}

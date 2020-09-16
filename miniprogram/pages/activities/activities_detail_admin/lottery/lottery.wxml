@@ -22,7 +22,7 @@
 <view class="weui-cells__title">中奖名单</view>
 <view class="weui-cells weui-cells_after-title">
 	<view class="weui-cell" bindtap="copyListToClipBoard">
-		<text class="weui-cell__ft">{{lottery_list_text}}</text>
+		<text class="weui-cell__ft namelist">{{lottery_list_text}}</text>
 	</view>
 </view>
 

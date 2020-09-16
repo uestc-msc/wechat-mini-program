@@ -3,3 +3,6 @@
 .weui-cells {
   margin-bottom: 50px;
 }
+.namelist {
+  text-align: left;
+}

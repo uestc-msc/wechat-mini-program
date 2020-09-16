@@ -37,7 +37,7 @@
 		</view>
 		<view class="weui-form__opr-area">
 			<button class="weui-btn weui-btn_primary" formType="submit">确定修改</button>
-			<button wx:if="{{needGetUserInfo}}" class="weui-btn weui-btn_primary" open-type="getUserInfo" bindgetuserinfo="getUserInfomation">点击授权获取头像</button>
+			<button wx:if="{{needGetUserInfo}}" class="weui-btn weui-btn_primary" open-type="getUserInfo" bindgetuserinfo="getUserInfomation">授权获取头像</button>
 		</view>
 	</form>
 </view>

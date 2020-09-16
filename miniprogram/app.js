@@ -3,8 +3,11 @@ App({
     onLaunch: function () {
       const that = this;
       this.globalData = {
-        app_version: "v1.2.2",
-        can_upload: false, // 禁止添加活动、上传图片
+        app_version: "v1.2.3",
+        app_settings: {
+          can_register: false, // 允许尚未注册的用户进行注册
+          can_upload: false,   // 允许添加活动、上传图片
+        },
 
         openid: "",
         // 如果数据库发现没有用户信息，应使 avatar_url 为空
@@ -70,7 +73,8 @@ App({
         .doc('settings')
         .get()
         .then(res => {
-          this.globalData.can_upload = res.data.can_upload
+          this.globalData.app_settings.can_upload = res.data.can_upload;
+          this.globalData.app_settings.can_register = res.data.can_register;
         });
       //查询数据库
       return db.collection('user_info').doc(

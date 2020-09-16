@@ -1,7 +1,7 @@
 // 获取某次活动的签到名单
 // 由于涉及到获取大量用户的名字
 // 小程序限制 LIMIT 20，云函数限制 LIMIT 100，故使用云函数一次拉取
-
+// v1.2.3 以后该函数将被弃用
 const cloud = require('wx-server-sdk')
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
