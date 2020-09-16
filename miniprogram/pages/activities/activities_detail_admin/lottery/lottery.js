@@ -39,7 +39,8 @@ Page({
       data: text
     });
   },
-  drawLottery() {
+  async drawLottery() {
+    await getCheckInList(app.globalData.current_activity._id);
     let namelist = this.data.check_in_namelist,
       shuffled_namelist = shuffle(namelist),
       lottery_namelist = shuffled_namelist.slice(0, this.data.picker_index + 1),
