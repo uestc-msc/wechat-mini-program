@@ -40,21 +40,22 @@ Page({
     });
   },
   async drawLottery() {
-    await getCheckInList(app.globalData.current_activity._id);
-    let namelist = this.data.check_in_namelist,
-      shuffled_namelist = shuffle(namelist),
-      lottery_namelist = shuffled_namelist.slice(0, this.data.picker_index + 1),
-      formatted_namelist = lottery_namelist.map((Element, index) => (index + 1) + ': ' + Element);
-    this.setData({
-      lottery_list_text: formatted_namelist.join('\n')
+    getCheckInList(app.globalData.current_activity._id, () => {
+      let namelist = this.data.check_in_namelist,
+        shuffled_namelist = shuffle(namelist),
+        lottery_namelist = shuffled_namelist.slice(0, this.data.picker_index + 1),
+        formatted_namelist = lottery_namelist.map((Element, index) => (index + 1) + ': ' + Element);
+      this.setData({
+        lottery_list_text: formatted_namelist.join('\n')
+      });
+      wx.showToast({
+        title: '请及时截图保存~',
+        icon: 'none'
+      });
+      this.setData({
+        button_name: '再开一次！'
+      })
     });
-    wx.showToast({
-      title: '请及时截图保存~',
-      icon: 'none'
-    });
-    this.setData({
-      button_name: '再开一次！'
-    })
   },
 })
 
@@ -86,26 +87,27 @@ function setPageData() {
   that.setData({
     title: cur.title,
     check_in_total: cur.check_in_list.length,
-    picker_range: [...new Array(cur.check_in_list.length+1).keys()].slice(1) // 生成 [1, 2, ..., {{cur.check_in_list.length}}]
+    picker_range: [...new Array(cur.check_in_list.length + 1).keys()].slice(1) // 生成 [1, 2, ..., {{cur.check_in_list.length}}]
   })
 }
 
-async function getCheckInList(id) {
+function getCheckInList(id, success_callback = () => {}) {
   wx.showLoading({
     title: '正在拿出点名册',
     mask: true
   });
-  await wx.cloud.callFunction({
+  wx.cloud.callFunction({
     name: 'get_collection',
     data: {
       collection: 'check_in_list',
-      id: app.globalData.current_activity._id
+      id: id
     },
     success: res => {
       that.setData({
         check_in_total: res.result.namelist.length,
         check_in_namelist: res.result.namelist
       })
+      success_callback();
       wx.hideLoading();
     }
   })
