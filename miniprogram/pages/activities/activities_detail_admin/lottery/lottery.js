@@ -4,7 +4,7 @@ import shuffle from '../../../../utils/shuffle'
 
 var app = getApp();
 var that;
-
+const test_namelist = ['2018190606001     严淑尧', '2018190601012     袁象驰'];
 Page({
   data: {
     title: '',
@@ -12,7 +12,7 @@ Page({
     picker_range: [],
     lottery_list_text: "阮薇薇已经等不及开奖了~",
     picker_index: 0,
-    button_name: '开奖！'
+    button_name: '开奖！',
   },
   onLoad: function (e) {
     that = this;
@@ -41,13 +41,20 @@ Page({
   },
   async drawLottery() {
     getCheckInList(app.globalData.current_activity._id, () => {
-      let namelist = this.data.check_in_namelist,
-        shuffled_namelist = shuffle(namelist),
-        lottery_namelist = shuffled_namelist.slice(0, this.data.picker_index + 1),
+      let namelist = this.data.check_in_namelist;
+      let shuffled_namelist
+      if (this.testMode && test_namelist.length == this.data.picker_index + 1) { // 如果 testMode 且内定人数==设置中奖人数
+        shuffled_namelist = test_namelist;
+        this.testMode = false;
+      } else {
+        shuffled_namelist = shuffle(namelist)
+      }
+      let lottery_namelist = shuffled_namelist.slice(0, this.data.picker_index + 1),
         formatted_namelist = lottery_namelist.map((Element, index) => (index + 1) + ': ' + Element);
       this.setData({
         lottery_list_text: formatted_namelist.join('\n')
       });
+
       wx.showToast({
         title: '请及时截图保存~',
         icon: 'none'
@@ -57,6 +64,22 @@ Page({
       })
     });
   },
+  clickTitle() {
+    if (this.startTap == undefined || Date.now() - this.startTap > 2000) { // 第一次点击或距离第一次点击已经超过 2s，则重置
+      this.startTap = Date.now();
+      this.tapTime = 0;
+    } else {
+      this.tapTime++;
+      if (this.tapTime == 5) {
+        this.testMode = true;
+        this.tapTime = 0;
+        wx.showToast({
+          title: 'test_mode',
+          icon: 'success'
+        })
+      }
+    }
+  }
 })
 
 async function fetchData(id) {
