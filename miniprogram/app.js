@@ -3,7 +3,7 @@ App({
     onLaunch: function () {
       const that = this;
       this.globalData = {
-        app_version: "v1.2.3",
+        app_version: "v1.2.4",
         app_settings: {
           can_register: false, // 允许尚未注册的用户进行注册
           can_upload: false,   // 允许添加活动、上传图片
