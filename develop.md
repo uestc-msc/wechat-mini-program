@@ -158,6 +158,14 @@ npm install
 
 路径：`pages/init_user/init_user`
 
+## 关于二维码和入口路径
+
+场景|入口
+-|-
+正常进入小程序|`pages/activities/activities`
+进入小程序并签到某活动|`pages/activities/activities?scene={活动id}`
+进入小程序并跳到活动页面，不进行签到（如查看评论回复情形下）|`pages/activities/activities_detail/activities_detail?id={活动id}`
+
 ## 数据库结构
 
 微信小程序使用 JSON 数据库。并且提供每日（凌晨）备份，每个备份保留七天。
@@ -198,6 +206,10 @@ npm install
 `check_in_list`|Array|签到名单（数组，存储每个人的 openid）
 `check_in_closed`|bool|管理员是否关闭签到（为空或 `false` 时可以签到；默认为空；该字段不影响管理员手动签到）
 `is_hidden`|bool|活动是否被删除（实际上是隐藏）
+
+### 评论信息 comment_info
+
+略。
 
 ### 相册信息 album_info
 

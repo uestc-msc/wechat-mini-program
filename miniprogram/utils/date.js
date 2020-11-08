@@ -24,5 +24,3 @@ export function getTime(show_seconds = false) {
   }
   return time;
 }
-
-getTime()

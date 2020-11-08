@@ -7,6 +7,17 @@
 
 ![小程序码](img/wxacode.jpg)
 
+## 阮薇薇点名啦 v2 计划
+
+由于微信小程序的以下弱点，我们计划将微信小程序+云数据库重写为[前端](https://github.com/uestc-msc/uestcmsc-activities-frontend) + [后端](https://github.com/uestc-msc/uestcmsc-activities-backend) + MySQL 的 WebApp。
+
+* 需要严格审核，甚至于某些功能（如任意用户均可上传的留言板/公开相册/云盘等）无法上架小程序
+* 微信小程序 API 随时可能变化，而小程序必须使用最新的 API（而不像 `Pypi`、`npm` 等可以使用指定版本的插件），可能导致原来的程序完全无法工作。如 `wx.getUserInfo()` 函数改版后，在用户未授权过的情况下调用此接口，将不再出现授权弹窗，会直接进入 `fail` 回调（详见[《公告》](https://developers.weixin.qq.com/community/develop/doc/0000a26e1aca6012e896a517556c01))。
+
+完成 WebApp 后，阮薇薇点名啦 v1 与 WebApp 数据将不会互通。（但可能会提供转移数据库和图片的代码）
+
+为此，我们计划修改阮薇薇点名啦 v1 的 API，使其适配 WebApp 的后端部分，即 WebApp 为主，微信小程序为辅的策略。新的小程序即为阮薇薇点名啦 v2。
+
 ## 运行环境
 
 基础库 2.9.4，对应微信版本 Android/iOS 7.0.7 及以上。
@@ -93,10 +104,6 @@
 * 图标库来自 [weui-icon](https://github.com/weui/weui-icon)
 
 [项目开发文档](develop.md)
-
-## 已知 bug
-
-* activities_all 页和 gallery 页上下颜色不一致（上面为 `#EDEDED`，下面为 `#F6F6F6`）
 
 ## 长远计划（由简至难）
 

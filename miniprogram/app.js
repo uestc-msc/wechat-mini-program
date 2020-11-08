@@ -1,9 +1,10 @@
 //app.js
 App({
     onLaunch: function () {
+      console.log('onlaunch')
       const that = this;
       this.globalData = {
-        app_version: "v1.2.4",
+        app_version: "v1.3.0",
         app_settings: {
           can_register: false, // 允许尚未注册的用户进行注册
           can_upload: false,   // 允许添加活动、上传图片

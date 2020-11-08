@@ -49,6 +49,14 @@
     "request": 10000,
     "downloadFile": 10000
   },
-  "sitemapLocation": "sitemap.json",
-  "style": "v2"
+  "usingComponents": {
+    "van-button": "@vant/weapp/button",
+    "van-popup": "@vant/weapp/popup",
+    "van-cell": "@vant/weapp/cell",
+    "van-cell-group": "@vant/weapp/cell-group",
+    "van-skeleton": "@vant/weapp/skeleton",
+    "van-tag": "@vant/weapp/tag",
+    "van-icon": "@vant/weapp/icon"
+  },
+  "sitemapLocation": "sitemap.json"
 }

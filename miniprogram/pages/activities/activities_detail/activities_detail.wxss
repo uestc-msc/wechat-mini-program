@@ -1,1 +1,154 @@
 /* pages/activities/activities_detail/activities_detail.wxss */
+
+.divLine{
+  background: #fefefe57;
+  width: 70%;
+  height: 2rpx;
+  margin-bottom: 3%;
+ }
+
+.main-content{
+  margin-top: 10%;
+}
+
+.button-sp-area{
+  height: auto;
+}
+
+.btn-font{
+  font-size: 25rpx;
+  font-weight: 400;
+  color: #57525260;
+}
+
+.page__title {
+  font-size:48rpx;
+  color:#333;
+  font-weight:900;
+  height: auto;
+}
+
+.button-action-active{
+  position: relative;
+}
+
+.view_fengexian {
+  margin-top: 40rpx;
+  width: 96%;
+  height: 80rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0rpx 2% 0rpx 2%;
+}
+
+/* 两个view的样式 */
+.view_fengexian view {
+  width: 33%;
+  height: 2rpx;
+  background: linear-gradient(to right, #ead6ee, #a0f1ea);
+}
+
+/* 字体的样式 */
+.text_fengexian {
+  font-size: 25rpx;
+  color: rgba(127, 134, 126, 0.774);
+  margin: 0rpx 2% 0rpx 2%;
+}
+
+.leaveBtn{
+  width: 90%;
+  height: 100rpx;
+  margin:5%;
+  margin-bottom: 2%;
+}
+.manageBtn{
+  display: flex;
+  padding-left: 40%;
+  padding-right: 5%;
+  justify-content: space-between; 
+  padding-bottom: 3%;
+  /* padding: 0rpx;
+  margin: 0rpx;
+  width: 1rpx; */
+}
+.imgView{
+  width: 15%
+}
+.headImg{
+  width: 70rpx;
+  height: 70rpx;
+  margin:20rpx;
+}
+.msgContent{
+  display: flex;
+  justify-content: center;  
+  width: 100%;
+  border-top: 1rpx solid #eee;
+  margin-bottom: 10rpx;
+}
+.msgText{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  padding: 20rpx;
+  word-wrap:break-word;
+}
+.nameView{
+  display: flex;
+  justify-content:space-between;
+}
+.nameText{
+  color:#808080;
+  font-weight: 550;
+  margin-right: 15rpx;
+  margin-bottom: 3rpx;
+}
+.goodCount{
+  margin-left: 5rpx;
+  margin-right: 5rpx;
+  font-size:30rpx;
+  color:lightslategray;
+}
+.delectView{
+  margin-left: 5rpx;
+  margin-right: 5rpx;
+  font-size: 25rpx;
+  color: gray;
+}
+.replyView{
+  margin-top: 10rpx;
+  display: flex;
+  flex-direction: column;
+  word-wrap:break-word;
+}
+.wordWrap {
+  position: absolute;
+  right: 12rpx;
+  bottom: 12rpx;
+}
+
+.remind{
+  display: flex;
+  justify-content: center;  
+  color: rgb(153, 153, 153);
+  font-size: 25rpx;
+  width: 90%;
+}
+.textArea{
+  background-color: #F6F6F6;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  box-sizing: content-box;
+  padding: 20rpx;
+  position: relative;
+}
+
+.divLine{
+  background: #E0E3DA;
+  width: 100%;
+  height: 5rpx;
+ }
+
+ 
