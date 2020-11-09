@@ -54,8 +54,10 @@ async function construct_collection(event) {
       });
     return collection;
   } else if (event.collection == 'admin_list') {
+    // 超级管理员不应该出现在这个页面
     const collection = db.collection('user_info').where({
-        is_admin: true
+        is_admin: true,
+        can_grant_admin: false
       })
       .orderBy('exp', 'desc')
       .field({

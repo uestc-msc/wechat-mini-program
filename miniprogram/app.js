@@ -101,7 +101,7 @@ App({
           that.globalData.username = res.data.username;
           that.globalData.student_id = res.data.student_id;
           that.globalData.telephone = res.data.telephone;
-          that.globalData.is_admin = res.data.is_admin;
+          that.globalData.is_admin = res.data.is_admin || res.data.can_grant_admin; // 超级管理员应默认具有管理员的权限
           that.globalData.can_grant_admin = res.data.can_grant_admin;
           that.globalData.register_date = res.data.register_date;
           that.globalData.exp = res.data.exp;

@@ -18,7 +18,7 @@ git clone https://github.com/uestc-msc/wechat-mini-program.git
 npm install
 ```
 
-### 其他项目的开发者的部署方法
+### fork 项目的开发者的部署方法
 
 
 1. clone 项目到本地。
@@ -43,13 +43,7 @@ git clone https://github.com/uestc-msc/wechat-mini-program.git
 
 5. 修改云数据库所有集合和云存储的访问权限为：任何人可读、任何人可写。
 
-5. 分别在 `cloudfunctions` 下的每个子文件夹下运行：
-
-```sh
-npm install
-```
-
-执行完成后，在微信开发者工具右键点击各子文件夹，点击“上传并部署：所有文件”。
+5. 在微信开发者工具右键点击 `cloudfunctions` 下的各子文件夹，并选择“上传并部署：云端安装依赖（不上传 node_modules）”。
 
 ## 功能、界面描述
 
@@ -185,7 +179,7 @@ npm install
 `avatar_url`|string|头像的链接
 `username`|string|姓名
 `student_id`|string|学号
-`is_admin`|bool|是否为管理员
+`is_admin`|bool|是否为管理员（当 `can_grant_admin==true` 时此项无效）
 `can_grant_admin`|bool|能授予别人管理员
 `register_date`|string|注册时间
 `exp`|int|参加活动/举办活动能获得经验值
@@ -209,7 +203,18 @@ npm install
 
 ### 评论信息 comment_info
 
-略。
+每一条记录的字段如下：
+
+字段|值|含义
+-|-|-
+`_id`|id|本条记录的 id
+`_openid`|id|创建者的 openid，即留言者的 id
+`activity`|id|留言所在的活动 id
+`avatar_url`|string|留言者的头像链接
+`username`|string|留言者的姓名
+`comment_text`|string|留言内容
+`like_list`|Array|点赞名单（数组，存储每个点赞者的 openid）
+`like_count`|string|点赞数，应等于 `like_list.length`
 
 ### 相册信息 album_info
 
