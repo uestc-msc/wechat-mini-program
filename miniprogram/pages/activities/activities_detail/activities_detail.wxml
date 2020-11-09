@@ -48,6 +48,7 @@
 		<view class="button-sp-area" wx:if="{{can_upload}}">
 			<view class="weui-btn weui-btn_primary" bindtap="showPopup">留言</view>
 		</view>
+		<!-- 分割线  -->
 		<view class="view_fengexian">
 			<view></view>
 			<text class="text_fengexian"></text>
