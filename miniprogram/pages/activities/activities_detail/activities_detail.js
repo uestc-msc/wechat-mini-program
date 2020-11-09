@@ -11,8 +11,9 @@ import {
 
 const app = getApp();
 var that;
-// let tap_title_total = 0;
+let tap_title_total = 0;
 const db = wx.cloud.database();
+const _ = db.command;
 // 订阅消息模板id
 // 参考 https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/subscribe-message.html
 // 这里使用的模板为：留言回复通知（回复内容、回复时间、回复者）
@@ -28,9 +29,10 @@ Page({
     check_in_total: "",
     checked_in: false, // 用户已签到
     is_admin: app.globalData.is_admin,
+    openid: app.globalData.openid,
 
     //以下为留言的数据
-    msgList: [], // 留言的数据
+    comment_list: [], // 留言的数据
     max_number: 140, // 可输入最大字数
     number: 0, // 已输入字数
 
@@ -62,18 +64,18 @@ Page({
         wx.hideNavigationBarLoading();
       });
   },
-  // tapTitle () {
-  //   tap_title_total++;
-  //   if (tap_title_total == 5) {
-  //     tap_title_total = 0;
-  //     wx.setClipboardData({
-  //       data: app.globalData.current_activity._id,
-  //     });
-  //     this.setData({
-  //       show_id: true
-  //     })
-  //   }
-  // },
+  tapTitle() {
+    tap_title_total++;
+    if (tap_title_total == 5) {
+      tap_title_total = 0;
+      wx.setClipboardData({
+        data: app.globalData.current_activity._id,
+      });
+      this.setData({
+        show_id: true
+      });
+    }
+  },
   callGallery() {
     wx.navigateTo({
       url: '/pages/gallery/album_detail/album_detail?album_id=' + app.globalData.current_activity._id,
@@ -102,45 +104,8 @@ Page({
         wx.stopPullDownRefresh()
       });
   },
+
   // 以下为留言区部分代码
-  // 置顶
-  toTop: function (e) {
-    let top = !e.currentTarget.dataset.msgdata.top;
-    db.collection("comment_info").doc(e.currentTarget.dataset.msgid).update({
-      data: {
-        top: top,
-      }
-    }).then(res => {
-      wx.showToast({
-        title: top ? "置顶成功" : "取消成功",
-        icon: "success"
-      });
-      this.getCommentData();
-    })
-  },
-
-  //删除
-  delect: function (e) {
-    wx.showModal({
-      title: '确认删除',
-      content: '真的要删除吗？这是不可逆的哦',
-
-      success(res) {
-        if (res.confirm) {
-          // console.log(e.currentTarget.dataset.msgid)
-          db.collection('comment_info').doc(e.currentTarget.dataset.msgid).remove()
-            .then(res => {
-              wx.showToast({
-                title: "删除成功",
-                icon: "success",
-              })
-              that.getCommentData();
-            })
-        }
-      }
-
-    })
-  },
 
   invalid_comment: function (str) {
     return str == 'undefined' || !str || !/[^\s]/.test(str);
@@ -148,8 +113,7 @@ Page({
 
   // 提交留言
   onSubmit: function (e) {
-    // console.log(e.detail.value.msgInput);
-    if (this.invalid_comment(e.detail.value.msgInput)) {
+    if (this.invalid_comment(e.detail.value.commentInput)) {
       wx.showToast({
         title: '留言不能为空',
         icon: 'none'
@@ -164,8 +128,10 @@ Page({
       data: {
         avatar_url: app.globalData.avatar_url,
         username: app.globalData.username,
-        text: e.detail.value.msgInput,
+        comment_text: e.detail.value.commentInput,
         activity_id: app.globalData.current_activity._id,
+        like_list: [],
+        like_count: 0, // 虽然可以从 like_list 计算得出，但是这是查询语句排序的依据，所以就额外维护一下
       }
     }).then(res => {
       console.log(res)
@@ -195,17 +161,17 @@ Page({
 
   // 管理员/主讲人回复留言
   reSubmit: function (e) {
-    if (this.invalid_comment(e.detail.value.msgInput)) {
+    if (this.invalid_comment(e.detail.value.commentInput)) {
       wx.showToast({
         title: '回复不能为空',
         icon: 'none'
       });
       return;
     }
-    //回复
+    // 上传回复到数据库
     db.collection("comment_info").doc(this.data.reply_message_id).update({
       data: {
-        reply: e.detail.value.msgInput
+        reply: e.detail.value.commentInput
       },
     }).then(res => {
       console.log(res)
@@ -228,7 +194,7 @@ Page({
               value: getDate() + " " + getTime()
             }, // 回复时间
             thing2: {
-              value: e.detail.value.msgInput
+              value: e.detail.value.commentInput
             }, // 回复内容
             name3: {
               value: app.globalData.username
@@ -249,40 +215,102 @@ Page({
     })
   },
 
-  //点赞
-  // tapGood: function (e) {
-  //   db
-  //     .collection('message')
-  //     .doc(e.currentTarget.dataset.msgid)
-  //     .get()
-  //     .then(res => {
-  //       console.log(res)
-  //       if (res.data.goodCount == null) {
-  //         res.data.goodCount = 0;
-  //       }
-  //       db.collection('message').doc(e.currentTarget.dataset.msgid).update({
-  //         data: {
-  //           good: true,
-  //           goodCount: Number(res.data.goodCount) + 1,
-  //         },
-  //       }).then(res => {
-  //         this.getCommentData()
-  //       })
-  //     })
-  // },
+  // 点赞
+  tapLike: function (e) {
+    let comment_list = this.data.comment_list;
+    let commentid = e.currentTarget.dataset.commentid;
+    let comment_index = comment_list.findIndex(item => item._id == commentid);
 
-  // 页面刷新获取数据
+    if (comment_list[comment_index].current_user_like == false) {
+      // 点赞
+      comment_list[comment_index].current_user_like = true;
+      comment_list[comment_index].like_count++;
+      this.setData({
+        comment_list
+      });
+      db.collection("comment_info").doc(commentid).update({
+        data: {
+          like_list: _.addToSet(app.globalData.openid),
+          like_count: _.inc(1)
+        }
+      });
+    } else {
+      // 取消点赞
+      comment_list[comment_index].current_user_like = false;
+      comment_list[comment_index].like_count--;
+      this.setData({
+        comment_list
+      });
+      db.collection("comment_info").doc(commentid).update({
+        data: {
+          like_list: _.pull(app.globalData.openid),
+          like_count: _.inc(-1)
+        }
+      });
+    }
+  },
+
+  // 置顶
+  toTop: function (e) {
+    let top = !e.currentTarget.dataset.commentdata.top;
+    db.collection("comment_info").doc(e.currentTarget.dataset.commentid).update({
+      data: {
+        top: top,
+      }
+    }).then(res => {
+      wx.showToast({
+        title: top ? "置顶成功" : "取消成功",
+        icon: "success"
+      });
+      this.getCommentData();
+    })
+  },
+
+  //删除
+  delect: function (e) {
+    wx.showModal({
+      title: '确认删除',
+      content: '真的要删除吗？这是不可逆的哦',
+
+      success(res) {
+        if (res.confirm) {
+          // console.log(e.currentTarget.dataset.commentid)
+          db.collection('comment_info').doc(e.currentTarget.dataset.commentid).remove()
+            .then(res => {
+              wx.showToast({
+                title: "删除成功",
+                icon: "success",
+              })
+              that.getCommentData();
+            })
+        }
+      }
+
+    })
+  },
+
+  // 获取评论数据
   getCommentData: function (e) {
     // console.log('getting data')
     db.collection("comment_info").where({
         activity_id: app.globalData.current_activity._id
       }).orderBy(
         'top', 'desc'
+      ).orderBy(
+        'like_count', 'desc'
       ).get()
       .then(res => {
+        let comment_list = res.data;
+        // 计算当前用户是否点过赞
+        comment_list.forEach(item => {
+          if (item.like_list != undefined)
+            item.current_user_like = item.like_list.includes(app.globalData.openid)
+          else
+            item.current_user_like = false;
+        });
         // console.log(res)
         this.setData({
-          msgList: res.data,
+          comment_list: comment_list,
           loading_comment: false
         })
       })
@@ -312,7 +340,7 @@ Page({
   showRe(e) {
     this.setData({
       show_reply_popup: true,
-      reply_message_id: e.currentTarget.dataset.msgid,
+      reply_message_id: e.currentTarget.dataset.commentid,
       replyUserId: e.currentTarget.dataset.userid
     });
   },

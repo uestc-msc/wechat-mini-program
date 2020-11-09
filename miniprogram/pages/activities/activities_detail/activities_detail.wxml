@@ -9,7 +9,7 @@
 		<view class="page__desc" wx:if="{{!checked_in && is_today}}">未签到
 			<icon class="icon-small" type="info_circle" size="18" color="red"></icon>
 		</view>
-		<!-- <view class="page__desc" wx:if="{{show_id}}">activity_id: {{_id}}</view> -->
+		<view class="page__desc" wx:if="{{show_id}}">activity_id: {{_id}}</view>
 	</view>
 	<view class="page__bd">
 		<view class="weui-cells weui-cells_after-title">
@@ -42,91 +42,90 @@
 		</view>
 
 		<!-- 以下为评论区部分 -->
-		<block wx:if="{{can_upload}}">
-			<!-- 留言按钮 -->
-			<view class="button-sp-area">
-				<view class="weui-btn weui-btn_primary" bindtap="showPopup">留言</view>
-			</view>
-			<!-- <view class="leaveBtn">
-		<van-button type="primary" size="large" round open-type="getUserInfo" bindgetuserinfo="onInfo">留言</van-button>
-	</view> -->
-			<view class="view_fengexian">
-				<view></view>
-				<text class="text_fengexian"></text>
-				<view></view>
-			</view>
-			<!-- 留言内容 -->
-			<van-skeleton class="main-content" title avatar row="3" loading="{{loading_comment}}">
-				<!-- 留言板块 -->
-				<block wx:for="{{msgList}}" wx:key="_id">
-					<view class="msgContent">
-						<!-- 头像部分 -->
-						<view class="imgView">
-							<image src="{{item.avatar_url}}" class="headImg"></image>
-						</view>
-						<!-- 内容部分 -->
-						<view class='msgText'>
-							<view class='nameView'>
-								<view>
-									<text class='nameText'>{{item.username}}</text>
-									<van-tag mark wx:if='{{item.top}}'>置顶</van-tag>
+		<!-- 基于 https://github.com/wowwm/MessageBoard-MiniProgram/blob/MessageBoard/miniprogram/pages/msgPages/msgPages.wxml -->
+		
+		<!-- 留言按钮 -->
+		<view class="button-sp-area" wx:if="{{can_upload}}">
+			<view class="weui-btn weui-btn_primary" bindtap="showPopup">留言</view>
+		</view>
+		<view class="view_fengexian">
+			<view></view>
+			<text class="text_fengexian"></text>
+			<view></view>
+		</view>
+		<!-- 留言内容 -->
+		<van-skeleton class="main-content" title avatar row="3" loading="{{loading_comment}}">
+			<!-- 留言板块 -->
+			<block wx:for="{{comment_list}}" wx:key="_id">
+				<view class="msgContent">
+					<!-- 头像部分 -->
+					<view class="imgView">
+						<image src="{{item.avatar_url}}" class="headImg"></image>
+					</view>
+					<!-- 内容部分 -->
+					<view class='msgText'>
+						<view class='nameView'>
+							<view>
+								<text class='nameText'>{{item.username}}</text>
+								<van-tag mark wx:if='{{item.top}}'>置顶</van-tag>
+							</view>
+							<!-- 点赞功能 -->
+							<view style="display: flex;" bindtap="tapLike" data-commentId='{{item._id}}'>
+								<block wx:if="{{item.current_user_like}}">
+									<van-icon name="good-job" size="45rpx" color="lightslategray" />
+								</block>
+								<block wx:else>
+									<van-icon name="good-job-o" size="45rpx" color="lightslategray" />
+								</block>
+								<view class='likeCount' wx:if="{{item.like_count != 0}}">
+									<text>{{item.like_count}}</text>
 								</view>
-								<!-- 点赞功能（似乎有bug） -->
-								<!-- <view wx:if='{{item.good}}' style="display: flex;">
-							<van-icon name="good-job" size="45rpx" color="lightslategray" />
-							<view class='goodCount'>
-								<text>{{item.goodCount}}</text>
 							</view>
 						</view>
-						<view wx:else style="display: flex;">
-							<van-icon name="good-job-o" size="45rpx" color="lightslategray" bind:click="tapGood"
-								data-msgId='{{item._id}}' />
-							<view class='goodCount'>
-								<text>{{item.goodCount}}</text>
+						<text selectable="true">{{item.comment_text}}</text>
+						<view class='replyView' wx:if='{{item.reply}}'>
+							<view>
+								<text style="color:green;font-weight:800">> </text>
+								<text style="color:gray">主讲人回复</text>
 							</view>
-						</view> -->
-							</view>
-							<text selectable="true">{{item.text}}</text>
-							<view class='replyView' wx:if='{{item.reply}}'>
-								<view>
-									<text style="color:green;font-weight:800">> </text>
-									<text style="color:gray">主讲人回复</text>
-								</view>
-								<text selectable="true">{{item.reply}}</text>
-							</view>
+							<text selectable="true">{{item.reply}}</text>
 						</view>
 					</view>
+				</view>
 
-					<!-- 按钮部分 -->
-					<view class="manageBtn" wx:if='{{is_admin}}'>
-						<van-button class="Btn" size="mini" plain bindtap="toTop" data-msgid='{{item._id}}' data-msgdata='{{item}}'>
-							<span class="btn-font">置顶</span>
-						</van-button>
-						<van-button class="Btn" size="mini" plain bindtap="showRe" data-msgid='{{item._id}}' data-userid='{{item._openid}}'>
-							<span class="btn-font">回复</span>
-						</van-button>
-						<van-button class="Btn" size="mini" plain bindtap='delect' data-msgId='{{item._id}}'>
-							<span class="btn-font" style="color: red;">删除</span>
-						</van-button>
-					</view>
-					<view>
-						<!-- 分割线 -->
-						<view class="divLine"></view>
-					</view>
+				<!-- 按钮部分 -->
+				<view class="manageBtn" wx:if='{{is_admin}}'>
+					<van-button class="Btn" size="mini" plain bindtap="toTop" data-commentid='{{item._id}}'
+						data-commentdata='{{item}}'>
+						<span class="btn-font">置顶</span>
+					</van-button>
+					<van-button class="Btn" size="mini" plain bindtap="showRe" data-commentid='{{item._id}}'
+						data-userid='{{item._openid}}'>
+						<span class="btn-font">回复</span>
+					</van-button>
+					<van-button class="Btn" size="mini" plain bindtap='delect' data-commentId='{{item._id}}'>
+						<span class="btn-font" style="color: red;">删除</span>
+					</van-button>
+				</view>
+				<view>
+					<!-- 分割线 -->
+					<view class="divLine"></view>
+				</view>
 
-				</block>
-			</van-skeleton>
+			</block>
+		</van-skeleton>
 
-			<!-- 留言弹窗 -->
-			<van-popup show="{{ show_comment_popup }}" bind:close="onClose" position="bottom" custom-style="height: 70%;" round closeable>
-				<!-- 提交留言 -->
-				<form bindsubmit="onSubmit">
-					<view class="writeView">
-						<van-cell title="请留言" />
-						<view class="textArea">
-							<textarea value="{{comment_text}}" style="height: 10em" maxlength="{{max_number}}" placeholder="请输入留言内容"
-								placeholder-style="color:gray;" name="msgInput" bindinput='inputText' />
-							<span class="wordWrap">{{number}}/{{max_number}}</span>
+		<!-- 留言弹窗 -->
+		<van-popup show="{{ show_comment_popup }}" bind:close="onClose" position="bottom" custom-style="height: 70%;" round
+			closeable>
+			<!-- 提交留言 -->
+			<form bindsubmit="onSubmit">
+				<view class="writeView">
+					<van-cell title="请留言" />
+					<view class="textArea">
+						<textarea value="{{comment_text}}" style="height: 10em" maxlength="{{max_number}}" placeholder="请输入留言内容"
+							placeholder-style="color:gray;" name="commentInput" bindinput='inputText' />
+						<span class="wordWrap">{{number}}/{{max_number}}</span>
       	</view>
     	</view>
     	<view class="button-sp-area">
@@ -153,7 +152,7 @@
 						value="{{comment_text}}"
 						style="height: 8em" 
 						maxlength="{{max_number}}" 
-						name="msgInput"
+						name="commentInput"
 						bindinput='inputText'/>
 					<span class="wordWrap">{{number}}/{{max_number}}</span>
 				</view>
@@ -163,6 +162,5 @@
 			</view>
 		</form>
 	</van-popup>
-</block>
 	</view>
 </view>
