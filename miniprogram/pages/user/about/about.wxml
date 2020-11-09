@@ -2,7 +2,7 @@
 
 <view class="page" data-weui-theme="{{theme}}">
 
-	<view class="app-icon">
+	<view class="app-icon" bindtap="clickPicture">
 		<image src="/images/icon_ruanweiwei.png"></image>
 	</view>
 
