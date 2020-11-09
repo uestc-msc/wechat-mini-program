@@ -5,7 +5,8 @@ import {
 } from '../../check_in/check_in.js';
 import getActivityInfo from '../../../utils/get_activity_info.js'
 import {
-  getDate, getTime
+  getDate,
+  getTime
 } from '../../../utils/date';
 
 const app = getApp();
@@ -15,7 +16,7 @@ const db = wx.cloud.database();
 // 订阅消息模板id
 // 参考 https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/subscribe-message.html
 // 这里使用的模板为：留言回复通知（回复内容、回复时间、回复者）
-const templateId = 'KLA0FQyb43hK0927G22lu6WYozMmjDH_E8nUQygwQ0A';
+const template_id = 'KLA0FQyb43hK0927G22lu6WYozMmjDH_E8nUQygwQ0A';
 
 Page({
   data: {
@@ -29,33 +30,22 @@ Page({
     is_admin: app.globalData.is_admin,
 
     //以下为留言的数据
-    maxNumber: 140, //可输入最大字数
-    number: 0, //已输入字数
+    msgList: [], // 留言的数据
+    max_number: 140, // 可输入最大字数
+    number: 0, // 已输入字数
 
-    show: false, //是否弹出留言面板
-    showReply: false, //是否弹出回复面板
-    // authority: false, //鉴权 -> is_admin
-    loading: true, //是否正在加载
-    textValue: "",
-    replyMsgId: "", // 如果主讲人正在回复，记录回复的消息的 id
-    userId: "", //用户openid
-    acceptSubscribeMessage: false, // 用户评论时已允许订阅消息推送
-
-    //留言数据
-    pageId: "",          // 当前 pageid
-    name: "",            // 当前用户 id
-    imageSrc: "",        // 当前用户头像 url
-    // goodCount: 0,
-    can_upload: false,
+    show_comment_popup: false, // 是否弹出留言面板
+    show_reply_popup: false, // 是否弹出回复面板
+    loading_comment: true, // 是否正在加载
+    comment_text: "",
+    reply_message_id: "", // 如果主讲人正在回复，记录回复的消息的 id
+    can_upload: false, // 是否能留言
   },
   onLoad: function (e) {
     wx.showNavigationBarLoading();
     that = this;
     this.setData({
       can_upload: app.globalData.app_settings.can_upload,
-      imageSrc: app.globalData.avatar_url,
-      name: app.globalData.username,
-      pageId: e.id
     });
     //尝试从全局变量中读取是否有该次活动的信息，如果有就先默认填上
     if (typeof (app.globalData.current_activity) != 'undefined' && app.globalData.current_activity._id == e.id) {
@@ -112,7 +102,7 @@ Page({
         wx.stopPullDownRefresh()
       });
   },
-  // 以下为评论区部分代码
+  // 以下为留言区部分代码
   // 置顶
   toTop: function (e) {
     let top = !e.currentTarget.dataset.msgdata.top;
@@ -155,73 +145,65 @@ Page({
   invalid_comment: function (str) {
     return str == 'undefined' || !str || !/[^\s]/.test(str);
   },
-  // 用户可选订阅消息，主讲人回复用户时，用户会有微信推送
-  onAcceptSubscribeMessage(e) {
 
-    // 这个地方 PC 模拟器会提示 requestSubscribeMessage:fail can only be invoked by user TAP gesture.
-    // 但是手机是正常的
-    wx.requestSubscribeMessage({
-      tmplIds: [templateId],
-      success(res) {
-        console.log(res)
-        wx.showToast({
-          title: "消息订阅成功 主讲人回复时会有微信推送",
-          icon: "none"
-        });
-        that.setData({
-          acceptSubscribeMessage: true
-        })
-      },
-      fail(res) {
-        console.log(res)
-      }
-    })
-  },
   // 提交留言
   onSubmit: function (e) {
     // console.log(e.detail.value.msgInput);
     if (this.invalid_comment(e.detail.value.msgInput)) {
       wx.showToast({
-        title: '评论不能为空',
+        title: '留言不能为空',
         icon: 'none'
       });
       return;
     }
-    wx.showLoading({
-      title: '提交留言...',
-    })
+    // 让用户同意订阅的同时上传，就不需要设置一个 showLoading 让用户等待了
+    // wx.showLoading({
+    //   title: '提交留言...',
+    // })
     db.collection("comment_info").add({
       data: {
-        imageSrc: this.data.imageSrc,
-        name: this.data.name,
+        avatar_url: app.globalData.avatar_url,
+        username: app.globalData.username,
         text: e.detail.value.msgInput,
-        pageId: this.data.pageId,
-        // good: false, //判断有无人点赞
+        activity_id: app.globalData.current_activity._id,
       }
     }).then(res => {
       console.log(res)
-      wx.showToast({
-        title: '评论成功',
-        icon: 'success'
-      });
       this.setData({
-        textValue: ""
+        comment_text: ""
       });
       this.getCommentData();
       this.onClose();
-    })
+    });
+    // 用户可选订阅消息提醒，主讲人回复用户时，用户会有微信推送
+    // 这个地方 PC 模拟器会提示 "requestSubscribeMessage:fail can only be invoked by user TAP gesture."
+    // 但是手机是正常的
+    wx.requestSubscribeMessage({
+      tmplIds: [template_id],
+      success(res) {
+        console.log(res)
+        wx.showToast({
+          title: "留言成功 主讲人回复时会有微信推送",
+          icon: "none"
+        });
+      },
+      fail(res) {
+        console.log(res)
+      }
+    });
   },
-  // 管理员回复评论
+
+  // 管理员/主讲人回复留言
   reSubmit: function (e) {
     if (this.invalid_comment(e.detail.value.msgInput)) {
       wx.showToast({
-        title: '评论不能为空',
+        title: '回复不能为空',
         icon: 'none'
       });
       return;
     }
     //回复
-    db.collection("comment_info").doc(this.data.replyMsgId).update({
+    db.collection("comment_info").doc(this.data.reply_message_id).update({
       data: {
         reply: e.detail.value.msgInput
       },
@@ -232,7 +214,7 @@ Page({
         icon: "success"
       });
       this.setData({
-        textValue: ""
+        comment_text: ""
       });
       this.closeRe();
       this.getCommentData();
@@ -249,13 +231,13 @@ Page({
               value: e.detail.value.msgInput
             }, // 回复内容
             name3: {
-              value: this.data.name
+              value: app.globalData.username
             }, // 回复者名字
           },
-          templateId: templateId,
-          // id: this.data.replyMsgId,
+          templateId: template_id,
+          // id: this.data.reply_message_id,
           userId: this.data.replyUserId, // 推送的对象
-          page: `pages/activities/activities_detail/activities_detail?id=${this.data.pageId}` // 用户点击推送后跳转的页面
+          page: `pages/activities/activities_detail/activities_detail?id=${app.globalData.current_activity._id}` // 用户点击推送后跳转的页面
         },
         success(res) {
           console.log(res)
@@ -293,7 +275,7 @@ Page({
   getCommentData: function (e) {
     // console.log('getting data')
     db.collection("comment_info").where({
-        pageId: this.data.pageId
+        activity_id: app.globalData.current_activity._id
       }).orderBy(
         'top', 'desc'
       ).get()
@@ -301,7 +283,7 @@ Page({
         // console.log(res)
         this.setData({
           msgList: res.data,
-          loading: false
+          loading_comment: false
         })
       })
   },
@@ -309,7 +291,7 @@ Page({
   //监听记录输入字数
   inputText: function (e) {
     let value = e.detail.value;
-    value = value.substr(0, this.data.maxNumber);
+    value = value.substr(0, this.data.max_number);
     let len = value.length;
     this.setData({
       'number': len
@@ -319,25 +301,24 @@ Page({
   //弹出面板设置
   showPopup(e) {
     this.setData({
-      show: true,
-      acceptSubscribeMessage: false,
+      show_comment_popup: true,
     });
   },
   onClose() {
     this.setData({
-      show: false
+      show_comment_popup: false
     });
   },
   showRe(e) {
     this.setData({
-      showReply: true,
-      replyMsgId: e.currentTarget.dataset.msgid,
+      show_reply_popup: true,
+      reply_message_id: e.currentTarget.dataset.msgid,
       replyUserId: e.currentTarget.dataset.userid
     });
   },
   closeRe() {
     this.setData({
-      showReply: false
+      show_reply_popup: false
     });
   },
 });
@@ -359,9 +340,7 @@ function setPageData() {
     is_admin: app.globalData.is_admin || cur.presenter_list.includes(app.globalData.openid),
     //读完 activity_info 以后再刷新一下 app_settings 等全局变量
     can_upload: app.globalData.app_settings.can_upload,
-    imageSrc: app.globalData.avatar_url,
-    name: app.globalData.username,
   });
-  //设置评论
+  //设置留言
   that.getCommentData();
 }

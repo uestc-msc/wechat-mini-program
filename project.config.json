@@ -19,6 +19,8 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -29,9 +31,7 @@
     "userConfirmedUseCompilerModuleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
-    "minifyWXSS": true,
-    "useMultiFrameRuntime": false,
-    "useApiHook": true
+    "minifyWXSS": true
   },
   "appid": "wx06d7ed7bad6750fd",
   "projectname": "wechat-mini-program",

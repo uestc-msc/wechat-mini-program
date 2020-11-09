@@ -1,7 +1,6 @@
 //app.js
 App({
     onLaunch: function () {
-      console.log('onlaunch')
       const that = this;
       this.globalData = {
         app_version: "v1.3.0",

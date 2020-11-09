@@ -56,19 +56,19 @@
 				<view></view>
 			</view>
 			<!-- 留言内容 -->
-			<van-skeleton class="main-content" title avatar row="3" loading="{{loading}}">
+			<van-skeleton class="main-content" title avatar row="3" loading="{{loading_comment}}">
 				<!-- 留言板块 -->
 				<block wx:for="{{msgList}}" wx:key="_id">
 					<view class="msgContent">
 						<!-- 头像部分 -->
 						<view class="imgView">
-							<image src="{{item.imageSrc}}" class="headImg"></image>
+							<image src="{{item.avatar_url}}" class="headImg"></image>
 						</view>
 						<!-- 内容部分 -->
 						<view class='msgText'>
 							<view class='nameView'>
 								<view>
-									<text class='nameText'>{{item.name}}</text>
+									<text class='nameText'>{{item.username}}</text>
 									<van-tag mark wx:if='{{item.top}}'>置顶</van-tag>
 								</view>
 								<!-- 点赞功能（似乎有bug） -->
@@ -118,29 +118,26 @@
 			</van-skeleton>
 
 			<!-- 留言弹窗 -->
-			<van-popup show="{{ show }}" bind:close="onClose" position="bottom" custom-style="height: 70%;" round closeable>
+			<van-popup show="{{ show_comment_popup }}" bind:close="onClose" position="bottom" custom-style="height: 70%;" round closeable>
 				<!-- 提交留言 -->
 				<form bindsubmit="onSubmit">
 					<view class="writeView">
 						<van-cell title="请留言" />
 						<view class="textArea">
-							<textarea value="{{textValue}}" style="height: 10em" maxlength="{{maxNumber}}" placeholder="请输入留言内容"
+							<textarea value="{{comment_text}}" style="height: 10em" maxlength="{{max_number}}" placeholder="请输入留言内容"
 								placeholder-style="color:gray;" name="msgInput" bindinput='inputText' />
-							<span class="wordWrap">{{number}}/{{maxNumber}}</span>
+							<span class="wordWrap">{{number}}/{{max_number}}</span>
       	</view>
     	</view>
     	<view class="button-sp-area">
       	<button type="primary" formType="submit" plain="true">提交留言</button>
-			</view>
-			<view class="button-sp-area" wx:if="{{!acceptSubscribeMessage}}">
-				<button type="primary" bindtap="onAcceptSubscribeMessage" plain="true" >订阅一次性回复消息提醒</button>
 			</view>
   	</form>
 	</van-popup>
 
 <!-- 回复弹窗 -->
 	<van-popup
-		show="{{ showReply }}" 
+		show="{{ show_reply_popup }}" 
 		bind:close="closeRe"
 		position="top"
 		custom-style="height: 50%;"
@@ -153,12 +150,12 @@
 				<van-cell title="请回复"/>
 				<view class="textArea">
 					<textarea
-						value="{{textValue}}"
+						value="{{comment_text}}"
 						style="height: 8em" 
-						maxlength="{{maxNumber}}" 
+						maxlength="{{max_number}}" 
 						name="msgInput"
 						bindinput='inputText'/>
-					<span class="wordWrap">{{number}}/{{maxNumber}}</span>
+					<span class="wordWrap">{{number}}/{{max_number}}</span>
 				</view>
 			</view>
 			<view class='submitBtnView'>

@@ -12,7 +12,7 @@ Page({
     avatar_url: "",
     student_id: "",
     exp: "",
-    can_grant_admin: false
+    is_admin: false
   },
 
   /**
@@ -44,7 +44,7 @@ Page({
           username: app.globalData.username + usertitle,
           avatar_url: app.globalData.avatar_url,
           student_id: app.globalData.student_id,
-          can_grant_admin: app.globalData.can_grant_admin,
+          is_admin: app.globalData.is_admin,
           exp: app.globalData.exp
         })
       });

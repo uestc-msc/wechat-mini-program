@@ -11,7 +11,8 @@
     "pages/gallery/album_detail/album_detail",
     "pages/user/user",
     "pages/user/modify_information/modify_information",
-    "pages/user/admin_list/admin_list",
+    "pages/user/settings/settings",
+    "pages/user/settings/admin_list/admin_list",
     "pages/user/about/about",
     "pages/people_selector/people_selector",
     "pages/init_user/init_user"

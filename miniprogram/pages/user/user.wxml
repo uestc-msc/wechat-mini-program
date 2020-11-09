@@ -16,16 +16,10 @@
 		</view>
 
 		<view class="weui-cells">
-			<block wx:if="{{can_grant_admin}}">
-				<navigator url='/pages/people_selector/people_selector?modify=grant_admin' class="weui-cell weui-cell_active weui-cell_access">
+			<block wx:if="{{is_admin}}">
+				<navigator url='/pages/user/settings/settings' class="weui-cell weui-cell_active weui-cell_access">
 					<view class="weui-cell__bd">
-						<text style="vertical-align: middle;">设置管理员</text>
-					</view>
-					<view class="weui-cell__ft"></view>
-				</navigator>
-				<navigator url='/pages/user/admin_list/admin_list' class="weui-cell weui-cell_active weui-cell_access">
-					<view class="weui-cell__bd">
-						<text style="vertical-align: middle;">导出管理员名单</text>
+						<text style="vertical-align: middle;">系统设置</text>
 					</view>
 					<view class="weui-cell__ft"></view>
 				</navigator>
